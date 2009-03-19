@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<EditTextPreference android:key="search_list_max_results"
+		android:numeric="integer" android:summary="@string/search_max_results_pref_summary"
+		android:title="@string/search_max_results_pref_text"
+		android:defaultValue="@string/default_search_list_max_results" />
+	<EditTextPreference android:key="account_max_results"
+		android:numeric="integer" android:summary="@string/account_max_results_pref_summary"
+		android:title="@string/account_max_results_pref_text"
+		android:defaultValue="@string/default_account_max_results" />
+	<EditTextPreference android:key="gmt"
+		android:numeric="signed" android:summary="@string/gmt_pref_summary"
+		android:title="@string/gmt_pref_text"
+		android:defaultValue="@string/default_gmt" />
+		
+	<EditTextPreference android:key="appointments_loading_before"
+		android:numeric="integer" android:summary="@string/appointments_loading_before_pref_summary"
+		android:title="@string/appointments_loading_before_pref_text"
+		android:defaultValue="@string/default_appointments_loading_before" />
+		
+	<EditTextPreference android:key="appointments_loading_after"
+		android:numeric="integer" android:summary="@string/appointments_loading_after_pref_summary"
+		android:title="@string/appointments_loading_after_pref_text"
+		android:defaultValue="@string/default_appointments_loading_after" />	
+</PreferenceScreen>
