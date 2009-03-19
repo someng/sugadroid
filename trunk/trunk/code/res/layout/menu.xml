@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/background" android:layout_height="fill_parent"
+	android:layout_width="fill_parent" android:padding="30dip"
+	android:orientation="horizontal">
+
+	<TableLayout android:orientation="vertical"
+		android:layout_height="wrap_content" android:layout_width="fill_parent"
+		android:layout_gravity="center" android:stretchColumns="1">
+
+		<TextView android:text="@string/welcome_text"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:textSize="20sp" android:paddingBottom="30dip" />
+
+		<TextView android:id="@+id/logged_in_message"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:textSize="14sp"  />
+
+	<TextView android:id="@+id/loading" android:text="@string/loading_text"
+		android:layout_height="wrap_content" android:layout_width="wrap_content"
+		android:textSize="14sp" android:paddingBottom="40dip" />
+
+		<TableRow>
+			<ImageView android:layout_gravity="center" 
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:src="@drawable/contacts" android:maxHeight="40dip" android:adjustViewBounds="true"/>
+			<Button android:id="@+id/contact_list_button" android:text="@string/contact_list_button"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		</TableRow>
+
+		<TableRow>
+			<ImageView android:layout_gravity="center"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:src="@drawable/companies" android:maxHeight="40dip" android:adjustViewBounds="true" />
+			<Button android:id="@+id/account_list_button" android:text="@string/account_list_button"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		</TableRow>
+
+		<TableRow>
+			<ImageView android:layout_gravity="center"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:src="@drawable/date" android:maxHeight="40dip" android:adjustViewBounds="true" />
+			<Button android:id="@+id/appointments_button" android:text="@string/appointments_button"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		</TableRow>
+
+
+	</TableLayout>
+</LinearLayout>
