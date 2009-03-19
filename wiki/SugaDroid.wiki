@@ -12,4 +12,4 @@ Add your content here.  Format your content with:
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
 
-<wiki:video url="https://ecoles.excilys.com/embedded/capicoPlayer.swf?id=YEKSgds3ZT"/>
+[https://ecoles.excilys.com/embedded/capicoPlayer.swf?id=YEKSgds3ZT A video demonstration]
