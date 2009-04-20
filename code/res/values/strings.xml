@@ -16,7 +16,7 @@
 	<string name="activity_connection_settings">SugaDroid, connection settings</string>
 	<string name="activity_general_settings">SugaDroid, general settings</string>
 
-	<!-- Error pop-up windows -->
+	<!-- pop-up windows -->
 	<string name="error_launch_task_title">The task could not be executed</string>
 	<string name="error_launch_task_message">A weird error occurred</string>
 	
@@ -30,6 +30,8 @@
 	<string name="day_not_loaded_title">Day not loaded</string>
 	<string name="day_not_loaded_message">This day has not been loaded yet (feature not available yet)</string>
 	
+	<string name="contact_added_title">Contact added</string>
+	<string name="contact_added_message">This contact has been successfully added</string>
 	
 	<string name="error_ok_button">OK</string>
 
@@ -120,5 +122,7 @@ It was created by Pierre-Yves Ricau for eBusiness Information, a French company,
 	<string name="appointment_duration">Duration:</string>
 	<string name="appointment_hours">h</string>
 	<string name="not_available">Not available</string>
+	
+	<string name="add_contact">Add contact</string>
 
 </resources>

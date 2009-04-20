@@ -52,6 +52,7 @@ public class DialogManager {
 	public static final int DIALOG_ERROR_LOGIN_FAILED = 4;
 	public static final int DIALOG_ERROR_NOT_LOGGED_IN = 5;
 	public static final int DIALOG_ERROR_INVALID_RESPONSE = 6;
+	public static final int DIALOG_CONTACT_ADDED = 7;
 
 	public DialogManager(Activity activity) {
 		this.activity = activity;
@@ -95,6 +96,10 @@ public class DialogManager {
 		case DIALOG_ERROR_INVALID_RESPONSE:
 			title = R.string.invalid_response_title;
 			message = R.string.invalid_response_message;
+			break;
+		case DIALOG_CONTACT_ADDED:
+			title = R.string.contact_added_title;
+			message = R.string.contact_added_message;
 			break;
 		default:
 			return null;

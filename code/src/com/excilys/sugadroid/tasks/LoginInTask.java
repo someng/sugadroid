@@ -40,9 +40,9 @@ import com.excilys.sugadroid.services.interfaces.ILoginServices;
 
 public class LoginInTask implements Runnable {
 
-	private final String		username;
-	private final String		password;
-	private final MenuActivity	activity;
+	private final String username;
+	private final String password;
+	private final MenuActivity activity;
 
 	public LoginInTask(MenuActivity activity, String username, String password) {
 		this.username = username;
@@ -62,6 +62,9 @@ public class LoginInTask implements Runnable {
 			ILoginServices services = ServiceFactory.getInstance()
 					.getLoginServices();
 
+			// If you want to login sending the MD5 of the password, just change
+			// to the following code:
+			// sessionId = services.login(username, getMD5(password), url);
 			sessionId = services.login(username, password, url);
 
 			userId = services.getUserId(sessionId, url);

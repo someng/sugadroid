@@ -2,20 +2,20 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@color/background" android:layout_height="fill_parent"
-	android:layout_width="fill_parent" android:padding="30dip"
+	android:layout_width="fill_parent" android:padding="30dip" 
 	android:orientation="horizontal">
 
 	<TableLayout android:orientation="vertical"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:layout_gravity="center" android:stretchColumns="1">
+		android:layout_gravity="center" android:stretchColumns="1" >
 
 		<TextView android:text="@string/welcome_text"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:textSize="20sp" android:paddingBottom="30dip" />
+			android:textSize="20sp" android:paddingBottom="30dip" android:textColor="@color/important_text"/>
 
 		<TextView android:id="@+id/logged_in_message"
 			android:layout_height="wrap_content" android:layout_width="wrap_content"
-			android:textSize="14sp"  />
+			android:textSize="14sp"  android:textColor="@color/important_text"/>
 
 	<TextView android:id="@+id/loading" android:text="@string/loading_text"
 		android:layout_height="wrap_content" android:layout_width="wrap_content"
