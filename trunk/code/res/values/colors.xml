@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-   <color name="background">#3500ffff</color>
-   
+   <color name="background">#181818</color>
+   <color name="important_text">#ffffff</color>
+   <color name="detail_text">#adb2ad</color>
 </resources>

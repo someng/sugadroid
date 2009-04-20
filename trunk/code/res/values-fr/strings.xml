@@ -74,4 +74,6 @@
 	<string name="appointments_loading_after_pref_text">Appointments future days</string>
 	<string name="appointments_loading_after_pref_summary">Enter the number of days after today to preload for appointments</string>
 	
+	<string name="add_contact">Add contact</string>
+	
 </resources>

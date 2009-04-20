@@ -27,9 +27,11 @@ package com.excilys.sugadroid.activities;
 
 import java.util.concurrent.RejectedExecutionException;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,6 +58,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 	private Button phoneMobileButton;
 	private Button phoneWorkButton;
 	private Button emailButton;
+	private Button addButton;
 	private TextView nameText;
 	private TextView contactInfoText;
 
@@ -86,6 +89,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 		phoneMobileButton = (Button) findViewById(R.id.contact_phone_mobile_button);
 		phoneWorkButton = (Button) findViewById(R.id.contact_phone_work_button);
 		emailButton = (Button) findViewById(R.id.contact_email_button);
+		addButton = (Button) findViewById(R.id.contact_add_button);
 	}
 
 	private void setContents() {
@@ -162,6 +166,13 @@ public class ContactDetailsActivity extends CommonActivity implements
 			});
 		}
 
+		addButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addContact(contact);
+			}
+		});
+
 	}
 
 	private void setTasks() {
@@ -210,4 +221,94 @@ public class ContactDetailsActivity extends CommonActivity implements
 		});
 	}
 
+	// TODO : clean this demo code.
+	private void addContact(ContactBean contact) {
+
+		ContentValues personValues = new ContentValues();
+		personValues.put(Contacts.People.NAME, contact.getFullName());
+		/* STARRED 0 = Contacts, 1 = Favorites */
+		personValues.put(Contacts.People.STARRED, 0);
+
+		// worked in SDK 1.0 R2 but not in SDK 1.1 R1 anymore
+		// Uri newPersonUri = getContentResolver()
+		// .insert(Contacts.People.CONTENT_URI, personValues);
+
+		Uri newPersonUri = Contacts.People.createPersonInMyContactsGroup(
+				getContentResolver(), personValues);
+
+		if (newPersonUri != null) {
+
+			// add account
+			if (contact.getAccountName() != null
+					&& !contact.getAccountName().equals("")) {
+				ContentValues organisationValues = new ContentValues();
+				Uri orgUri = Uri.withAppendedPath(newPersonUri,
+						Contacts.Organizations.CONTENT_DIRECTORY);
+				organisationValues.put(Contacts.Organizations.COMPANY, contact
+						.getAccountName());
+				organisationValues.put(Contacts.Organizations.TYPE,
+						Contacts.Organizations.TYPE_WORK);
+				Uri orgUpdate = getContentResolver().insert(orgUri,
+						organisationValues);
+				if (orgUpdate == null) {
+					Log.e(TAG, "Could not insert contact's account name");
+				}
+			}
+
+			if (contact.getPhoneMobile() != null
+					&& !contact.getPhoneMobile().equals("")) {
+				// add mobile phone number
+				ContentValues mobileValues = new ContentValues();
+				Uri mobileUri = Uri.withAppendedPath(newPersonUri,
+						Contacts.People.Phones.CONTENT_DIRECTORY);
+				mobileValues.put(Contacts.Phones.NUMBER, contact
+						.getPhoneMobile());
+				mobileValues.put(Contacts.Phones.TYPE,
+						Contacts.Phones.TYPE_MOBILE);
+				Uri phoneUpdate = getContentResolver().insert(mobileUri,
+						mobileValues);
+				if (phoneUpdate == null) {
+					Log
+							.e(TAG,
+									"Could not insert contact's mobile phone number");
+				}
+			}
+
+			if (contact.getPhoneWork() != null
+					&& !contact.getPhoneWork().equals("")) {
+				// add work phone number
+				ContentValues workValues = new ContentValues();
+				Uri faxUri = Uri.withAppendedPath(newPersonUri,
+						Contacts.People.Phones.CONTENT_DIRECTORY);
+				workValues.put(Contacts.Phones.NUMBER, contact.getPhoneWork());
+				workValues.put(Contacts.Phones.TYPE, Contacts.Phones.TYPE_WORK);
+				Uri phoneUpdate = getContentResolver().insert(faxUri,
+						workValues);
+				if (phoneUpdate == null) {
+					Log.e(TAG, "Could not insert contact's work phone number");
+				}
+			}
+
+			if (contact.getEmail1() != null && !contact.getEmail1().equals("")) {
+				// add email
+				ContentValues emailValues = new ContentValues();
+				Uri emailUri = Uri.withAppendedPath(newPersonUri,
+						Contacts.People.ContactMethods.CONTENT_DIRECTORY);
+				emailValues.put(Contacts.ContactMethods.KIND,
+						Contacts.KIND_EMAIL);
+				emailValues.put(Contacts.ContactMethods.TYPE,
+						Contacts.ContactMethods.TYPE_HOME);
+				emailValues.put(Contacts.ContactMethods.DATA, contact
+						.getEmail1());
+				Uri emailUpdate = getContentResolver().insert(emailUri,
+						emailValues);
+				if (emailUpdate == null) {
+					Log.e(TAG, "Could not insert contact's email");
+				}
+			}
+
+			showDialog(DialogManager.DIALOG_CONTACT_ADDED);
+
+		}
+	}
 }

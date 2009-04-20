@@ -125,4 +125,8 @@ public class ContactBean implements Serializable {
 		return firstName + " " + lastName;
 	}
 
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+
 }

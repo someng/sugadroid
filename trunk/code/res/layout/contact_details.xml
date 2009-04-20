@@ -42,5 +42,13 @@
 		<Button android:id="@+id/contact_email_button"
 			android:layout_width="fill_parent" android:layout_height="wrap_content" />
 	</TableRow>
+	
+	<TableRow>
+		<ImageView android:layout_width="wrap_content"
+			android:layout_gravity="center" android:layout_height="wrap_content"
+			android:src="@drawable/contact"  android:maxHeight="40dip" android:adjustViewBounds="true" />
+		<Button android:id="@+id/contact_add_button" android:text = "@string/add_contact"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</TableRow>
 
 </TableLayout>
