@@ -33,7 +33,7 @@ import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.ILoginServices;
 
-public class LoginServicesKsoap2Impl extends BaseServicesKsoap2Impl implements
+public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		ILoginServices {
 
 	private static LoginServicesKsoap2Impl singleton;
