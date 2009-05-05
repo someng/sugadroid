@@ -37,22 +37,13 @@ import com.excilys.sugadroid.beans.SessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
-public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
-		IAccountServices {
-
-	private static AccountServicesKsoap2Impl singleton;
+public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl
+		implements IAccountServices {
 
 	private static String TAG = AccountServicesKsoap2Impl.class.getSimpleName();
 
-	private AccountServicesKsoap2Impl() {
+	public AccountServicesKsoap2Impl() {
 	};
-
-	public static AccountServicesKsoap2Impl getInstance() {
-		if (singleton == null) {
-			singleton = new AccountServicesKsoap2Impl();
-		}
-		return singleton;
-	}
 
 	@Override
 	public AccountBean getAccountDetails(SessionBean session, String accountId)

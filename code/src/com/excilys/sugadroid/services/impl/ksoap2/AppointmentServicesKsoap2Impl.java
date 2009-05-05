@@ -46,19 +46,11 @@ import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
 		implements IAppointmentServices {
 
-	private static AppointmentServicesKsoap2Impl singleton;
 	private static String TAG = AppointmentServicesKsoap2Impl.class
 			.getSimpleName();
 
-	private AppointmentServicesKsoap2Impl() {
+	public AppointmentServicesKsoap2Impl() {
 	};
-
-	public static AppointmentServicesKsoap2Impl getInstance() {
-		if (singleton == null) {
-			singleton = new AppointmentServicesKsoap2Impl();
-		}
-		return singleton;
-	}
 
 	@Override
 	public IAppointmentBean getAppointmentDetails(SessionBean session,
