@@ -85,6 +85,7 @@ public class SoapSerializationEnvelope extends SoapEnvelope {
             SoapFault fault = new SoapFault();
             fault.parse(parser);
             bodyIn = fault;
+            parser.nextTag(); // This line was added by Pierre-Yves Ricau, to correct a bug.
         } else {
             while (parser.getEventType() == XmlPullParser.START_TAG) {
                 String rootAttr = parser.getAttributeValue(enc, ROOT_LABEL);

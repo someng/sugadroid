@@ -23,11 +23,16 @@
 
 package org.ksoap2.transport;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.ksoap2.*;
-import org.kxml2.io.*;
-import org.xmlpull.v1.*;
+import org.ksoap2.SoapEnvelope;
+import org.kxml2.io.KXmlParser;
+import org.kxml2.io.KXmlSerializer;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
 
 /**
  * Abstract class which holds common methods and members that are used by the
@@ -37,83 +42,95 @@ import org.xmlpull.v1.*;
  */
 abstract public class Transport {
 
-    protected String url;
-    /** Set to true if debugging */
-    public boolean debug;
-    /** String dump of request for debugging. */
-    public String requestDump;
-    /** String dump of response for debugging */
-    public String responseDump;
-    private String xmlVersionTag = "";
+	protected String url;
+	/** Set to true if debugging */
+	public boolean debug;
+	/** String dump of request for debugging. */
+	public String requestDump;
+	/** String dump of response for debugging */
+	public String responseDump;
+	private String xmlVersionTag = "";
 
-    public Transport() {
-    }
+	public Transport() {
+	}
 
-    public Transport(String url) {
-        this.url = url;
-    }
+	public Transport(String url) {
+		this.url = url;
+	}
 
-    /**
-     * Sets up the parsing to hand over to the envelope to deserialize.
-     */
-    protected void parseResponse(SoapEnvelope envelope, InputStream is) throws XmlPullParserException, IOException {
-        XmlPullParser xp = new KXmlParser();
-        xp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-        xp.setInput(is, null);
-        envelope.parse(xp);
-    }
+	/**
+	 * Sets up the parsing to hand over to the envelope to deserialize.
+	 */
+	protected void parseResponse(SoapEnvelope envelope, InputStream is)
+			throws XmlPullParserException, IOException {
+		XmlPullParser xp = new KXmlParser();
+		xp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+		xp.setInput(is, null);
+		envelope.parse(xp);
+	}
 
-    /**
-     * Serializes the request.
-     */
-    protected byte[] createRequestData(SoapEnvelope envelope) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bos.write(xmlVersionTag.getBytes());
-        XmlSerializer xw = new KXmlSerializer();
-        xw.setOutput(bos, null);
-        envelope.write(xw);
-        xw.flush();
-        bos.write('\r');
-        bos.write('\n');
-        bos.flush();
-        return bos.toByteArray();
-    }
+	/**
+	 * Serializes the request.
+	 */
+	protected byte[] createRequestData(SoapEnvelope envelope)
+			throws IOException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bos.write(xmlVersionTag.getBytes());
+		XmlSerializer xw = new KXmlSerializer();
+		xw.setOutput(bos, null);
+		envelope.write(xw);
+		xw.flush();
+		bos.write('\r');
+		bos.write('\n');
+		bos.flush();
+		return bos.toByteArray();
+	}
 
-    /**
-     * Set the target url.
-     * 
-     * @param url
-     *            the target url.
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	/**
+	 * Set the target url.
+	 * 
+	 * @param url
+	 *            the target url.
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    /**
-     * Sets the version tag for the outgoing soap call. Example <?xml
-     * version=\"1.0\" encoding=\"UTF-8\"?>
-     * 
-     * @param tag
-     *            the xml string to set at the top of the soap message.
-     */
-    public void setXmlVersionTag(String tag) {
-        xmlVersionTag = tag;
-    }
+	/**
+	 * returns the target url (method added by Pierre-Yves Ricau)
+	 * 
+	 * @return
+	 */
+	public String getUrl() {
+		return url;
+	}
 
-    /**
-     * Attempts to reset the connection.
-     */
-    public void reset() {
-    }
+	/**
+	 * Sets the version tag for the outgoing soap call. Example <?xml
+	 * version=\"1.0\" encoding=\"UTF-8\"?>
+	 * 
+	 * @param tag
+	 *            the xml string to set at the top of the soap message.
+	 */
+	public void setXmlVersionTag(String tag) {
+		xmlVersionTag = tag;
+	}
 
-    /**
-     * Perform a soap call with a given namespace and the given envelope.
-     * 
-     * @param targetNamespace
-     *            the namespace with which to perform the call in.
-     * @param envelope
-     *            the envelope the contains the information for the call.
-     */
-    abstract public void call(String targetNamespace, SoapEnvelope envelope) throws IOException, XmlPullParserException;
+	/**
+	 * Attempts to reset the connection.
+	 */
+	public void reset() {
+	}
+
+	/**
+	 * Perform a soap call with a given namespace and the given envelope.
+	 * 
+	 * @param targetNamespace
+	 *            the namespace with which to perform the call in.
+	 * @param envelope
+	 *            the envelope the contains the information for the call.
+	 */
+	abstract public void call(String targetNamespace, SoapEnvelope envelope)
+			throws IOException, XmlPullParserException;
 
 }
