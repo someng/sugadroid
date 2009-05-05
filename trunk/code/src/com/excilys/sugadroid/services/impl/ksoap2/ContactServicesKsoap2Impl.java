@@ -35,23 +35,14 @@ import com.excilys.sugadroid.beans.SessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
-public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
-		IContactServices {
-
-	private static ContactServicesKsoap2Impl singleton;
+public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
+		implements IContactServices {
 
 	@SuppressWarnings("unused")
 	private static String TAG = ContactServicesKsoap2Impl.class.getSimpleName();
 
-	private ContactServicesKsoap2Impl() {
+	public ContactServicesKsoap2Impl() {
 	};
-
-	public static ContactServicesKsoap2Impl getInstance() {
-		if (singleton == null) {
-			singleton = new ContactServicesKsoap2Impl();
-		}
-		return singleton;
-	}
 
 	@Override
 	public ContactBean getContactDetails(SessionBean session, String contactId)

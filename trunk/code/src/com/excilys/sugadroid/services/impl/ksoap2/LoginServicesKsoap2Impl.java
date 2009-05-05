@@ -36,18 +36,10 @@ import com.excilys.sugadroid.services.interfaces.ILoginServices;
 public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		ILoginServices {
 
-	private static LoginServicesKsoap2Impl singleton;
 	private static String TAG = LoginServicesKsoap2Impl.class.getSimpleName();
 
-	private LoginServicesKsoap2Impl() {
+	public LoginServicesKsoap2Impl() {
 	};
-
-	public static LoginServicesKsoap2Impl getInstance() {
-		if (singleton == null) {
-			singleton = new LoginServicesKsoap2Impl();
-		}
-		return singleton;
-	}
 
 	@Override
 	public String login(String username, String password, String url)

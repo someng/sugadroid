@@ -25,10 +25,7 @@
 
 package com.excilys.sugadroid.services;
 
-import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.AppointmentServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.ContactServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.LoginServicesKsoap2Impl;
+import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
@@ -56,19 +53,19 @@ public class ServiceFactory {
 	}
 
 	public ILoginServices getLoginServices() {
-		return LoginServicesKsoap2Impl.getInstance();
+		return BeanHolder.getInstance().getLoginServices();
 	}
 
 	public IContactServices getContactServices() {
-		return ContactServicesKsoap2Impl.getInstance();
+		return BeanHolder.getInstance().getContactServices();
 	}
 
 	public IAccountServices getAccountServices() {
-		return AccountServicesKsoap2Impl.getInstance();
+		return BeanHolder.getInstance().getAccountServices();
 	}
 
 	public IAppointmentServices getAppointmentServices() {
-		return AppointmentServicesKsoap2Impl.getInstance();
+		return BeanHolder.getInstance().getAppointmentServices();
 	}
 
 }
