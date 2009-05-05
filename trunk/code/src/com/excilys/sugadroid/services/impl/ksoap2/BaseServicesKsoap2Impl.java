@@ -28,10 +28,12 @@ package com.excilys.sugadroid.services.impl.ksoap2;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
+import org.ksoap2.transport.Transport;
 
 import android.util.Log;
 
@@ -40,6 +42,7 @@ import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactory;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.ParsingException;
+import com.excilys.sugadroid.services.util.HTTPSHackUtil;
 
 public abstract class BaseServicesKsoap2Impl {
 
@@ -51,13 +54,31 @@ public abstract class BaseServicesKsoap2Impl {
 	private final String GET_ENTRY_LIST_METHOD_NAME = "get_entry_list";
 	private final String GET_ENTRY_LIST_SOAP_ACTION = "get_entry_list";
 
+	private Transport androidHttpTransport;
+
+	public BaseServicesKsoap2Impl() {
+
+	}
+
 	public Object sendRequest(final SoapObject request,
 			final String soapAction, final String Url)
 			throws InvalidResponseException {
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
 		envelope.setOutputSoapObject(request);
-		HttpTransportSE androidHttpTransport = new HttpTransportSE(Url);
+
+		if (androidHttpTransport == null) {
+
+			HttpClientTransportAndroid androidTransport = new HttpClientTransportAndroid(
+					Url);
+
+			HttpClient client = new DefaultHttpClient();
+			new HTTPSHackUtil().httpClientAllowAllSSL(client);
+			androidTransport.setHttpClient(client);
+
+			androidHttpTransport = androidTransport;
+
+		}
 
 		// TODO : set to false when debug is over.
 		// if set to true, the response of the server will be dumped in the log
