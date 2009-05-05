@@ -35,7 +35,7 @@ import com.excilys.sugadroid.beans.SessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
-public class ContactServicesKsoap2Impl extends BaseServicesKsoap2Impl implements
+public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		IContactServices {
 
 	private static ContactServicesKsoap2Impl singleton;

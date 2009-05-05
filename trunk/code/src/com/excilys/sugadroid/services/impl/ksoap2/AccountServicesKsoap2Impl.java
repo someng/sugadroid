@@ -37,7 +37,7 @@ import com.excilys.sugadroid.beans.SessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
-public class AccountServicesKsoap2Impl extends BaseServicesKsoap2Impl implements
+public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		IAccountServices {
 
 	private static AccountServicesKsoap2Impl singleton;

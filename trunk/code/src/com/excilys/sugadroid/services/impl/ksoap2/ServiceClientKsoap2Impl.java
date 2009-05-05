@@ -44,9 +44,9 @@ import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactor
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.ParsingException;
 import com.excilys.sugadroid.services.util.HTTPSHackUtil;
 
-public abstract class BaseServicesKsoap2Impl {
+public abstract class ServiceClientKsoap2Impl {
 
-	private static String TAG = BaseServicesKsoap2Impl.class.getSimpleName();
+	private static String TAG = ServiceClientKsoap2Impl.class.getSimpleName();
 	protected static final String NAMESPACE = "http://www.sugarcrm.com/sugarcrm";
 
 	private final String GET_ENTRY_METHOD_NAME = "get_entry";
@@ -56,7 +56,7 @@ public abstract class BaseServicesKsoap2Impl {
 
 	private Transport androidHttpTransport;
 
-	public BaseServicesKsoap2Impl() {
+	public ServiceClientKsoap2Impl() {
 
 	}
 

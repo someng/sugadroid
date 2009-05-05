@@ -43,7 +43,7 @@ import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 
-public class AppointmentServicesKsoap2Impl extends BaseServicesKsoap2Impl
+public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
 		implements IAppointmentServices {
 
 	private static AppointmentServicesKsoap2Impl singleton;
