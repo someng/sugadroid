@@ -29,35 +29,28 @@ import java.util.List;
 
 import com.excilys.sugadroid.activities.AccountListActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class SearchAccountsTask implements Runnable {
+public class SearchAccountsTask extends AuthenticatedTask<AccountListActivity> {
 
 	private final String search;
-	private final AccountListActivity activity;
 
 	public SearchAccountsTask(AccountListActivity activity, String search) {
+		super(activity);
 		this.search = search;
-		this.activity = activity;
+
 	}
 
-	public void run() {
+	@Override
+	public void doRun() throws ServiceException {
 		List<AccountBean> accounts;
-		try {
-			accounts = BeanHolder.getInstance().getAccountServices()
-					.searchAccounts(search, activity.getOffset(),
-							GeneralSettings.getSearchListMaxResults(activity));
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
+
+		accounts = BeanHolder.getInstance().getAccountServices()
+				.searchAccounts(search, activity.getOffset(),
+						GeneralSettings.getSearchListMaxResults(activity));
+
 		activity.updateItemList(accounts);
 	}
 

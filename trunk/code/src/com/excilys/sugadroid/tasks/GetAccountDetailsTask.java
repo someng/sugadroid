@@ -27,40 +27,31 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class GetAccountDetailsTask implements Runnable {
+public class GetAccountDetailsTask extends
+		AuthenticatedTask<CallingGetItemDetailsActivity<AccountBean>> {
 
 	private final String accountId;
-	private final CallingGetItemDetailsActivity<AccountBean> activity;
 
 	public GetAccountDetailsTask(
 			CallingGetItemDetailsActivity<AccountBean> activity,
 			String accountId) {
-		this.activity = activity;
+		super(activity);
 		this.accountId = accountId;
 	}
 
 	@Override
-	public void run() {
+	public void doRun() throws ServiceException {
 		AccountBean account;
 
-		try {
-			account = BeanHolder.getInstance().getAccountServices()
-					.getAccountDetails(accountId);
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
+		account = BeanHolder.getInstance().getAccountServices()
+				.getAccountDetails(accountId);
+
 		account.setContacts(new ArrayList<ContactBean>());
 		activity.forwardItemDetailsActivity(account);
 	}

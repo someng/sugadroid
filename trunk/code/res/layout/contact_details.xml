@@ -5,6 +5,8 @@
 	android:layout_height="fill_parent" android:stretchColumns="1"
 	android:padding="5dip" android:orientation="vertical">
 
+    <include layout="@layout/top" />
+
 	<TextView android:id="@+id/contact_name_text"
 		android:layout_height="wrap_content" android:layout_width="wrap_content"
 		android:layout_gravity="center" android:textSize="18sp" />

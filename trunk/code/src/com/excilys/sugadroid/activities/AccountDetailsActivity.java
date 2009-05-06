@@ -27,7 +27,6 @@ package com.excilys.sugadroid.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -42,7 +41,6 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
@@ -96,7 +94,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		setListeners();
 
 		if (accountContacts.size() == 0) {
-			threadManager.queueUpdate(0, getAccountContactsTask);
+			executeOnGuiThreadAuthenticatedTask(getAccountContactsTask);
 		}
 
 	}
@@ -156,10 +154,12 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				List<ContactBean> contacts = accountContacts;
 				if (position == contacts.size() - 1
 						&& contacts.get(position).equals(moreResults)) {
-					threadManager.queueUpdate(0, getAccountContactsTask);
+					executeOnGuiThreadAuthenticatedTask(getAccountContactsTask);
+
 				} else {
 					selectedItem = itemAdapter.getItem(position);
-					threadManager.queueUpdate(500, getItemDetailsTask);
+					executeDelayedOnGuiThreadAuthenticatedTask(500,
+							getItemDetailsTask);
 				}
 			}
 		});
@@ -203,11 +203,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 				loadingText.setVisibility(View.VISIBLE);
 				hideEmpty();
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-				}
+				submitRejectableTask(task);
 			}
 		};
 
@@ -220,13 +216,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				// Let user know we're doing something
 				loadingText.setVisibility(View.VISIBLE);
 
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					if (!AccountDetailsActivity.this.isFinishing()) {
-						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					}
-				}
+				submitRejectableTask(task);
 
 			}
 		};

@@ -27,7 +27,6 @@ package com.excilys.sugadroid.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 import org.joda.time.LocalDate;
 
@@ -133,7 +132,8 @@ public class AppointmentsActivity extends CommonActivity implements
 				selectedItem = (IAppointmentBean) arg0.getAdapter().getItem(
 						position);
 				Log.d(TAG, "Item clicked: " + selectedItem.getName());
-				threadManager.queueUpdate(500, getItemDetailsTask);
+				executeDelayedOnGuiThreadAuthenticatedTask(500,
+						getItemDetailsTask);
 			}
 		});
 
@@ -259,13 +259,8 @@ public class AppointmentsActivity extends CommonActivity implements
 
 				// Let user know we're doing something
 				loadingText.setVisibility(View.VISIBLE);
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					if (!AppointmentsActivity.this.isFinishing()) {
-						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					}
-				}
+				submitRejectableTask(task);
+
 			}
 		};
 	}

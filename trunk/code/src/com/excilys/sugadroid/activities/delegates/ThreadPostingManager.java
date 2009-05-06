@@ -71,7 +71,7 @@ public class ThreadPostingManager {
 	}
 
 	/** Request an update to start after a short delay */
-	public void queueUpdate(long delayMillis, Runnable task) {
+	public void updateDelayedOnGuiThread(long delayMillis, Runnable task) {
 		// Cancel previous update if it hasn't started yet
 		if (updateTask != null) {
 			guiThread.removeCallbacks(updateTask);
@@ -81,6 +81,19 @@ public class ThreadPostingManager {
 
 		// Start an update if nothing happens after a few milliseconds
 		guiThread.postDelayed(task, delayMillis);
+	}
+
+	/** Request an update to start */
+	public void updateOnGuiThread(Runnable task) {
+		// Cancel previous update if it hasn't started yet
+		if (updateTask != null) {
+			guiThread.removeCallbacks(updateTask);
+		}
+
+		updateTask = task;
+
+		// Start an update
+		guiThread.post(task);
 	}
 
 	public void onDestroy() {

@@ -28,7 +28,6 @@ package com.excilys.sugadroid.activities.delegates;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 
 import com.excilys.sugadroid.R;
 
@@ -79,13 +78,7 @@ public class DialogManager {
 		case CUSTOM:
 			return new AlertDialog.Builder(activity).setTitle(
 					customOkDialogTitle).setMessage(customOkDialogMessage)
-					.setNeutralButton(R.string.error_ok_button,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-
-								}
-							}).create();
+					.setNeutralButton(R.string.dialog_OK_button, null).create();
 		case ERROR_LOGIN_FAILED:
 			title = R.string.error_login_failed_title;
 			message = R.string.error_login_failed_message;

@@ -35,11 +35,10 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  */
 public interface ILoginServices extends IWebService {
 
-	public String login(String username, String password, String url)
+	public String login(String username, String password)
 			throws ServiceException;
 
-	public String getUserId(String sessionId, String url)
-			throws ServiceException;
+	public String getUserId(String sessionId) throws ServiceException;
 
-	public String getServerVersion(String url) throws ServiceException;
+	public String getServerVersion() throws ServiceException;
 }

@@ -42,7 +42,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 	};
 
 	@Override
-	public String login(String username, String password, String url)
+	public String login(String username, String password)
 			throws ServiceException {
 
 		Log.d(TAG, "login called");
@@ -81,8 +81,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 	}
 
 	@Override
-	public String getUserId(String sessionId, String url)
-			throws ServiceException {
+	public String getUserId(String sessionId) throws ServiceException {
 
 		Log.d(TAG, "getUserId called");
 
@@ -103,7 +102,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 	}
 
 	@Override
-	public String getServerVersion(String url) throws ServiceException {
+	public String getServerVersion() throws ServiceException {
 		final String SOAP_ACTION = "get_server_version";
 		final String METHOD_NAME = "get_server_version";
 

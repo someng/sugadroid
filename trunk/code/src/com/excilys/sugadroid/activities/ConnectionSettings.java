@@ -25,6 +25,9 @@
 
 package com.excilys.sugadroid.activities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -38,11 +41,61 @@ public class ConnectionSettings extends PreferenceActivity {
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_URL = "sugar_soap_url";
 
+	private static final Map<String, String> savedSettings = new HashMap<String, String>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.connection_settings);
 	}
+
+	/**
+	 * This methods saves the current settings, to be able to check later if
+	 * settings changed
+	 * 
+	 * @param context
+	 */
+	public static void saveCurrentSettings(Context context) {
+		savedSettings.clear();
+		savedSettings.put(PREF_USERNAME, getUsername(context));
+		savedSettings.put(PREF_PASSWORD, getPassword(context));
+		savedSettings.put(PREF_URL, getSugarSoapUrl(context));
+	}
+
+	/**
+	 * This methods tells is the settings changed. It is used by a callback
+	 * called when resuming from the ConnectionSettingsActivity
+	 * 
+	 * @param context
+	 *            an activity
+	 * @return
+	 */
+	public static boolean currentSettingsChanged(Context context) {
+
+		if (savedSettings.isEmpty()) {
+			return false;
+		}
+
+		try {
+			if (!getUsername(context).equals(savedSettings.get(PREF_USERNAME))) {
+				return true;
+			}
+
+			if (!getPassword(context).equals(savedSettings.get(PREF_PASSWORD))) {
+				return true;
+			}
+
+			if (!getSugarSoapUrl(context).equals(savedSettings.get(PREF_URL))) {
+				return true;
+			}
+
+			return false;
+		} finally {
+			savedSettings.clear();
+		}
+	}
+
+	// Static getters (extracting data from context)
 
 	public static String getUsername(Context context) {
 

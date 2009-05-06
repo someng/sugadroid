@@ -29,35 +29,27 @@ import java.util.List;
 
 import com.excilys.sugadroid.activities.ContactListActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class SearchContactsTask implements Runnable {
+public class SearchContactsTask extends AuthenticatedTask<ContactListActivity> {
 
 	private final String search;
-	private final ContactListActivity activity;
 
 	public SearchContactsTask(ContactListActivity activity, String search) {
+		super(activity);
 		this.search = search;
-		this.activity = activity;
 	}
 
-	public void run() {
+	@Override
+	public void doRun() throws ServiceException {
 		List<ContactBean> contacts;
-		try {
-			contacts = BeanHolder.getInstance().getContactServices()
-					.searchContacts(search, activity.getOffset(),
-							GeneralSettings.getSearchListMaxResults(activity));
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
+
+		contacts = BeanHolder.getInstance().getContactServices()
+				.searchContacts(search, activity.getOffset(),
+						GeneralSettings.getSearchListMaxResults(activity));
+
 		activity.updateItemList(contacts);
 	}
 

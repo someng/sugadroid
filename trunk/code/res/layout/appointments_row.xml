@@ -5,6 +5,7 @@
     android:layout_height="fill_parent"
     android:paddingBottom="20dip"
     >
+    
 	<TextView
 	android:id="@+id/appointment_subject"
     android:layout_width="fill_parent" 

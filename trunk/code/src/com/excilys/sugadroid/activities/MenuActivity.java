@@ -25,24 +25,16 @@
 
 package com.excilys.sugadroid.activities;
 
-import java.util.concurrent.RejectedExecutionException;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
-import com.excilys.sugadroid.beans.ISessionBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
-import com.excilys.sugadroid.tasks.LoginInTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 
 public class MenuActivity extends CommonActivity {
@@ -52,13 +44,9 @@ public class MenuActivity extends CommonActivity {
 	private Button accountListButton;
 	private Button contactListButton;
 	private Button appointmentsButton;
-	private TextView loggedInText;
 	private TextView loadingText;
 
-	private Runnable loginTask;
 	private Runnable getInitialCalendarTask;
-
-	private Class<? extends Activity> forward;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,70 +61,30 @@ public class MenuActivity extends CommonActivity {
 
 	}
 
-	public void postSetMessageLoggedIn() {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				setMessageLoggedIn();
-			}
-		});
-	}
-
-	public void setMessageLoggedIn() {
-		StringBuilder sb = new StringBuilder(
-				getString(R.string.logged_in_message));
-		sb.append(" (").append(
-				BeanHolder.getInstance().getSessionBean().getUsername())
-				.append(")");
-		loggedInText.setText(sb.toString());
-	}
-
-	public void postSetMessageNotLoggedIn() {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				setMessageNotLoggedIn();
-			}
-		});
-	}
-
-	public void setMessageNotLoggedIn() {
-		loggedInText.setText(R.string.logged_out_message);
-	}
-
-	public void setMessageLogingIn() {
-		loggedInText.setText(R.string.loging_in_message);
-	}
-
 	private void findViews() {
 		accountListButton = (Button) findViewById(R.id.account_list_button);
 		contactListButton = (Button) findViewById(R.id.contact_list_button);
-		loggedInText = (TextView) findViewById(R.id.logged_in_message);
 		appointmentsButton = (Button) findViewById(R.id.appointments_button);
 		loadingText = (TextView) findViewById(R.id.loading);
 
-		loadingText.setVisibility(View.INVISIBLE);
+		loadingText.setVisibility(View.INVISIBLE); // TODO try visibility GONE
 	}
 
 	private void setListeners() {
 		accountListButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+
 				Log.d(TAG, "account_list button clicked");
 
-				logoutIfParametersChanged();
+				executeOnGuiThreadAuthenticatedTask(new Runnable() {
+					public void run() {
 
-				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
-					Intent i = new Intent(MenuActivity.this,
-							AccountListActivity.class);
-					startActivity(i);
-				} else {
-					String username = ConnectionSettings
-							.getUsername(MenuActivity.this);
-					if (username != null && !username.equals("")) {
-						forward = AccountListActivity.class;
-						threadManager.queueUpdate(0, loginTask);
-					} else {
-						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
+						Intent i = new Intent(MenuActivity.this,
+								AccountListActivity.class);
+						startActivity(i);
+
 					}
-				}
+				});
 			}
 		});
 
@@ -144,22 +92,15 @@ public class MenuActivity extends CommonActivity {
 			public void onClick(View v) {
 				Log.d(TAG, "contact_list button clicked");
 
-				logoutIfParametersChanged();
+				executeOnGuiThreadAuthenticatedTask(new Runnable() {
+					public void run() {
 
-				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
-					Intent i = new Intent(MenuActivity.this,
-							ContactListActivity.class);
-					startActivity(i);
-				} else {
-					String username = ConnectionSettings
-							.getUsername(MenuActivity.this);
-					if (username != null && !username.equals("")) {
-						forward = ContactListActivity.class;
-						threadManager.queueUpdate(0, loginTask);
-					} else {
-						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
+						Intent i = new Intent(MenuActivity.this,
+								ContactListActivity.class);
+						startActivity(i);
+
 					}
-				}
+				});
 			}
 		});
 
@@ -167,20 +108,7 @@ public class MenuActivity extends CommonActivity {
 			public void onClick(View v) {
 				Log.d(TAG, "appointments button clicked");
 
-				logoutIfParametersChanged();
-
-				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
-					threadManager.queueUpdate(0, getInitialCalendarTask);
-				} else {
-					String username = ConnectionSettings
-							.getUsername(MenuActivity.this);
-					if (username != null && !username.equals("")) {
-						forward = AppointmentsActivity.class;
-						threadManager.queueUpdate(0, loginTask);
-					} else {
-						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
-					}
-				}
+				executeOnGuiThreadAuthenticatedTask(getInitialCalendarTask);
 			}
 		});
 
@@ -188,38 +116,14 @@ public class MenuActivity extends CommonActivity {
 
 	private void setTasks() {
 
-		loginTask = new Runnable() {
-			public void run() {
-
-				String username = ConnectionSettings
-						.getUsername(MenuActivity.this);
-				String password = ConnectionSettings
-						.getPassword(MenuActivity.this);
-
-				LoginInTask task = new LoginInTask(MenuActivity.this, username,
-						password);
-				setMessageLogingIn();
-				// Begin task now but don't wait for it
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					setMessageNotLoggedIn();
-				}
-			}
-		};
-
 		getInitialCalendarTask = new Runnable() {
 			public void run() {
 				GetInitialCalendarTask task = new GetInitialCalendarTask(
 						MenuActivity.this);
 
 				loadingText.setVisibility(View.VISIBLE);
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-				}
+
+				submitRejectableTask(task);
 
 			}
 		};
@@ -230,40 +134,7 @@ public class MenuActivity extends CommonActivity {
 		return R.menu.menu;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-		case R.id.connection_settings:
-			// Launch the connection settings activity
-			startActivity(new Intent(this, ConnectionSettings.class));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	public void forwardAfterLogin() {
-		if (forward != null) {
-
-			if (forward.equals(AppointmentsActivity.class)) {
-				threadManager.queueUpdate(0, getInitialCalendarTask);
-			} else {
-
-				runOnUiThread(new Runnable() {
-
-					public void run() {
-						Intent i = new Intent(MenuActivity.this, forward);
-						forward = null;
-						startActivity(i);
-					}
-				});
-			}
-		}
-	}
-
-	public void forwardAppointmentsActivity(final EagerLoadingCalendar calendar) {
+	public void onInitialCalendarLoaded(final EagerLoadingCalendar calendar) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Intent i = new Intent(MenuActivity.this,
@@ -273,41 +144,6 @@ public class MenuActivity extends CommonActivity {
 				startActivity(i);
 			}
 		});
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		logoutIfParametersChanged();
-		if (!BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
-			setMessageNotLoggedIn();
-
-			String username = ConnectionSettings.getUsername(this);
-			if (username != null && !username.equals("")) {
-				forward = null;
-				threadManager.queueUpdate(0, loginTask);
-			}
-		} else {
-			setMessageLoggedIn();
-		}
-	}
-
-	private void logoutIfParametersChanged() {
-
-		ISessionBean session = BeanHolder.getInstance().getSessionBean();
-
-		Log.d(TAG, "Checking if parameters changed");
-
-		if (session.isLoggedIn()) {
-
-			if (session.checkLoginParamsChanged(ConnectionSettings
-					.getUsername(this), ConnectionSettings
-					.getSugarSoapUrl(this), ConnectionSettings
-					.getPassword(this).hashCode())) {
-
-				session.logout();
-			}
-		}
 	}
 
 	@Override

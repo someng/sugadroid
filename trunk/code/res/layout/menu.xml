@@ -5,6 +5,8 @@
 	android:layout_width="fill_parent" android:padding="30dip" 
 	android:orientation="horizontal">
 
+    <include layout="@layout/top" />
+
 	<TableLayout android:orientation="vertical"
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:layout_gravity="center" android:stretchColumns="1" >

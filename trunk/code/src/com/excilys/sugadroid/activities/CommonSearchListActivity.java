@@ -28,7 +28,6 @@ package com.excilys.sugadroid.activities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -45,7 +44,6 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 
 public abstract class CommonSearchListActivity<Bean extends Serializable, GetItemDetailsTask extends Runnable, SearchItemsTask extends Runnable>
@@ -157,10 +155,12 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 				Log.d(TAG, "item clicked " + position + " " + arg3);
 
 				if (position == getOffset()) {
-					threadManager.queueUpdate(500, searchItemsTask);
+					executeDelayedOnGuiThreadAuthenticatedTask(500,
+							searchItemsTask);
 				} else {
 					selectedItem = items.get(position);
-					threadManager.queueUpdate(500, getItemDetailsTask);
+					executeDelayedOnGuiThreadAuthenticatedTask(500,
+							getItemDetailsTask);
 				}
 			}
 		});
@@ -172,7 +172,7 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				threadManager.queueUpdate(800, searchItemsTask);
+				executeDelayedOnGuiThreadAuthenticatedTask(800, searchItemsTask);
 			}
 
 			public void afterTextChanged(Editable s) {
@@ -202,13 +202,9 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 
 					// Begin task now but don't wait for it
 					SearchItemsTask task = getSearchItemTaskInstance(search);
-					try {
-						threadManager.submitTask(task);
-					} catch (RejectedExecutionException e) {
-						if (!CommonSearchListActivity.this.isFinishing()) {
-							showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-						}
-					}
+
+					submitRejectableTask(task);
+
 				}
 			}
 		};
@@ -219,11 +215,8 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 				// Let user know we're doing something
 				itemSearchInfoMessage.setText(R.string.loading_text);
 
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-				}
+				submitRejectableTask(task);
+
 			}
 
 		};

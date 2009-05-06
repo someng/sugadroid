@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ********* Application name ********* -->
 	<string name="app_name">SugaDroid</string>
 
-	<!-- Activity titles -->
+	<!-- ********* Activity titles ********* -->
 	<string name="activity_contact_list">SugaDroid, contacts list</string>
 	<string name="activity_account_list">SugaDroid, accounts list</string>
-	<string name="activity_contact_details">SugaDroid, contact details
-	</string>
-	<string name="activity_account_details">SugaDroid, account details
-	</string>
-	<string name="activity_appointment_details">SugaDroid, appointment details
-	</string>
+	<string name="activity_contact_details">SugaDroid, contact details</string>
+	<string name="activity_account_details">SugaDroid, account details</string>
+	<string name="activity_appointment_details">SugaDroid, appointment details</string>
 	<string name="activity_appointments">SugaDroid, my appointments</string>
 	<string name="activity_connection_settings">SugaDroid, connection settings</string>
 	<string name="activity_general_settings">SugaDroid, general settings</string>
 
-	<!-- pop-up windows -->
+	<!-- ********* Dialog box messages ********* -->
 	<string name="error_launch_task_title">The task could not be executed</string>
 	<string name="error_launch_task_message">A weird error occurred</string>
 	
@@ -33,12 +31,27 @@
 	<string name="contact_added_title">Contact added</string>
 	<string name="contact_added_message">This contact has been successfully added</string>
 	    
-        <string name="dialog_OK_button">Ok</string>
+    <string name="dialog_OK_button">Ok</string>
     <string name="dialog_unknow_error_title">Unknown error</string>
     <string name="dialog_unknow_error_message">"An unknown error occurred, good luck !"
     </string>
 
-	<!-- Menu buttons -->
+    <!-- ********* Toast texts ********* -->
+    <!-- Toast Login -->
+    <string name="toast_login_failed_no_network">Login failed, check the network</string>
+    <string name="toast_login_failed_bad_credentials">Login failed, check your username and password</string>
+    <string name="toast_login_failed">Login failed, message:</string>
+    <string name="toast_login_successful">Login successful</string>
+    <string name="toast_login_in">Login in</string>
+    
+    <!-- Toast Service -->
+    <string name="toast_service_call_failed_no_network">Action failed, check the network</string> 
+    <string name="toast_service_call_failed">Action failed, message:</string>
+    <string name="toast_service_no_session">Action failed, no session, you need to login</string>
+    <string name="toast_service_session_invalid">Action failed, session invalid, you need to login again</string>
+
+
+	<!-- ********* Menu texts ********* -->
 	<string name="settings_label">General settings</string>
 	<string name="settings_shortcut">s</string>
 	
@@ -48,13 +61,14 @@
 	<string name="back_to_menu_label">Back to menu</string>
 	<string name="back_to_menu_shortcut">m</string>
 	
+    <!-- ********* About texts ********* -->
 	<string name="about_title">About</string>
 	<string name="about_text">\
 SugaDroid is a prototype to show how to use SugarCRM Web Services with an Android Client.
 It was created by Pierre-Yves Ricau for eBusiness Information, a French company, in march 2009.
 </string>
 	
-	<!-- Settings content -->
+	<!-- ********* Settings texts ********* -->
 	<string name="username_pref_text">Username</string>
 	<string name="username_pref_summary">The username you use to log in to Sugar</string>
 	
@@ -80,7 +94,7 @@ It was created by Pierre-Yves Ricau for eBusiness Information, a French company,
 	<string name="appointments_loading_after_pref_summary">Enter the number of days after today to preload for appointments</string>
 
 	<!-- default values for preferences -->
-	<!-- The following 6 next entries does not need to be translated -->
+	<!-- The following 8 next entries does not need to be translated -->
 	<string name="default_username"></string>
 	<string name="default_password"></string>
 	<string name="default_url">http://demo.sugarcrm.com/sugarcrm_ce/soap.php</string>
@@ -90,7 +104,7 @@ It was created by Pierre-Yves Ricau for eBusiness Information, a French company,
 	<string name="default_appointments_loading_before">1</string>
 	<string name="default_appointments_loading_after">7</string>
 
-	<!-- Content of views -->
+	<!-- ********* View texts ********* -->
 	<string name="welcome_text">Welcome !</string>
 	<string name="loading_text">Loading...</string>
 
@@ -127,5 +141,10 @@ It was created by Pierre-Yves Ricau for eBusiness Information, a French company,
 	<string name="not_available">Not available</string>
 	
 	<string name="add_contact">Add contact</string>
+    
+    <!-- Top view -->
+    <string name="top_logged_in">Logged in</string>
+    <string name="top_not_logged_in">Not logged in</string>
+    <string name="top_login_in">Login in...</string>
 
 </resources>

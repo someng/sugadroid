@@ -27,7 +27,6 @@ package com.excilys.sugadroid.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,7 +38,6 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
@@ -86,7 +84,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 		setAdapters();
 		setListeners();
 
-		threadManager.queueUpdate(0, getAppointmentContactsTask);
+		executeOnGuiThreadAuthenticatedTask(getAppointmentContactsTask);
 
 	}
 
@@ -143,7 +141,8 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				selectedItem = itemAdapter.getItem(position);
-				threadManager.queueUpdate(500, getItemDetailsTask);
+				executeDelayedOnGuiThreadAuthenticatedTask(500,
+						getItemDetailsTask);
 			}
 
 		});
@@ -157,17 +156,12 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 				// Let user know we're doing something
 				loadingText.setVisibility(View.VISIBLE);
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					loadingText.setVisibility(View.INVISIBLE);
-					if (!AppointmentDetailsActivity.this.isFinishing()) {
-						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					}
-				}
+
+				submitRejectableTask(task);
 			}
 
 		};
+
 		getAppointmentContactsTask = new Runnable() {
 			public void run() {
 
@@ -176,13 +170,8 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 				loadingText.setVisibility(View.VISIBLE);
 				hideEmpty();
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					if (!AppointmentDetailsActivity.this.isFinishing()) {
-						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					}
-				}
+
+				submitRejectableTask(task);
 			}
 		};
 	}

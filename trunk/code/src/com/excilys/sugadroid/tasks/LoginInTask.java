@@ -28,10 +28,10 @@ package com.excilys.sugadroid.tasks;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.excilys.sugadroid.activities.ConnectionSettings;
-import com.excilys.sugadroid.activities.MenuActivity;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
-import com.excilys.sugadroid.di.BeanHolder;
+import android.util.Log;
+
+import com.excilys.sugadroid.activities.interfaces.IAuthenticatingActivity;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -39,14 +39,22 @@ import com.excilys.sugadroid.services.interfaces.ILoginServices;
 
 public class LoginInTask implements Runnable {
 
+	private static final String TAG = LoginInTask.class.getSimpleName();
+
 	private final String username;
 	private final String password;
-	private final MenuActivity activity;
+	private final IAuthenticatingActivity activity;
+	private final ILoginServices loginServices;
+	private final ISessionBean sessionBean;
 
-	public LoginInTask(MenuActivity activity, String username, String password) {
+	public LoginInTask(IAuthenticatingActivity activity, String username,
+			String password, ILoginServices loginServices,
+			ISessionBean sessionBean) {
 		this.username = username;
 		this.password = password;
 		this.activity = activity;
+		this.loginServices = loginServices;
+		this.sessionBean = sessionBean;
 	}
 
 	public void run() {
@@ -54,50 +62,35 @@ public class LoginInTask implements Runnable {
 		String userId;
 		String version;
 
-		String url = ConnectionSettings.getSugarSoapUrl(activity);
-
-		BeanHolder.getInstance().getTransport().setUrl(url);
-
 		try {
-
-			ILoginServices services = BeanHolder.getInstance()
-					.getLoginServices();
 
 			// If you want to login sending the MD5 of the password, just change
 			// to the following code:
-			// sessionId = services.login(username, getMD5(password), url);
-			sessionId = services.login(username, password, url);
+			// sessionId = services.login(username, getMD5(password));
+			sessionId = loginServices.login(username, password);
 
-			userId = services.getUserId(sessionId, url);
+			userId = loginServices.getUserId(sessionId);
 
-			version = services.getServerVersion(url);
+			version = loginServices.getServerVersion();
 
+			sessionBean.setLoggedIn(sessionId, userId, username, password
+					.hashCode(), loginServices.getEntryPoint(), version);
+
+			activity.onLoginSuccessful();
 		} catch (LoginFailedException e) {
-			rollbackFromLogin();
-			activity.postShowDialog(DialogValues.ERROR_LOGIN_FAILED);
-			return;
+			Log.e(TAG, Log.getStackTraceString(e));
+			sessionBean.logout();
+			activity.onLoginFailedBadCredentials();
 		} catch (InvalidResponseException e) {
-			rollbackFromLogin();
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
+			Log.e(TAG, Log.getStackTraceString(e));
+			sessionBean.logout();
+			activity.onLoginFailedNoNetwork();
 		} catch (ServiceException e) {
-			rollbackFromLogin();
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
+			Log.e(TAG, Log.getStackTraceString(e));
+			sessionBean.logout();
+			activity.onLoginFailed(e.getMessage());
 		}
 
-		BeanHolder.getInstance().getSessionBean().setLoggedIn(sessionId,
-				userId, username, password.hashCode(), url, version);
-
-		activity.postSetMessageLoggedIn();
-
-		activity.forwardAfterLogin();
-
-	}
-
-	private void rollbackFromLogin() {
-		BeanHolder.getInstance().getSessionBean().logout();
-		activity.postSetMessageNotLoggedIn();
 	}
 
 	/**

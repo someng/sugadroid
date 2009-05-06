@@ -29,40 +29,31 @@ import java.util.List;
 
 import com.excilys.sugadroid.activities.AppointmentDetailsActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class GetAppointmentContactsTask implements Runnable {
+public class GetAppointmentContactsTask extends
+		AuthenticatedTask<AppointmentDetailsActivity> {
 
 	private final String appointmentId;
-	private final AppointmentDetailsActivity activity;
 	private final int offset;
 
 	public GetAppointmentContactsTask(AppointmentDetailsActivity activity,
 			String appointmentId, int offset) {
-		this.activity = activity;
+		super(activity);
 		this.appointmentId = appointmentId;
 		this.offset = offset;
 	}
 
 	@Override
-	public void run() {
+	public void doRun() throws ServiceException {
 		List<ContactBean> contacts;
-		try {
-			contacts = BeanHolder.getInstance().getContactServices()
-					.getAppointmentContacts(appointmentId, offset,
-							GeneralSettings.getAccountMaxResults(activity));
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
 
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
+		contacts = BeanHolder.getInstance().getContactServices()
+				.getAppointmentContacts(appointmentId, offset,
+						GeneralSettings.getAccountMaxResults(activity));
+
 		activity.updateContactList(contacts);
 	}
 }
