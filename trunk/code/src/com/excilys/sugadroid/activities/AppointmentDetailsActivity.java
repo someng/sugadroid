@@ -41,6 +41,8 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 import com.excilys.sugadroid.tasks.GetAppointmentContactsTask;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 
@@ -147,10 +149,15 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 	}
 
 	protected void setTasks() {
+
+		final IContactServices contactServices = BeanHolder.getInstance()
+				.getContactServices();
+
 		getItemDetailsTask = new Runnable() {
 			public void run() {
 				GetContactDetailsTask task = new GetContactDetailsTask(
-						AppointmentDetailsActivity.this, selectedItem.getId());
+						AppointmentDetailsActivity.this, contactServices,
+						selectedItem.getId());
 
 				// Let user know we're doing something
 				showLoadingText();
@@ -164,7 +171,12 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 			public void run() {
 
 				GetAppointmentContactsTask task = new GetAppointmentContactsTask(
-						AppointmentDetailsActivity.this, appointment.getId(), 0);
+						AppointmentDetailsActivity.this,
+						contactServices,
+						appointment.getId(),
+						0,
+						GeneralSettings
+								.getAccountMaxResults(AppointmentDetailsActivity.this));
 
 				showLoadingText();
 				hideEmpty();
@@ -191,7 +203,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 	}
 
 	@Override
-	public void forwardItemDetailsActivity(final ContactBean contact) {
+	public void onItemDetailsLoaded(final ContactBean contact) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");

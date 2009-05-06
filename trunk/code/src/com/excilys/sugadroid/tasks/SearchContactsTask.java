@@ -28,27 +28,28 @@ package com.excilys.sugadroid.tasks;
 import java.util.List;
 
 import com.excilys.sugadroid.activities.ContactListActivity;
-import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 
 public class SearchContactsTask extends AuthenticatedTask<ContactListActivity> {
 
-	private final String search;
+	private String search;
+	private IContactServices contactServices;
+	private int maxResults;
 
-	public SearchContactsTask(ContactListActivity activity, String search) {
+	public SearchContactsTask(ContactListActivity activity,
+			IContactServices contactServices, String search, int maxResults) {
 		super(activity);
 		this.search = search;
+		this.contactServices = contactServices;
+		this.maxResults = maxResults;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		List<ContactBean> contacts;
-
-		contacts = BeanHolder.getInstance().getContactServices()
-				.searchContacts(search, activity.getOffset(),
-						GeneralSettings.getSearchListMaxResults(activity));
+		List<ContactBean> contacts = contactServices.searchContacts(search,
+				activity.getOffset(), maxResults);
 
 		activity.updateItemList(contacts);
 	}

@@ -30,17 +30,25 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
-import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 
 public class GetInitialCalendarTask extends AuthenticatedTask<MenuActivity> {
 
-	public GetInitialCalendarTask(MenuActivity activity) {
+	private int appointmentsLoadingBefore;
+	private int appointmentsLoadingAfter;
+	private IAppointmentServices appointmentServices;
+
+	public GetInitialCalendarTask(MenuActivity activity,
+			IAppointmentServices appointmentServices,
+			int appointmentsLoadingBefore, int appointmentsLoadingAfter) {
 		super(activity);
+		this.appointmentServices = appointmentServices;
+		this.appointmentsLoadingAfter = appointmentsLoadingAfter;
+		this.appointmentsLoadingBefore = appointmentsLoadingBefore;
 	}
 
 	@Override
@@ -49,14 +57,11 @@ public class GetInitialCalendarTask extends AuthenticatedTask<MenuActivity> {
 		Map<LocalDate, List<IAppointmentBean>> initialDaysAppointments;
 
 		LocalDate today = new LocalDate();
-		LocalDate before = today.minusDays(GeneralSettings
-				.getAppointmentsLoadingBefore(activity));
-		LocalDate after = today.plusDays(GeneralSettings
-				.getAppointmentsLoadingAfter(activity));
+		LocalDate before = today.minusDays(appointmentsLoadingBefore);
+		LocalDate after = today.plusDays(appointmentsLoadingAfter);
 
-		initialDaysAppointments = BeanHolder.getInstance()
-				.getAppointmentServices().getAppointmentsInInterval(before,
-						after);
+		initialDaysAppointments = appointmentServices
+				.getAppointmentsInInterval(before, after);
 
 		EagerLoadingCalendar calendar = new EagerLoadingCalendar(before, after,
 				initialDaysAppointments);

@@ -44,6 +44,8 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 import com.excilys.sugadroid.tasks.GetAccountContactsTask;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 
@@ -56,7 +58,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 	private AccountBean account;
 
 	private TextView nameText;
-	private TextView loadingText;
 	private TextView addressText;
 	private Button addressButton;
 	private Button phoneButton;
@@ -104,8 +105,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		super.findViews();
 		nameText = (TextView) findViewById(R.id.account_name_text);
 
-		loadingText = (TextView) findViewById(R.id.info_message);
-
 		addressButton = (Button) findViewById(R.id.address_button);
 		phoneButton = (Button) findViewById(R.id.phone_button);
 		addressText = (TextView) findViewById(R.id.address_text);
@@ -114,7 +113,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 	private void setContents() {
 		nameText.setText(account.toString());
 		nameText.setVisibility(View.VISIBLE);
-		loadingText.setVisibility(View.INVISIBLE);
+		hideLoadingText();
 
 		if (account.getPhoneOffice() != null
 				&& !account.getPhoneOffice().equals("")) {
@@ -188,6 +187,10 @@ public class AccountDetailsActivity extends CommonListActivity implements
 	}
 
 	protected void setTasks() {
+
+		final IContactServices contactServices = BeanHolder.getInstance()
+				.getContactServices();
+
 		getAccountContactsTask = new Runnable() {
 			public void run() {
 
@@ -199,9 +202,14 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				}
 
 				GetAccountContactsTask task = new GetAccountContactsTask(
-						AccountDetailsActivity.this, account.getId(), size);
+						AccountDetailsActivity.this,
+						contactServices,
+						account.getId(),
+						size,
+						GeneralSettings
+								.getAccountMaxResults(AccountDetailsActivity.this));
 
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 				hideEmpty();
 				submitRejectableTask(task);
 			}
@@ -211,10 +219,11 @@ public class AccountDetailsActivity extends CommonListActivity implements
 			public void run() {
 
 				GetContactDetailsTask task = new GetContactDetailsTask(
-						AccountDetailsActivity.this, selectedItem.getId());
+						AccountDetailsActivity.this, contactServices,
+						selectedItem.getId());
 
 				// Let user know we're doing something
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 
 				submitRejectableTask(task);
 
@@ -246,7 +255,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 				allContacts.addAll(contacts);
 
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				showEmpty();
 				itemAdapter.notifyDataSetChanged();
 
@@ -259,14 +268,14 @@ public class AccountDetailsActivity extends CommonListActivity implements
 	}
 
 	@Override
-	public void forwardItemDetailsActivity(final ContactBean contact) {
+	public void onItemDetailsLoaded(final ContactBean contact) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");
 				Intent intent = new Intent(AccountDetailsActivity.this,
 						ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				startActivity(intent);
 			}
 		});

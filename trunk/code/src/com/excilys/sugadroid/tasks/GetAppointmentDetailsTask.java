@@ -30,30 +30,30 @@ import java.util.ArrayList;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 
 public class GetAppointmentDetailsTask extends
 		AuthenticatedTask<CallingGetItemDetailsActivity<IAppointmentBean>> {
 
-	private final String appointmentId;
+	private String appointmentId;
+	private IAppointmentServices appointmentServices;
 
 	public GetAppointmentDetailsTask(
 			CallingGetItemDetailsActivity<IAppointmentBean> activity,
-			String appointmentId) {
+			IAppointmentServices appointmentServices, String appointmentId) {
 		super(activity);
 		this.appointmentId = appointmentId;
+		this.appointmentServices = appointmentServices;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		IAppointmentBean appointment;
-
-		appointment = BeanHolder.getInstance().getAppointmentServices()
+		IAppointmentBean appointment = appointmentServices
 				.getAppointmentDetails(appointmentId);
 
 		appointment.setContacts(new ArrayList<ContactBean>());
 
-		activity.forwardItemDetailsActivity(appointment);
+		activity.onItemDetailsLoaded(appointment);
 	}
 }

@@ -66,7 +66,7 @@ public class LoginInTask implements Runnable {
 
 			// If you want to login sending the MD5 of the password, just change
 			// to the following code:
-			// sessionId = services.login(username, getMD5(password));
+			// sessionId = loginServices.login(username, getMD5(password));
 			sessionId = loginServices.login(username, password);
 
 			userId = loginServices.getUserId(sessionId);
