@@ -1,6 +1,5 @@
 package com.excilys.sugadroid.beans;
 
-
 public interface ISessionBean {
 
 	public enum SessionState {
@@ -14,9 +13,7 @@ public interface ISessionBean {
 	public abstract String getUserId();
 
 	public abstract void setLoggedIn(String sessionId, String userId,
-			String username, int passwordHash, String url, String version);
-
-	public abstract boolean isLoggedIn();
+			String username, String url, String version);
 
 	public abstract void logout();
 
@@ -25,11 +22,6 @@ public interface ISessionBean {
 	public abstract String getVersion();
 
 	public abstract boolean isVersion4_5();
-
-	public abstract int getPasswordHash();
-
-	public abstract boolean checkLoginParamsChanged(String username,
-			String url, int passwordHash);
 
 	/**
 	 * Record in session bean that the user is currently login in. Used to avoid

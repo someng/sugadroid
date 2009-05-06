@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
+import com.excilys.sugadroid.beans.ISessionBean.SessionState;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 
@@ -58,6 +59,10 @@ public class MenuActivity extends CommonActivity {
 		findViews();
 		setListeners();
 		setTasks();
+
+		if (sessionBean.getState().equals(SessionState.NOT_LOGGED_IN)) {
+			login();
+		}
 
 	}
 
