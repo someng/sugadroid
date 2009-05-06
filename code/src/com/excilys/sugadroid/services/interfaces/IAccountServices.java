@@ -28,7 +28,7 @@ package com.excilys.sugadroid.services.interfaces;
 import java.util.List;
 
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
 
@@ -54,7 +54,7 @@ public interface IAccountServices {
 	 * @return a list of account beans, the response from the service
 	 * @throws ServiceException
 	 */
-	public List<AccountBean> searchAccounts(SessionBean session, String search,
+	public List<AccountBean> searchAccounts(ISessionBean session, String search,
 			Integer offset, Integer maxResults) throws ServiceException;
 
 	/**
@@ -68,6 +68,6 @@ public interface IAccountServices {
 	 * @return the account bean
 	 * @throws ServiceException
 	 */
-	public AccountBean getAccountDetails(SessionBean session, String accountId)
+	public AccountBean getAccountDetails(ISessionBean session, String accountId)
 			throws ServiceException;
 }

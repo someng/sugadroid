@@ -33,7 +33,7 @@ import org.ksoap2.serialization.SoapObject;
 import android.util.Log;
 
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
@@ -46,7 +46,7 @@ public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	};
 
 	@Override
-	public AccountBean getAccountDetails(SessionBean session, String accountId)
+	public AccountBean getAccountDetails(ISessionBean session, String accountId)
 			throws ServiceException {
 
 		Log.d(TAG, "getAccountDetails called, accountId: " + accountId);
@@ -74,7 +74,7 @@ public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<AccountBean> searchAccounts(SessionBean session, String search,
+	public List<AccountBean> searchAccounts(ISessionBean session, String search,
 			Integer offset, Integer maxResults) throws ServiceException {
 		Log.d(TAG, "searchAccounts called, search: " + search);
 

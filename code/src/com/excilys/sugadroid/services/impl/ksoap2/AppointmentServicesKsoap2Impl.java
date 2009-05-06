@@ -38,7 +38,7 @@ import android.util.Log;
 
 import com.excilys.sugadroid.beans.AppointmentBeanV4_5;
 import com.excilys.sugadroid.beans.AppointmentBeanV5;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
@@ -53,7 +53,7 @@ public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	};
 
 	@Override
-	public IAppointmentBean getAppointmentDetails(SessionBean session,
+	public IAppointmentBean getAppointmentDetails(ISessionBean session,
 			String appointmentId) throws ServiceException {
 
 		Log.d(TAG, "getAppointmentDetails called, appointmentId: "
@@ -95,7 +95,7 @@ public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<IAppointmentBean> getDayAppointments(SessionBean session,
+	public List<IAppointmentBean> getDayAppointments(ISessionBean session,
 			LocalDate day) throws ServiceException {
 
 		Log.d(TAG, "getDayAppointments called, date: " + day.toString());
@@ -154,7 +154,7 @@ public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
 
 	@Override
 	public Map<LocalDate, List<IAppointmentBean>> getAppointmentsInInterval(
-			SessionBean session, String userId, LocalDate start, LocalDate end)
+			ISessionBean session, String userId, LocalDate start, LocalDate end)
 			throws ServiceException {
 		Log.d(TAG, "getAppointmentsInInterval called, days " + start.toString()
 				+ " " + end.toString());

@@ -33,9 +33,10 @@ import org.joda.time.LocalDate;
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
+import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
-import com.excilys.sugadroid.services.ServiceFactory;
+import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
@@ -53,7 +54,7 @@ public class GetInitialCalendarTask implements Runnable {
 
 		Map<LocalDate, List<IAppointmentBean>> initialDaysAppointments;
 
-		SessionBean session = SessionBean.getInstance();
+		ISessionBean session = SessionBeanImpl.getInstance();
 
 		LocalDate today = new LocalDate();
 		LocalDate before = today.minusDays(GeneralSettings
@@ -62,7 +63,7 @@ public class GetInitialCalendarTask implements Runnable {
 				.getAppointmentsLoadingAfter(activity));
 
 		try {
-			initialDaysAppointments = ServiceFactory.getInstance()
+			initialDaysAppointments = BeanHolder.getInstance()
 					.getAppointmentServices().getAppointmentsInInterval(
 							session, session.getUserId(), before, after);
 		} catch (InvalidResponseException e) {

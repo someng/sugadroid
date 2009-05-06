@@ -31,7 +31,7 @@ import java.util.Vector;
 import org.ksoap2.serialization.SoapObject;
 
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
@@ -45,7 +45,7 @@ public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	};
 
 	@Override
-	public ContactBean getContactDetails(SessionBean session, String contactId)
+	public ContactBean getContactDetails(ISessionBean session, String contactId)
 			throws ServiceException {
 
 		SoapObject request = newEntryRequest();
@@ -71,7 +71,7 @@ public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<ContactBean> searchContacts(SessionBean session, String search,
+	public List<ContactBean> searchContacts(ISessionBean session, String search,
 			Integer offset, Integer maxResults) throws ServiceException {
 
 		String query = "contacts.first_name LIKE '%" + search
@@ -83,7 +83,7 @@ public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<ContactBean> getAccountContacts(SessionBean session,
+	public List<ContactBean> getAccountContacts(ISessionBean session,
 			String accountId, Integer offset, Integer maxResults)
 			throws ServiceException {
 
@@ -95,7 +95,7 @@ public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<ContactBean> getAppointmentContacts(SessionBean session,
+	public List<ContactBean> getAppointmentContacts(ISessionBean session,
 			String appointmentId, Integer offset, Integer maxResults)
 			throws ServiceException {
 

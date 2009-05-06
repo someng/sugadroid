@@ -31,8 +31,8 @@ import java.security.NoSuchAlgorithmException;
 import com.excilys.sugadroid.activities.ConnectionSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
-import com.excilys.sugadroid.beans.SessionBean;
-import com.excilys.sugadroid.services.ServiceFactory;
+import com.excilys.sugadroid.beans.SessionBeanImpl;
+import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -59,7 +59,7 @@ public class LoginInTask implements Runnable {
 
 		try {
 
-			ILoginServices services = ServiceFactory.getInstance()
+			ILoginServices services = BeanHolder.getInstance()
 					.getLoginServices();
 
 			// If you want to login sending the MD5 of the password, just change
@@ -86,7 +86,7 @@ public class LoginInTask implements Runnable {
 			return;
 		}
 
-		SessionBean.getInstance().setLoggedIn(sessionId, userId, username,
+		SessionBeanImpl.getInstance().setLoggedIn(sessionId, userId, username,
 				password.hashCode(), url, version);
 
 		activity.postSetMessageLoggedIn();
@@ -96,7 +96,7 @@ public class LoginInTask implements Runnable {
 	}
 
 	private void rollbackFromLogin() {
-		SessionBean.getInstance().logout();
+		SessionBeanImpl.getInstance().logout();
 		activity.postSetMessageNotLoggedIn();
 	}
 
