@@ -31,7 +31,6 @@ import java.util.Vector;
 import org.ksoap2.serialization.SoapObject;
 
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
@@ -45,12 +44,11 @@ public class ContactServicesKsoap2Impl extends
 	};
 
 	@Override
-	public ContactBean getContactDetails(ISessionBean session, String contactId)
+	public ContactBean getContactDetails(String contactId)
 			throws ServiceException {
 
 		SoapObject request = newEntryRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Contacts");
 		request.addProperty("id", contactId);
 
@@ -67,53 +65,45 @@ public class ContactServicesKsoap2Impl extends
 
 		request.addProperty("select_fields", t);
 
-		return getEntry(request, ContactBean.class, session.getUrl());
+		return getEntry(request, ContactBean.class);
 	}
 
 	@Override
-	public List<ContactBean> searchContacts(ISessionBean session,
-			String search, Integer offset, Integer maxResults)
-			throws ServiceException {
+	public List<ContactBean> searchContacts(String search, Integer offset,
+			Integer maxResults) throws ServiceException {
 
 		String query = "contacts.first_name LIKE '%" + search
 				+ "%' OR contacts.last_name LIKE '%" + search + "%'";
 
-		return getContactListWithQuery(session.getSessionId(), query, offset,
-				maxResults, session.getUrl());
+		return getContactListWithQuery(query, offset, maxResults);
 
 	}
 
 	@Override
-	public List<ContactBean> getAccountContacts(ISessionBean session,
-			String accountId, Integer offset, Integer maxResults)
-			throws ServiceException {
+	public List<ContactBean> getAccountContacts(String accountId,
+			Integer offset, Integer maxResults) throws ServiceException {
 
 		String query = "contacts.id = accounts_contacts.contact_id AND accounts_contacts.account_id = '"
 				+ accountId + "'";
 
-		return getContactListWithQuery(session.getSessionId(), query, offset,
-				maxResults, session.getUrl());
+		return getContactListWithQuery(query, offset, maxResults);
 	}
 
 	@Override
-	public List<ContactBean> getAppointmentContacts(ISessionBean session,
-			String appointmentId, Integer offset, Integer maxResults)
-			throws ServiceException {
+	public List<ContactBean> getAppointmentContacts(String appointmentId,
+			Integer offset, Integer maxResults) throws ServiceException {
 
 		String query = "contacts.id in (select contact_id from meetings_contacts where meeting_id = '"
 				+ appointmentId + "')";
 
-		return getContactListWithQuery(session.getSessionId(), query, offset,
-				maxResults, session.getUrl());
+		return getContactListWithQuery(query, offset, maxResults);
 	}
 
-	private List<ContactBean> getContactListWithQuery(String sessionId,
-			String query, Integer offset, Integer maxResults, String url)
-			throws ServiceException {
+	private List<ContactBean> getContactListWithQuery(String query,
+			Integer offset, Integer maxResults) throws ServiceException {
 
 		SoapObject request = newEntryListRequest();
 
-		request.addProperty("session", sessionId);
 		request.addProperty("module_name", "Contacts");
 		request.addProperty("query", query);
 		request.addProperty("order_by", "contacts.last_name asc");
@@ -130,6 +120,6 @@ public class ContactServicesKsoap2Impl extends
 		request.addProperty("max_results", maxResults.toString());
 		request.addProperty("deleted", "0");
 
-		return getEntryList(request, ContactBean.class, url);
+		return getEntryList(request, ContactBean.class);
 	}
 }

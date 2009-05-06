@@ -53,9 +53,7 @@ public class GetAccountDetailsTask implements Runnable {
 
 		try {
 			account = BeanHolder.getInstance().getAccountServices()
-					.getAccountDetails(
-							BeanHolder.getInstance().getSessionBean(),
-							accountId);
+					.getAccountDetails(accountId);
 		} catch (InvalidResponseException e) {
 			activity
 					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);

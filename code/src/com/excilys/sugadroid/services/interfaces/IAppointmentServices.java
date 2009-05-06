@@ -30,7 +30,6 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
-import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
@@ -42,17 +41,16 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  */
 public interface IAppointmentServices extends IWebService {
 
-	public List<IAppointmentBean> getDayAppointments(ISessionBean session,
-			LocalDate day) throws ServiceException;
+	public List<IAppointmentBean> getDayAppointments(LocalDate day)
+			throws ServiceException;
 
-	public IAppointmentBean getAppointmentDetails(ISessionBean session,
-			String appointmentId) throws ServiceException;
+	public IAppointmentBean getAppointmentDetails(String appointmentId)
+			throws ServiceException;
 
 	/**
 	 * This method returns the appointments occurring between two dates, mapped
 	 * by days
 	 * 
-	 * @param session
 	 * @param userId
 	 * @param start
 	 * @param end
@@ -60,7 +58,6 @@ public interface IAppointmentServices extends IWebService {
 	 * @throws ServiceException
 	 */
 	public Map<LocalDate, List<IAppointmentBean>> getAppointmentsInInterval(
-			ISessionBean session, String userId, LocalDate start, LocalDate end)
-			throws ServiceException;
+			LocalDate start, LocalDate end) throws ServiceException;
 
 }

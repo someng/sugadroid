@@ -38,7 +38,6 @@ import android.util.Log;
 
 import com.excilys.sugadroid.beans.AppointmentBeanV4_5;
 import com.excilys.sugadroid.beans.AppointmentBeanV5;
-import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
@@ -54,17 +53,16 @@ public class AppointmentServicesKsoap2Impl extends
 	};
 
 	@Override
-	public IAppointmentBean getAppointmentDetails(ISessionBean session,
-			String appointmentId) throws ServiceException {
+	public IAppointmentBean getAppointmentDetails(String appointmentId)
+			throws ServiceException {
 
 		Log.d(TAG, "getAppointmentDetails called, appointmentId: "
 				+ appointmentId);
 
-		boolean version4_5 = session.isVersion4_5();
+		boolean version4_5 = sessionBean.isVersion4_5();
 
 		SoapObject request = newEntryRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Meetings");
 		request.addProperty("id", appointmentId);
 
@@ -91,27 +89,26 @@ public class AppointmentServicesKsoap2Impl extends
 			appointmentBeanClass = AppointmentBeanV5.class;
 		}
 
-		return getEntry(request, appointmentBeanClass, session.getUrl());
+		return getEntry(request, appointmentBeanClass);
 
 	}
 
 	@Override
-	public List<IAppointmentBean> getDayAppointments(ISessionBean session,
-			LocalDate day) throws ServiceException {
+	public List<IAppointmentBean> getDayAppointments(LocalDate day)
+			throws ServiceException {
 
 		Log.d(TAG, "getDayAppointments called, date: " + day.toString());
 
-		boolean version4_5 = session.isVersion4_5();
+		boolean version4_5 = sessionBean.isVersion4_5();
 
 		SoapObject request = newEntryListRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Meetings");
 
 		String query;
 
 		query = "meetings.id = meetings_users.meeting_id AND meetings_users.user_id='"
-				+ session.getUserId() + "' AND ";
+				+ sessionBean.getUserId() + "' AND ";
 
 		if (version4_5) {
 			query += "meetings.date_start='" + day.toString("yyyy-MM-dd") + "'";
@@ -143,11 +140,10 @@ public class AppointmentServicesKsoap2Impl extends
 		List<IAppointmentBean> appointments = new ArrayList<IAppointmentBean>();
 
 		if (version4_5) {
-			appointments.addAll(getEntryList(request,
-					AppointmentBeanV4_5.class, session.getUrl()));
+			appointments
+					.addAll(getEntryList(request, AppointmentBeanV4_5.class));
 		} else {
-			appointments.addAll(getEntryList(request, AppointmentBeanV5.class,
-					session.getUrl()));
+			appointments.addAll(getEntryList(request, AppointmentBeanV5.class));
 		}
 
 		return appointments;
@@ -155,8 +151,7 @@ public class AppointmentServicesKsoap2Impl extends
 
 	@Override
 	public Map<LocalDate, List<IAppointmentBean>> getAppointmentsInInterval(
-			ISessionBean session, String userId, LocalDate start, LocalDate end)
-			throws ServiceException {
+			LocalDate start, LocalDate end) throws ServiceException {
 		Log.d(TAG, "getAppointmentsInInterval called, days " + start.toString()
 				+ " " + end.toString());
 
@@ -165,11 +160,11 @@ public class AppointmentServicesKsoap2Impl extends
 					"start day should be before or equal to end day");
 		}
 
-		boolean version4_5 = session.isVersion4_5();
+		boolean version4_5 = sessionBean.isVersion4_5();
 
 		StringBuilder sb = new StringBuilder(
 				"meetings_users.meeting_id=meetings.id AND meetings_users.user_id='")
-				.append(userId).append("' AND ");
+				.append(sessionBean.getUserId()).append("' AND ");
 
 		if (version4_5) {
 			sb.append("meetings.date_start>='").append(
@@ -187,7 +182,6 @@ public class AppointmentServicesKsoap2Impl extends
 
 		SoapObject request = newEntryListRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Meetings");
 		request.addProperty("query", query);
 		if (version4_5) {
@@ -215,11 +209,10 @@ public class AppointmentServicesKsoap2Impl extends
 		List<IAppointmentBean> appointments = new ArrayList<IAppointmentBean>();
 
 		if (version4_5) {
-			appointments.addAll(getEntryList(request,
-					AppointmentBeanV4_5.class, session.getUrl()));
+			appointments
+					.addAll(getEntryList(request, AppointmentBeanV4_5.class));
 		} else {
-			appointments.addAll(getEntryList(request, AppointmentBeanV5.class,
-					session.getUrl()));
+			appointments.addAll(getEntryList(request, AppointmentBeanV5.class));
 		}
 
 		Map<LocalDate, List<IAppointmentBean>> appointmentsInInterval = new HashMap<LocalDate, List<IAppointmentBean>>();

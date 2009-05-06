@@ -56,6 +56,8 @@ public class LoginInTask implements Runnable {
 
 		String url = ConnectionSettings.getSugarSoapUrl(activity);
 
+		BeanHolder.getInstance().getTransport().setUrl(url);
+
 		try {
 
 			ILoginServices services = BeanHolder.getInstance()

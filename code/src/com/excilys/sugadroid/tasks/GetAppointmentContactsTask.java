@@ -53,9 +53,7 @@ public class GetAppointmentContactsTask implements Runnable {
 		List<ContactBean> contacts;
 		try {
 			contacts = BeanHolder.getInstance().getContactServices()
-					.getAppointmentContacts(
-							BeanHolder.getInstance().getSessionBean(),
-							appointmentId, offset,
+					.getAppointmentContacts(appointmentId, offset,
 							GeneralSettings.getAccountMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity

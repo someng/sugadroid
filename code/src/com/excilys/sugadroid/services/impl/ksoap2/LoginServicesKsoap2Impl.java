@@ -61,7 +61,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 		request.addProperty("user_auth", userAuth);
 		SoapObject response;
 
-		response = (SoapObject) sendRequest(request, SOAP_ACTION, url);
+		response = (SoapObject) sendRequest(request, SOAP_ACTION);
 
 		try {
 			checkErrorValue((SoapObject) response.getProperty("error"));
@@ -95,7 +95,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 
 		String userId;
 
-		userId = (String) sendRequest(request, SOAP_ACTION, url);
+		userId = (String) sendRequest(request, SOAP_ACTION);
 
 		Log.d(TAG, "user id: " + userId);
 
@@ -111,7 +111,7 @@ public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
 
 		String serverVersion;
 
-		serverVersion = (String) sendRequest(request, SOAP_ACTION, url);
+		serverVersion = (String) sendRequest(request, SOAP_ACTION);
 
 		return serverVersion;
 	}
