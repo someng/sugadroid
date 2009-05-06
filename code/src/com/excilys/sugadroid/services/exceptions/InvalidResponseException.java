@@ -30,33 +30,27 @@ public class InvalidResponseException extends ServiceException {
 	private static final long serialVersionUID = 1L;
 
 	public InvalidResponseException() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidResponseException(String detailMessage) {
 		super(detailMessage);
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidResponseException(Throwable throwable) {
 		super(throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidResponseException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidResponseException(String error, String description) {
 		super(error, description);
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidResponseException(String error, String description,
 			String errorNumber) {
 		super(error, description, errorNumber);
-		// TODO Auto-generated constructor stub
 	}
 
 }

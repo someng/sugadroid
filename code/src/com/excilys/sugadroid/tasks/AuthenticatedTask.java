@@ -5,6 +5,7 @@ import android.util.Log;
 import com.excilys.sugadroid.activities.interfaces.IAuthenticatedActivity;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
+import com.excilys.sugadroid.services.exceptions.NotLoggedInException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
 /**
@@ -36,11 +37,13 @@ public abstract class AuthenticatedTask<T extends IAuthenticatedActivity>
 		} catch (InvalidResponseException e) {
 			Log.e(TAG, Log.getStackTraceString(e));
 			activity.onServiceCallFailedNoNetwork();
+		} catch (NotLoggedInException e) {
+			Log.e(TAG, Log.getStackTraceString(e));
+			activity.onNotLoggedIn();
 		} catch (ServiceException e) {
 			Log.e(TAG, Log.getStackTraceString(e));
 			activity.onServiceCallFailed(e.getMessage());
 		}
-		// TODO : create a NotLoggedIn exception
 
 	}
 

@@ -58,7 +58,6 @@ public class ContactDetailsActivity extends CommonActivity implements
 	private Button emailButton;
 	private Button addButton;
 	private TextView nameText;
-	private TextView contactInfoText;
 
 	private Runnable getItemDetailsTask;
 
@@ -82,7 +81,6 @@ public class ContactDetailsActivity extends CommonActivity implements
 
 	private void findViews() {
 		nameText = (TextView) findViewById(R.id.contact_name_text);
-		contactInfoText = (TextView) findViewById(R.id.contact_info_text);
 		accountButton = (Button) findViewById(R.id.contact_account_button);
 		phoneMobileButton = (Button) findViewById(R.id.contact_phone_mobile_button);
 		phoneWorkButton = (Button) findViewById(R.id.contact_phone_work_button);
@@ -92,7 +90,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 
 	private void setContents() {
 		nameText.setText(contact.toString());
-		contactInfoText.setText("");
+		hideLoadingText();
 
 		if (contact.getAccountName() != null
 				&& !contact.getAccountName().equals("")) {
@@ -180,7 +178,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 						ContactDetailsActivity.this, contact.getAccountId());
 
 				// Let user know we're doing something
-				contactInfoText.setText(R.string.loading_text);
+				showLoadingText();
 
 				submitRejectableTask(task);
 
@@ -209,7 +207,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 				Intent intent = new Intent(ContactDetailsActivity.this,
 						AccountDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, account);
-				contactInfoText.setText("");
+				hideLoadingText();
 				startActivity(intent);
 			}
 		});

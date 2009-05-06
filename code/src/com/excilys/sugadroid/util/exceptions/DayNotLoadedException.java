@@ -33,22 +33,18 @@ public class DayNotLoadedException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public DayNotLoadedException() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public DayNotLoadedException(String detailMessage) {
 		super(detailMessage);
-		// TODO Auto-generated constructor stub
 	}
 
 	public DayNotLoadedException(Throwable throwable) {
 		super(throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 	public DayNotLoadedException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 }

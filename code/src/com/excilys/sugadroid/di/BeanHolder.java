@@ -84,7 +84,7 @@ public class BeanHolder {
 		transport = transportAndroid;
 		// TODO set to false when debug is over.
 		// if set to true, the response of the server will be dumped in the log
-		transport.debug = false;
+		transport.debug = true;
 
 		String namespace = "http://www.sugarcrm.com/sugarcrm";
 

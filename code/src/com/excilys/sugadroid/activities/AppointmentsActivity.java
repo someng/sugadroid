@@ -80,8 +80,6 @@ public class AppointmentsActivity extends CommonActivity implements
 
 	private Runnable getItemDetailsTask;
 
-	private TextView loadingText;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -189,10 +187,8 @@ public class AppointmentsActivity extends CommonActivity implements
 		pageFlipper = (ViewFlipper) findViewById(R.id.appointments_flipper);
 		previousDayButton = (Button) findViewById(R.id.previous_day_button);
 		nextDayButton = (Button) findViewById(R.id.next_day_button);
-		loadingText = (TextView) findViewById(R.id.loading);
 		currentDayText = (TextView) findViewById(R.id.appointments_day);
-
-		loadingText.setVisibility(View.INVISIBLE);
+		hideLoadingText();
 	}
 
 	private void setListeners() {
@@ -258,7 +254,7 @@ public class AppointmentsActivity extends CommonActivity implements
 						AppointmentsActivity.this, selectedItem.getId());
 
 				// Let user know we're doing something
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 				submitRejectableTask(task);
 
 			}
@@ -324,7 +320,7 @@ public class AppointmentsActivity extends CommonActivity implements
 				Intent intent = new Intent(AppointmentsActivity.this,
 						AppointmentDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, appointment);
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				startActivity(intent);
 			}
 		});

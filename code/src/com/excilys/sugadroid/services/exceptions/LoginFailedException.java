@@ -31,17 +31,14 @@ public class LoginFailedException extends ServiceException {
 
 	public LoginFailedException(String detailMessage) {
 		super(detailMessage);
-		// TODO Auto-generated constructor stub
 	}
 
 	public LoginFailedException(Throwable throwable) {
 		super(throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 	public LoginFailedException(String detailMessage, Throwable throwable) {
 		super(detailMessage, throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 	public LoginFailedException(String error, String description) {

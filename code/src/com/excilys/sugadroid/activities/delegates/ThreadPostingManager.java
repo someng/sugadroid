@@ -70,8 +70,8 @@ public class ThreadPostingManager {
 		taskPending = executor.submit(task);
 	}
 
-	/** Request an update to start after a short delay */
-	public void updateDelayedOnGuiThread(long delayMillis, Runnable task) {
+	/** Request a post on the Gui Thread to start after a short delay */
+	public void postDelayedOnGuiThread(long delayMillis, Runnable task) {
 		// Cancel previous update if it hasn't started yet
 		if (updateTask != null) {
 			guiThread.removeCallbacks(updateTask);
@@ -83,8 +83,8 @@ public class ThreadPostingManager {
 		guiThread.postDelayed(task, delayMillis);
 	}
 
-	/** Request an update to start */
-	public void updateOnGuiThread(Runnable task) {
+	/** Request a post on the Gui Thread */
+	public void postOnGuiThread(Runnable task) {
 		// Cancel previous update if it hasn't started yet
 		if (updateTask != null) {
 			guiThread.removeCallbacks(updateTask);

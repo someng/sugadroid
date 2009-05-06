@@ -52,7 +52,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 	private IAppointmentBean appointment;
 
-	private TextView loadingText;
 	private TextView nameText;
 	private TextView dateStartText;
 	private TextView durationText;
@@ -92,7 +91,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 	protected void findViews() {
 		super.findViews();
 		nameText = (TextView) findViewById(R.id.appointment_name_text);
-		loadingText = (TextView) findViewById(R.id.appointment_info_text);
 		dateStartText = (TextView) findViewById(R.id.appointment_date_start);
 		durationText = (TextView) findViewById(R.id.appointment_duration);
 		descriptionText = (TextView) findViewById(R.id.appointment_description_text);
@@ -100,7 +98,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 		String appointmentName = getString(R.string.appointment_name);
 		nameText.setText(appointmentName + " " + appointment.getName());
 
-		loadingText.setVisibility(View.INVISIBLE);
+		hideLoadingText();
 
 		StringBuilder sb = new StringBuilder(
 				getString(R.string.appointment_date_start));
@@ -155,7 +153,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 						AppointmentDetailsActivity.this, selectedItem.getId());
 
 				// Let user know we're doing something
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 
 				submitRejectableTask(task);
 			}
@@ -168,7 +166,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 				GetAppointmentContactsTask task = new GetAppointmentContactsTask(
 						AppointmentDetailsActivity.this, appointment.getId(), 0);
 
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 				hideEmpty();
 
 				submitRejectableTask(task);
@@ -184,7 +182,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 				allContacts.addAll(contacts);
 
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				showEmpty();
 				itemAdapter.notifyDataSetChanged();
 
@@ -200,7 +198,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 				Intent intent = new Intent(AppointmentDetailsActivity.this,
 						ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				startActivity(intent);
 			}
 		});
