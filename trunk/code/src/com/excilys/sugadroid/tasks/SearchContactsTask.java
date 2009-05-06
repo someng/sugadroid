@@ -31,8 +31,8 @@ import com.excilys.sugadroid.activities.ContactListActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBean;
-import com.excilys.sugadroid.services.ServiceFactory;
+import com.excilys.sugadroid.beans.SessionBeanImpl;
+import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
@@ -49,8 +49,8 @@ public class SearchContactsTask implements Runnable {
 	public void run() {
 		List<ContactBean> contacts;
 		try {
-			contacts = ServiceFactory.getInstance().getContactServices()
-					.searchContacts(SessionBean.getInstance(), search,
+			contacts = BeanHolder.getInstance().getContactServices()
+					.searchContacts(SessionBeanImpl.getInstance(), search,
 							activity.getOffset(),
 							GeneralSettings.getSearchListMaxResults(activity));
 		} catch (InvalidResponseException e) {

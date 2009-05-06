@@ -28,7 +28,7 @@ package com.excilys.sugadroid.services.interfaces;
 import java.util.List;
 
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
 /**
@@ -39,17 +39,17 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  */
 public interface IContactServices {
 
-	public List<ContactBean> searchContacts(SessionBean session, String search,
+	public List<ContactBean> searchContacts(ISessionBean session, String search,
 			Integer offset, Integer maxResults) throws ServiceException;
 
-	public List<ContactBean> getAccountContacts(SessionBean session,
+	public List<ContactBean> getAccountContacts(ISessionBean session,
 			String accountId, Integer offset, Integer maxResults)
 			throws ServiceException;
 
-	public List<ContactBean> getAppointmentContacts(SessionBean session,
+	public List<ContactBean> getAppointmentContacts(ISessionBean session,
 			String appointmentId, Integer offset, Integer maxResults)
 			throws ServiceException;
 
-	public ContactBean getContactDetails(SessionBean session, String contactId)
+	public ContactBean getContactDetails(ISessionBean session, String contactId)
 			throws ServiceException;
 }

@@ -1,9 +1,29 @@
+/* ==================================import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.ksoap2.transport.Transport;
+
+import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
+import com.excilys.sugadroid.services.impl.ksoap2.AppointmentServicesKsoap2Impl;
+import com.excilys.sugadroid.services.impl.ksoap2.ContactServicesKsoap2Impl;
+import com.excilys.sugadroid.services.impl.ksoap2.HttpClientTransportAndroid;
+import com.excilys.sugadroid.services.impl.ksoap2.LoginServicesKsoap2Impl;
+import com.excilys.sugadroid.services.interfaces.IAccountServices;
+import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
+import com.excilys.sugadroid.services.interfaces.ILoginServices;
+import com.excilys.sugadroid.services.util.HTTPSHackUtil;
+ not, see <http://www.gnu.org/licenses/>.
+ * ============================================================================
+ */
+
 package com.excilys.sugadroid.di;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.ksoap2.transport.Transport;
 
+import com.excilys.sugadroid.beans.ISessionBean;
+import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
 import com.excilys.sugadroid.services.impl.ksoap2.AppointmentServicesKsoap2Impl;
 import com.excilys.sugadroid.services.impl.ksoap2.ContactServicesKsoap2Impl;
@@ -42,8 +62,11 @@ public class BeanHolder {
 	private IContactServices contactServices;
 	private IAccountServices accountServices;
 	private IAppointmentServices appointmentServices;
+	private ISessionBean sessionBean;
 
 	private BeanHolder() {
+
+		sessionBean = new SessionBeanImpl();
 
 		hackUtil = new HTTPSHackUtil();
 		// Not linked to beans, should be placed somewhere else
@@ -105,6 +128,10 @@ public class BeanHolder {
 
 	public IAppointmentServices getAppointmentServices() {
 		return appointmentServices;
+	}
+
+	public ISessionBean getSessionBean() {
+		return sessionBean;
 	}
 
 }

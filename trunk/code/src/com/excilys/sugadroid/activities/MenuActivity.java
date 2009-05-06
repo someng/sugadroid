@@ -39,7 +39,8 @@ import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
-import com.excilys.sugadroid.beans.SessionBean;
+import com.excilys.sugadroid.beans.ISessionBean;
+import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
 import com.excilys.sugadroid.tasks.LoginInTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
@@ -83,8 +84,9 @@ public class MenuActivity extends CommonActivity {
 	public void setMessageLoggedIn() {
 		StringBuilder sb = new StringBuilder(
 				getString(R.string.logged_in_message));
-		sb.append(" (").append(SessionBean.getInstance().getUsername()).append(
-				")");
+		sb.append(" (").append(
+				BeanHolder.getInstance().getSessionBean().getUsername())
+				.append(")");
 		loggedInText.setText(sb.toString());
 	}
 
@@ -121,7 +123,7 @@ public class MenuActivity extends CommonActivity {
 
 				logoutIfParametersChanged();
 
-				if (SessionBean.getInstance().isLoggedIn()) {
+				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
 					Intent i = new Intent(MenuActivity.this,
 							AccountListActivity.class);
 					startActivity(i);
@@ -144,7 +146,7 @@ public class MenuActivity extends CommonActivity {
 
 				logoutIfParametersChanged();
 
-				if (SessionBean.getInstance().isLoggedIn()) {
+				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
 					Intent i = new Intent(MenuActivity.this,
 							ContactListActivity.class);
 					startActivity(i);
@@ -167,7 +169,7 @@ public class MenuActivity extends CommonActivity {
 
 				logoutIfParametersChanged();
 
-				if (SessionBean.getInstance().isLoggedIn()) {
+				if (BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
 					threadManager.queueUpdate(0, getInitialCalendarTask);
 				} else {
 					String username = ConnectionSettings
@@ -277,7 +279,7 @@ public class MenuActivity extends CommonActivity {
 	public void onResume() {
 		super.onResume();
 		logoutIfParametersChanged();
-		if (!SessionBean.getInstance().isLoggedIn()) {
+		if (!BeanHolder.getInstance().getSessionBean().isLoggedIn()) {
 			setMessageNotLoggedIn();
 
 			String username = ConnectionSettings.getUsername(this);
@@ -292,7 +294,7 @@ public class MenuActivity extends CommonActivity {
 
 	private void logoutIfParametersChanged() {
 
-		SessionBean session = SessionBean.getInstance();
+		ISessionBean session = BeanHolder.getInstance().getSessionBean();
 
 		Log.d(TAG, "Checking if parameters changed");
 
