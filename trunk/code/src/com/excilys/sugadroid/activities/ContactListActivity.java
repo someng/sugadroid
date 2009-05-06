@@ -26,7 +26,7 @@
 package com.excilys.sugadroid.activities;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
@@ -36,7 +36,7 @@ import com.excilys.sugadroid.tasks.SearchContactsTask;
 public class ContactListActivity
 		extends
 		CommonSearchListActivity<ContactBean, GetContactDetailsTask, SearchContactsTask>
-		implements CallingGetItemDetailsActivity<ContactBean> {
+		implements ICallingGetItemDetailsActivity<ContactBean> {
 
 	@Override
 	public Class<ContactDetailsActivity> getItemDetailsActivity() {

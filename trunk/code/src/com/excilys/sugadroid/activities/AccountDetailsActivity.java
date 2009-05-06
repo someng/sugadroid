@@ -41,7 +41,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
@@ -50,7 +50,7 @@ import com.excilys.sugadroid.tasks.GetAccountContactsTask;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 
 public class AccountDetailsActivity extends CommonListActivity implements
-		CallingGetItemDetailsActivity<ContactBean> {
+		ICallingGetItemDetailsActivity<ContactBean> {
 
 	private static final String TAG = AccountDetailsActivity.class
 			.getSimpleName();

@@ -26,7 +26,7 @@
 package com.excilys.sugadroid.activities;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
@@ -36,7 +36,7 @@ import com.excilys.sugadroid.tasks.SearchAccountsTask;
 public class AccountListActivity
 		extends
 		CommonSearchListActivity<AccountBean, GetAccountDetailsTask, SearchAccountsTask>
-		implements CallingGetItemDetailsActivity<AccountBean> {
+		implements ICallingGetItemDetailsActivity<AccountBean> {
 
 	@Override
 	public Class<AccountDetailsActivity> getItemDetailsActivity() {

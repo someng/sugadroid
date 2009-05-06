@@ -27,20 +27,20 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
 public class GetAccountDetailsTask extends
-		AuthenticatedTask<CallingGetItemDetailsActivity<AccountBean>> {
+		AuthenticatedTask<ICallingGetItemDetailsActivity<AccountBean>> {
 
 	private String accountId;
 	private IAccountServices accountServices;
 
 	public GetAccountDetailsTask(
-			CallingGetItemDetailsActivity<AccountBean> activity,
+			ICallingGetItemDetailsActivity<AccountBean> activity,
 			IAccountServices accountServices, String accountId) {
 		super(activity);
 		this.accountId = accountId;

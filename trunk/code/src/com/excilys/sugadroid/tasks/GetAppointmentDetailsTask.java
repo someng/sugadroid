@@ -27,20 +27,20 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 
 public class GetAppointmentDetailsTask extends
-		AuthenticatedTask<CallingGetItemDetailsActivity<IAppointmentBean>> {
+		AuthenticatedTask<ICallingGetItemDetailsActivity<IAppointmentBean>> {
 
 	private String appointmentId;
 	private IAppointmentServices appointmentServices;
 
 	public GetAppointmentDetailsTask(
-			CallingGetItemDetailsActivity<IAppointmentBean> activity,
+			ICallingGetItemDetailsActivity<IAppointmentBean> activity,
 			IAppointmentServices appointmentServices, String appointmentId) {
 		super(activity);
 		this.appointmentId = appointmentId;

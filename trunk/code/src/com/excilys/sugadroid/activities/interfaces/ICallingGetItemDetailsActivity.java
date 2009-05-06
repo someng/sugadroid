@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @author Pierre-Yves Ricau
  * 
  */
-public interface CallingGetItemDetailsActivity<T extends Serializable> extends
+public interface ICallingGetItemDetailsActivity<T extends Serializable> extends
 		IAuthenticatedActivity {
 
 	public void onItemDetailsLoaded(T item);

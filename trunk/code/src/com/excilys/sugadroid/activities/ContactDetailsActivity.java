@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
@@ -46,7 +46,7 @@ import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.tasks.GetAccountDetailsTask;
 
 public class ContactDetailsActivity extends CommonActivity implements
-		CallingGetItemDetailsActivity<AccountBean> {
+		ICallingGetItemDetailsActivity<AccountBean> {
 
 	private static final String TAG = ContactDetailsActivity.class
 			.getSimpleName();
