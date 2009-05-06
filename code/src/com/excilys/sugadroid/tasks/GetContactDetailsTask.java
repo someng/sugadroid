@@ -45,7 +45,7 @@ public class GetContactDetailsTask extends
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 		ContactBean contact = contactServices.getContactDetails(contactId);
 
 		activity.onItemDetailsLoaded(contact);

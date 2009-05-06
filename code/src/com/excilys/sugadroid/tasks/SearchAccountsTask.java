@@ -47,7 +47,7 @@ public class SearchAccountsTask extends AuthenticatedTask<AccountListActivity> {
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 		List<AccountBean> accounts = accountServices.searchAccounts(search,
 				activity.getOffset(), maxResults);
 

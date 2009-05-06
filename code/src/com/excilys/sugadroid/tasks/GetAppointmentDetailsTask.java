@@ -48,7 +48,7 @@ public class GetAppointmentDetailsTask extends
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 		IAppointmentBean appointment = appointmentServices
 				.getAppointmentDetails(appointmentId);
 

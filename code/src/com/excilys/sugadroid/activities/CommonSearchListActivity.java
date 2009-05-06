@@ -197,9 +197,6 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 
 					lastSearch = search;
 
-					// Let user know we're doing something
-					showLoadingText();
-
 					// Begin task now but don't wait for it
 					SearchItemsTask task = getSearchItemTaskInstance(search);
 
@@ -211,9 +208,6 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 		getItemDetailsTask = new Runnable() {
 			public void run() {
 				GetItemDetailsTask task = getItemDetailsTaskInstance(selectedItem);
-
-				// Let user know we're doing something
-				showLoadingText();
 
 				submitRejectableTask(task);
 

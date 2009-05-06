@@ -25,36 +25,27 @@
 
 package com.excilys.sugadroid.tasks;
 
-import java.util.List;
+import com.excilys.sugadroid.activities.interfaces.ICallingLoadingTasksActivity;
 
-import com.excilys.sugadroid.activities.AccountDetailsActivity;
-import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.services.exceptions.ServiceException;
-import com.excilys.sugadroid.services.interfaces.IContactServices;
+public abstract class LoadingTask<T extends ICallingLoadingTasksActivity>
+		implements Runnable {
 
-public class GetAccountContactsTask extends
-		AuthenticatedTask<AccountDetailsActivity> {
+	protected T activity;
 
-	private String accountId;
-	private int offset;
-	private IContactServices contactServices;
-	private int maxResults;
-
-	public GetAccountContactsTask(AccountDetailsActivity activity,
-			IContactServices contactServices, String accountId, int offset,
-			int maxResults) {
-		super(activity);
-		this.contactServices = contactServices;
-		this.accountId = accountId;
-		this.offset = offset;
-		this.maxResults = maxResults;
+	public LoadingTask(T activity) {
+		this.activity = activity;
 	}
 
 	@Override
-	public void doRunAuthenticatedTask() throws ServiceException {
-		List<ContactBean> contacts = contactServices.getAccountContacts(
-				accountId, offset, maxResults);
+	public void run() {
+		try {
+			doRunLoadingTask();
+		} finally {
+			activity.onLoadingDone();
+		}
 
-		activity.updateContactList(contacts);
 	}
+
+	public abstract void doRunLoadingTask();
+
 }

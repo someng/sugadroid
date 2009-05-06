@@ -209,7 +209,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 						GeneralSettings
 								.getAccountMaxResults(AccountDetailsActivity.this));
 
-				showLoadingText();
 				hideEmpty();
 				submitRejectableTask(task);
 			}
@@ -221,9 +220,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				GetContactDetailsTask task = new GetContactDetailsTask(
 						AccountDetailsActivity.this, contactServices,
 						selectedItem.getId());
-
-				// Let user know we're doing something
-				showLoadingText();
 
 				submitRejectableTask(task);
 
@@ -255,7 +251,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 				allContacts.addAll(contacts);
 
-				hideLoadingText();
 				showEmpty();
 				itemAdapter.notifyDataSetChanged();
 
@@ -275,7 +270,6 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				Intent intent = new Intent(AccountDetailsActivity.this,
 						ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
-				hideLoadingText();
 				startActivity(intent);
 			}
 		});

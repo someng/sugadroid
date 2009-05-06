@@ -91,7 +91,7 @@ public abstract class CommonActivity extends Activity implements
 
 		final BeanHolder holder = BeanHolder.getInstance();
 
-		initActivity(new DialogManager(this), new ThreadPostingManager(),
+		initActivity(new DialogManager(this), new ThreadPostingManager(this),
 				holder.getSessionBean(), holder.getLoginServices(), holder
 						.getTransport());
 
@@ -329,6 +329,7 @@ public abstract class CommonActivity extends Activity implements
 			if (!isFinishing()) {
 				Log.e(TAG, Log.getStackTraceString(e));
 				showShortInfo(e.getMessage());
+				hideLoadingText();
 			}
 		}
 	}
@@ -549,14 +550,34 @@ public abstract class CommonActivity extends Activity implements
 		if (loadingText == null) {
 			loadingText = (TextView) findViewById(R.id.loading_information);
 		}
-		loadingText.setVisibility(View.VISIBLE);
+		if (loadingText != null) {
+			loadingText.setVisibility(View.VISIBLE);
+		}
 	}
 
 	protected void hideLoadingText() {
 		if (loadingText == null) {
 			loadingText = (TextView) findViewById(R.id.loading_information);
 		}
-		loadingText.setVisibility(View.INVISIBLE);
+		if (loadingText != null) {
+			loadingText.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	public void onLoadingDone() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				hideLoadingText();
+			}
+		});
+	}
+
+	public void onLoadingStarting() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				showLoadingText();
+			}
+		});
 	}
 
 }

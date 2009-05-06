@@ -184,9 +184,6 @@ public class ContactDetailsActivity extends CommonActivity implements
 						ContactDetailsActivity.this, accountServices, contact
 								.getAccountId());
 
-				// Let user know we're doing something
-				showLoadingText();
-
 				submitRejectableTask(task);
 
 			}
@@ -214,7 +211,6 @@ public class ContactDetailsActivity extends CommonActivity implements
 				Intent intent = new Intent(ContactDetailsActivity.this,
 						AccountDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, account);
-				hideLoadingText();
 				startActivity(intent);
 			}
 		});

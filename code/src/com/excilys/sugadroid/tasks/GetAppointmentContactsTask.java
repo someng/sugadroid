@@ -51,7 +51,7 @@ public class GetAppointmentContactsTask extends
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 		List<ContactBean> contacts = contactServices.getAppointmentContacts(
 				appointmentId, offset, maxResults);
 

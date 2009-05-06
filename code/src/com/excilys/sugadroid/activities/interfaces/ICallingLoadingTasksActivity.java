@@ -25,21 +25,10 @@
 
 package com.excilys.sugadroid.activities.interfaces;
 
-/**
- * An activity that provides callbacks to show informations when authenticated
- * tasks perform
- * 
- * @author Pierre-Yves Ricau
- * 
- */
-public interface IAuthenticatedActivity extends ICallingLoadingTasksActivity {
+public interface ICallingLoadingTasksActivity {
 
-	public abstract void onNotLoggedIn();
+	public abstract void onLoadingStarting();
 
-	public abstract void onSessionInvalid();
-
-	public abstract void onServiceCallFailed(String message);
-
-	public abstract void onServiceCallFailedNoNetwork();
+	public abstract void onLoadingDone();
 
 }
