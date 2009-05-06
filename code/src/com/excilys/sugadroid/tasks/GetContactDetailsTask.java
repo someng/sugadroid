@@ -25,39 +25,28 @@
 
 package com.excilys.sugadroid.tasks;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class GetContactDetailsTask implements Runnable {
+public class GetContactDetailsTask extends
+		AuthenticatedTask<CallingGetItemDetailsActivity<ContactBean>> {
 
 	private final String contactId;
-	private final CallingGetItemDetailsActivity<ContactBean> activity;
 
 	public GetContactDetailsTask(
 			CallingGetItemDetailsActivity<ContactBean> activity,
 			String contactId) {
-		this.activity = activity;
+		super(activity);
 		this.contactId = contactId;
 	}
 
 	@Override
-	public void run() {
-		ContactBean contact;
+	public void doRun() throws ServiceException {
+		ContactBean contact = BeanHolder.getInstance().getContactServices()
+				.getContactDetails(contactId);
 
-		try {
-			contact = BeanHolder.getInstance().getContactServices()
-					.getContactDetails(contactId);
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
 		activity.forwardItemDetailsActivity(contact);
 	}
 }

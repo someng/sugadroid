@@ -25,8 +25,6 @@
 
 package com.excilys.sugadroid.activities;
 
-import java.util.concurrent.RejectedExecutionException;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -152,7 +150,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 			accountButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					threadManager.queueUpdate(0, getItemDetailsTask);
+					executeOnGuiThreadAuthenticatedTask(getItemDetailsTask);
 				}
 			});
 		}
@@ -183,13 +181,9 @@ public class ContactDetailsActivity extends CommonActivity implements
 
 				// Let user know we're doing something
 				contactInfoText.setText(R.string.loading_text);
-				try {
-					threadManager.submitTask(task);
-				} catch (RejectedExecutionException e) {
-					if (!ContactDetailsActivity.this.isFinishing()) {
-						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
-					}
-				}
+
+				submitRejectableTask(task);
+
 			}
 
 		};

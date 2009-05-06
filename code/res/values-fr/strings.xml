@@ -8,7 +8,10 @@
 	<string name="error_launch_task_message">Une erreur étrange est apparue</string>
 	<string name="error_login_failed_title">Connexion impossible</string>
 	<string name="error_login_failed_message">Veuillez vérifier votre identifiant et votre mot de passe dans les paramètres de connexion.</string>
-	<string name="error_ok_button">Ok</string>
+    <string name="dialog_OK_button">Ok</string>
+    <string name="dialog_unknow_error_title">Unknown error</string>
+    <string name="dialog_unknow_error_message">"An unknown error occurred, good luck !"
+    </string>
 	<string name="contact_list_button">Chercher des contacts</string>
 	<string name="account_list_button">Chercher des comptes</string>
 	<string name="appointments_button">Mes rendez-vous</string>
@@ -76,4 +79,19 @@
 	
 	<string name="add_contact">Add contact</string>
 	
+        <!-- ********* Toast texts ********* -->
+    <!-- Toast Login -->
+    <string name="toast_login_failed_no_network">Login failed, check the network</string>
+    <string name="toast_login_failed_bad_credentials">Login failed, check your username and password</string>
+    <string name="toast_login_failed">Login failed, message:</string>
+    <string name="toast_login_successful">Login successful</string>
+    <string name="toast_login_in">Login in</string>
+    
+    <!-- Toast Service -->
+    <string name="toast_service_call_failed_no_network">Action failed, check the network</string> 
+    <string name="toast_service_call_failed">Action failed, message:</string>
+    <string name="toast_service_no_session">Action failed, no session, you need to login</string>
+    <string name="toast_service_session_invalid">Action failed, session invalid, you need to login again</string>
+    
+    
 </resources>

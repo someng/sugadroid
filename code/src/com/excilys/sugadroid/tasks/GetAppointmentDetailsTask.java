@@ -27,40 +27,30 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.di.BeanHolder;
-import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-public class GetAppointmentDetailsTask implements Runnable {
+public class GetAppointmentDetailsTask extends
+		AuthenticatedTask<CallingGetItemDetailsActivity<IAppointmentBean>> {
 
 	private final String appointmentId;
-	private final CallingGetItemDetailsActivity<IAppointmentBean> activity;
 
 	public GetAppointmentDetailsTask(
 			CallingGetItemDetailsActivity<IAppointmentBean> activity,
 			String appointmentId) {
-		this.activity = activity;
+		super(activity);
 		this.appointmentId = appointmentId;
 	}
 
 	@Override
-	public void run() {
+	public void doRun() throws ServiceException {
 		IAppointmentBean appointment;
 
-		try {
-			appointment = BeanHolder.getInstance().getAppointmentServices()
-					.getAppointmentDetails(appointmentId);
-		} catch (InvalidResponseException e) {
-			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
-			return;
-		} catch (ServiceException e) {
-			activity.postShowCustomDialog(e.getMessage(), e.getDescription());
-			return;
-		}
+		appointment = BeanHolder.getInstance().getAppointmentServices()
+				.getAppointmentDetails(appointmentId);
 
 		appointment.setContacts(new ArrayList<ContactBean>());
 
