@@ -46,7 +46,7 @@ public class DialogManager {
 	private Activity activity;
 
 	public enum DialogValues {
-		ERROR_DAY_NOT_LOADED, ERROR_CANNOT_LAUNCH_TASK, CUSTOM, ERROR_LOGIN_FAILED, ERROR_NOT_LOGGED_IN, ERROR_INVALID_RESPONSE, CONTACT_ADDED;
+		ERROR_DAY_NOT_LOADED, CUSTOM, CONTACT_ADDED;
 
 		public static DialogValues valueOf(int i) {
 			return DialogValues.values()[i];
@@ -71,29 +71,15 @@ public class DialogManager {
 
 		// More dialogs here :
 		// http://developer.android.com/guide/samples/ApiDemos/src/com/example/android/apis/app/AlertDialogSamples.html
-		case ERROR_CANNOT_LAUNCH_TASK:
-			title = R.string.error_launch_task_title;
-			message = R.string.error_launch_task_message;
-			break;
+
 		case CUSTOM:
 			return new AlertDialog.Builder(activity).setTitle(
 					customOkDialogTitle).setMessage(customOkDialogMessage)
 					.setNeutralButton(R.string.dialog_OK_button, null).create();
-		case ERROR_LOGIN_FAILED:
-			title = R.string.error_login_failed_title;
-			message = R.string.error_login_failed_message;
-			break;
-		case ERROR_NOT_LOGGED_IN:
-			title = R.string.not_logged_in_title;
-			message = R.string.not_logged_in_message;
-			break;
+
 		case ERROR_DAY_NOT_LOADED:
 			title = R.string.day_not_loaded_title;
 			message = R.string.day_not_loaded_message;
-			break;
-		case ERROR_INVALID_RESPONSE:
-			title = R.string.invalid_response_title;
-			message = R.string.invalid_response_message;
 			break;
 		case CONTACT_ADDED:
 			title = R.string.contact_added_title;

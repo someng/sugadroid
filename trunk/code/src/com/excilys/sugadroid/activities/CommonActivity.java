@@ -37,6 +37,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,6 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.activities.delegates.ThreadPostingManager;
 import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
-import com.excilys.sugadroid.activities.interfaces.BaseActivity;
 import com.excilys.sugadroid.activities.interfaces.IAuthenticatedActivity;
 import com.excilys.sugadroid.activities.interfaces.IAuthenticatingActivity;
 import com.excilys.sugadroid.beans.ISessionBean;
@@ -61,7 +61,7 @@ import com.excilys.sugadroid.tasks.LoginInTask;
  * @author Pierre-Yves Ricau
  * 
  */
-public abstract class CommonActivity extends Activity implements BaseActivity,
+public abstract class CommonActivity extends Activity implements
 		IAuthenticatingActivity, IAuthenticatedActivity {
 
 	private static final String TAG = CommonActivity.class.getSimpleName();
@@ -78,6 +78,10 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 	// A task waiting for authentication to proceed before being launched (via
 	// callbacks on this activity)
 	private Runnable pendingAuthenticatedTask;
+
+	private TextView loadingText;
+
+	protected int menuId = R.menu.back_to_menu;
 
 	public static final String ITEM_IDENTIFIER = "ITEM";
 
@@ -173,7 +177,7 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 	 */
 	protected void login() {
 		if (!sessionBean.getState().equals(SessionState.LOGIN_IN)) {
-			threadManager.updateOnGuiThread(loginTask);
+			threadManager.postOnGuiThread(loginTask);
 		}
 	}
 
@@ -190,7 +194,7 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 		switch (sessionBean.getState()) {
 		case LOGGED_IN:
 			pendingAuthenticatedTask = null;
-			threadManager.updateOnGuiThread(task);
+			threadManager.postOnGuiThread(task);
 			break;
 		case LOGIN_IN:
 			pendingAuthenticatedTask = task;
@@ -215,7 +219,7 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 		switch (sessionBean.getState()) {
 		case LOGGED_IN:
 			pendingAuthenticatedTask = null;
-			threadManager.updateDelayedOnGuiThread(delayMillis, task);
+			threadManager.postDelayedOnGuiThread(delayMillis, task);
 			break;
 		case LOGIN_IN:
 			// No delay will be applied if authenticating
@@ -259,39 +263,11 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 		showDialog(dialog.ordinal());
 	}
 
-	public void postShowCustomDialog(final String title, final String message) {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				showCustomDialog(title, message);
-			}
-		});
-	}
-
-	public void postShowDialog(final int id) {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				showDialog(id);
-			}
-		});
-	}
-
-	public void postShowDialog(final DialogValues dialog) {
-		runOnUiThread(new Runnable() {
-			public void run() {
-				showDialog(dialog);
-			}
-		});
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(getMenuId(), menu);
+		inflater.inflate(menuId, menu);
 		return true;
-	}
-
-	protected int getMenuId() {
-		return R.menu.back_to_menu;
 	}
 
 	@Override
@@ -531,7 +507,7 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 
 	/**
 	 * Logout the user, updates the UI to show that the user is not logged in,
-	 * and show a message saying that the service ticket is invalid
+	 * and show a message saying that the session is invalid
 	 */
 	public void onSessionInvalid() {
 		runOnUiThread(new Runnable() {
@@ -567,6 +543,20 @@ public abstract class CommonActivity extends Activity implements BaseActivity,
 			pendingAuthenticatedTask = null;
 			login();
 		}
+	}
+
+	protected void showLoadingText() {
+		if (loadingText == null) {
+			loadingText = (TextView) findViewById(R.id.loading_information);
+		}
+		loadingText.setVisibility(View.VISIBLE);
+	}
+
+	protected void hideLoadingText() {
+		if (loadingText == null) {
+			loadingText = (TextView) findViewById(R.id.loading_information);
+		}
+		loadingText.setVisibility(View.INVISIBLE);
 	}
 
 }

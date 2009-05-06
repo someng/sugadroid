@@ -15,22 +15,12 @@
 	<string name="activity_general_settings">SugaDroid, general settings</string>
 
 	<!-- ********* Dialog box messages ********* -->
-	<string name="error_launch_task_title">The task could not be executed</string>
-	<string name="error_launch_task_message">A weird error occurred</string>
-	
-	<string name="error_login_failed_title">Login attempt failed</string>
-	<string name="error_login_failed_message">Please check the username and password in the
-		connection settings.</string>
-		
-	<string name="invalid_response_title">Invalid server response</string>
-	<string name="invalid_response_message">The server response is not valid. Did you write the good URL? You might find more information in the application logs.</string>	
-	
 	<string name="day_not_loaded_title">Day not loaded</string>
 	<string name="day_not_loaded_message">This day has not been loaded yet (feature not available yet)</string>
 	
 	<string name="contact_added_title">Contact added</string>
 	<string name="contact_added_message">This contact has been successfully added</string>
-	    
+
     <string name="dialog_OK_button">Ok</string>
     <string name="dialog_unknow_error_title">Unknown error</string>
     <string name="dialog_unknow_error_message">"An unknown error occurred, good luck !"
@@ -120,9 +110,6 @@ It was created by Pierre-Yves Ricau for eBusiness Information, a French company,
 	<string name="logged_in_message">Logged in</string>
 	<string name="logged_out_message">Not logged in</string>
 	<string name="loging_in_message">Login in...</string>
-	<string name="not_logged_in_title">You are not logged in!</string>
-	<string name="not_logged_in_message">To log in, please fill in your connection settings in the preferences menu.
-	</string>
 	
 	<string name="address_button">Show on Google Maps</string>
 	<string name="previous_day_button">&lt;</string>

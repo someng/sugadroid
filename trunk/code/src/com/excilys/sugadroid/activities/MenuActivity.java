@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.beans.ISessionBean.SessionState;
@@ -45,7 +44,8 @@ public class MenuActivity extends CommonActivity {
 	private Button accountListButton;
 	private Button contactListButton;
 	private Button appointmentsButton;
-	private TextView loadingText;
+
+	protected int menuId = R.menu.menu;
 
 	private Runnable getInitialCalendarTask;
 
@@ -70,8 +70,7 @@ public class MenuActivity extends CommonActivity {
 		accountListButton = (Button) findViewById(R.id.account_list_button);
 		contactListButton = (Button) findViewById(R.id.contact_list_button);
 		appointmentsButton = (Button) findViewById(R.id.appointments_button);
-		loadingText = (TextView) findViewById(R.id.loading);
-		loadingText.setVisibility(View.INVISIBLE); // TODO try visibility GONE
+		hideLoadingText();
 	}
 
 	private void setListeners() {
@@ -125,17 +124,12 @@ public class MenuActivity extends CommonActivity {
 				GetInitialCalendarTask task = new GetInitialCalendarTask(
 						MenuActivity.this);
 
-				loadingText.setVisibility(View.VISIBLE);
+				showLoadingText();
 
 				submitRejectableTask(task);
 
 			}
 		};
-	}
-
-	@Override
-	protected int getMenuId() {
-		return R.menu.menu;
 	}
 
 	public void onInitialCalendarLoaded(final EagerLoadingCalendar calendar) {
@@ -144,7 +138,7 @@ public class MenuActivity extends CommonActivity {
 				Intent i = new Intent(MenuActivity.this,
 						AppointmentsActivity.class);
 				i.putExtra(AppointmentsActivity.CALENDAR, calendar);
-				loadingText.setVisibility(View.INVISIBLE);
+				hideLoadingText();
 				startActivity(i);
 			}
 		});
@@ -152,7 +146,7 @@ public class MenuActivity extends CommonActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// Do nothing => just overriding to avoid the default behavior
+		// Do nothing => just overriding to avoid the CommonActivity behavior
 	}
 
 }
