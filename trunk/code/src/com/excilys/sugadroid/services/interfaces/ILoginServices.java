@@ -33,7 +33,7 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  * @author Pierre-Yves Ricau
  * 
  */
-public interface ILoginServices {
+public interface ILoginServices extends IWebService {
 
 	public String login(String username, String password, String url)
 			throws ServiceException;

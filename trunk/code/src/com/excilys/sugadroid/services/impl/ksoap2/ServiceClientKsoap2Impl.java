@@ -25,181 +25,90 @@
 
 package com.excilys.sugadroid.services.impl.ksoap2;
 
-import java.util.List;
-import java.util.Vector;
+import java.io.IOException;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.Transport;
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Log;
 
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
-import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
-import com.excilys.sugadroid.services.exceptions.ServiceException;
-import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactory;
-import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.ParsingException;
-import com.excilys.sugadroid.services.util.HTTPSHackUtil;
+import com.excilys.sugadroid.services.interfaces.IWebService;
 
-public abstract class ServiceClientKsoap2Impl {
+public abstract class ServiceClientKsoap2Impl implements IWebService {
 
 	private static String TAG = ServiceClientKsoap2Impl.class.getSimpleName();
-	protected static final String NAMESPACE = "http://www.sugarcrm.com/sugarcrm";
 
-	private final String GET_ENTRY_METHOD_NAME = "get_entry";
-	private final String GET_ENTRY_SOAP_ACTION = "get_entry";
-	private final String GET_ENTRY_LIST_METHOD_NAME = "get_entry_list";
-	private final String GET_ENTRY_LIST_SOAP_ACTION = "get_entry_list";
+	protected String namespace;
 
-	private Transport androidHttpTransport;
-
-	public ServiceClientKsoap2Impl() {
-
-	}
+	private Transport transport;
 
 	public Object sendRequest(final SoapObject request,
-			final String soapAction, final String Url)
+			final String soapAction, String url)
 			throws InvalidResponseException {
+
+		// TODO : remove, when url will not be set there any longer
+		transport.setUrl(url);
+
+		Log.d(TAG, "Calling action [" + soapAction + "] on service ["
+				+ transport.getUrl() + "]");
+
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
+
 		envelope.setOutputSoapObject(request);
-
-		if (androidHttpTransport == null) {
-
-			HttpClientTransportAndroid androidTransport = new HttpClientTransportAndroid(
-					Url);
-
-			HttpClient client = new DefaultHttpClient();
-			new HTTPSHackUtil().httpClientAllowAllSSL(client);
-			androidTransport.setHttpClient(client);
-
-			androidHttpTransport = androidTransport;
-
-		}
-
-		// TODO : set to false when debug is over.
-		// if set to true, the response of the server will be dumped in the log
-		// (if any error)
-		androidHttpTransport.debug = false;
 
 		Object response;
 		try {
-			androidHttpTransport.call(soapAction, envelope);
+			transport.call(soapAction, envelope);
 			response = envelope.getResponse();
-		} catch (Exception e) {
-			if (androidHttpTransport.debug) {
-				Log.e(TAG, "response: \n" + androidHttpTransport.responseDump);
-			}
-			Log.e(TAG, Log.getStackTraceString(e));
+		} catch (IOException e) {
 			throw new InvalidResponseException(e);
+		} catch (XmlPullParserException e) {
+			throw new InvalidResponseException(e);
+		} finally {
+			logRawResponse();
 		}
-
-		// Uncomment to have permanent log of the response (only if
-		// androidHttpTransport.debug = true)
-		// Log.i(TAG, "response: \n" + androidHttpTransport.responseDump);
 
 		return response;
 	}
 
-	public <Bean> Bean getEntry(SoapObject request, Class<Bean> beanClass,
-			final String url) throws ServiceException {
-
-		SoapObject response;
-
-		response = (SoapObject) sendRequest(request, GET_ENTRY_SOAP_ACTION, url);
-
-		try {
-			checkErrorValue((SoapObject) response.getProperty("error"));
-		} catch (ServiceException e) {
-			if (e.getErrorNumber() != null && e.getErrorNumber().equals("10")) {
-				InvalidSessionException exception = new InvalidSessionException(
-						e.getMessage(), e.getDescription());
-				exception.setSessionId((String) request.getProperty("session"));
-				throw exception;
-			} else {
-				throw e;
-			}
+	/**
+	 * Log raw response from server, if transport.debug is true
+	 */
+	protected void logRawResponse() {
+		if (transport.debug) {
+			Log.i(TAG, "Raw response from server: \n" + transport.responseDump);
 		}
-
-		@SuppressWarnings("unchecked")
-		SoapObject entryList = ((Vector<SoapObject>) response
-				.getProperty("entry_list")).get(0);
-
-		Bean bean;
-		try {
-			bean = Ksoap2BeanFactory.getInstance().parseBean(entryList,
-					beanClass);
-		} catch (ParsingException e) {
-			throw new ServiceException(e);
-		}
-
-		return bean;
 	}
 
-	public SoapObject newEntryRequest() {
-		return new SoapObject(NAMESPACE, GET_ENTRY_METHOD_NAME);
+	// GETTERS AND SETTERS
+
+	public String getNamespace() {
+		return namespace;
 	}
 
-	public <Bean> List<Bean> getEntryList(SoapObject request,
-			Class<Bean> beanClass, final String url) throws ServiceException {
-
-		SoapObject response;
-
-		response = (SoapObject) sendRequest(request,
-				GET_ENTRY_LIST_SOAP_ACTION, url);
-
-		try {
-			checkErrorValue((SoapObject) response.getProperty("error"));
-		} catch (ServiceException e) {
-			if (e.getErrorNumber() != null && e.getErrorNumber().equals("10")) {
-				InvalidSessionException exception = new InvalidSessionException(
-						e.getMessage(), e.getDescription());
-				exception.setSessionId((String) request.getProperty("session"));
-				throw exception;
-			} else {
-				throw e;
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		Vector<SoapObject> entryList = (Vector<SoapObject>) response
-				.getProperty("entry_list");
-
-		List<Bean> beans;
-		try {
-			beans = Ksoap2BeanFactory.getInstance().parseBeanList(entryList,
-					beanClass);
-		} catch (ParsingException e) {
-			throw new ServiceException(e);
-		}
-
-		Log.d(TAG, beans.size() + " elements found");
-
-		return beans;
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 
-	public void checkErrorValue(SoapObject error) throws ServiceException {
-		String errorNumber = (String) error.getProperty("number");
-
-		if (!errorNumber.equals("0")) {
-
-			String errorName = (String) error.getProperty("name") + " ("
-					+ errorNumber + ")";
-			String description = (String) error.getProperty("description");
-
-			Log.i(TAG, errorName);
-			Log.i(TAG, description);
-
-			throw new ServiceException(errorName, description, errorNumber);
-		}
-
+	public String getEntryPoint() {
+		return transport.getUrl();
 	}
 
-	public SoapObject newEntryListRequest() {
-		return new SoapObject(NAMESPACE, GET_ENTRY_LIST_METHOD_NAME);
+	public void setEntryPoint(String entryPoint) {
+		transport.setUrl(entryPoint);
+	}
+
+	public Transport getTransport() {
+		return transport;
+	}
+
+	public void setTransport(Transport transport) {
+		this.transport = transport;
 	}
 
 }

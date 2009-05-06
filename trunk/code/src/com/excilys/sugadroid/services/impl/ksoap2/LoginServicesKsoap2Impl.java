@@ -33,8 +33,8 @@ import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.ILoginServices;
 
-public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
-		ILoginServices {
+public class LoginServicesKsoap2Impl extends SugarServiceClientKsoap2Impl
+		implements ILoginServices {
 
 	private static String TAG = LoginServicesKsoap2Impl.class.getSimpleName();
 
@@ -50,10 +50,10 @@ public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		final String SOAP_ACTION = "login";
 		final String METHOD_NAME = "login";
 
-		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+		SoapObject request = new SoapObject(namespace, METHOD_NAME);
 
 		// Creating input parameters
-		SoapObject userAuth = new SoapObject(NAMESPACE, "user_auth");
+		SoapObject userAuth = new SoapObject(namespace, "user_auth");
 		userAuth.addProperty("user_name", username);
 		userAuth.addProperty("password", password);
 		userAuth.addProperty("version", "1.0");
@@ -89,7 +89,7 @@ public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		final String SOAP_ACTION = "get_user_id";
 		final String METHOD_NAME = "get_user_id";
 
-		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+		SoapObject request = new SoapObject(namespace, METHOD_NAME);
 
 		request.addProperty("session", sessionId);
 
@@ -107,7 +107,7 @@ public class LoginServicesKsoap2Impl extends ServiceClientKsoap2Impl implements
 		final String SOAP_ACTION = "get_server_version";
 		final String METHOD_NAME = "get_server_version";
 
-		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+		SoapObject request = new SoapObject(namespace, METHOD_NAME);
 
 		String serverVersion;
 

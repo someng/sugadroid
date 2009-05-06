@@ -35,8 +35,8 @@ import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
-public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
-		implements IContactServices {
+public class ContactServicesKsoap2Impl extends
+		AuthenticatedSugarServiceClientKsoap2Impl implements IContactServices {
 
 	@SuppressWarnings("unused")
 	private static String TAG = ContactServicesKsoap2Impl.class.getSimpleName();
@@ -71,8 +71,9 @@ public class ContactServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<ContactBean> searchContacts(ISessionBean session, String search,
-			Integer offset, Integer maxResults) throws ServiceException {
+	public List<ContactBean> searchContacts(ISessionBean session,
+			String search, Integer offset, Integer maxResults)
+			throws ServiceException {
 
 		String query = "contacts.first_name LIKE '%" + search
 				+ "%' OR contacts.last_name LIKE '%" + search + "%'";
