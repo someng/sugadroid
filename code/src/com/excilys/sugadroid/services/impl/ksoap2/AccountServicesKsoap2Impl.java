@@ -37,8 +37,8 @@ import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
-public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl
-		implements IAccountServices {
+public class AccountServicesKsoap2Impl extends
+		AuthenticatedSugarServiceClientKsoap2Impl implements IAccountServices {
 
 	private static String TAG = AccountServicesKsoap2Impl.class.getSimpleName();
 
@@ -74,8 +74,9 @@ public class AccountServicesKsoap2Impl extends ServiceClientKsoap2Impl
 	}
 
 	@Override
-	public List<AccountBean> searchAccounts(ISessionBean session, String search,
-			Integer offset, Integer maxResults) throws ServiceException {
+	public List<AccountBean> searchAccounts(ISessionBean session,
+			String search, Integer offset, Integer maxResults)
+			throws ServiceException {
 		Log.d(TAG, "searchAccounts called, search: " + search);
 
 		SoapObject request = newEntryListRequest();

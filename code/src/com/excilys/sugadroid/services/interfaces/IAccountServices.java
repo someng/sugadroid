@@ -38,7 +38,7 @@ import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
  * @author Pierre-Yves Ricau
  * 
  */
-public interface IAccountServices {
+public interface IAccountServices extends IWebService {
 
 	/**
 	 * This method return a list of accounts that match the search string
@@ -54,8 +54,9 @@ public interface IAccountServices {
 	 * @return a list of account beans, the response from the service
 	 * @throws ServiceException
 	 */
-	public List<AccountBean> searchAccounts(ISessionBean session, String search,
-			Integer offset, Integer maxResults) throws ServiceException;
+	public List<AccountBean> searchAccounts(ISessionBean session,
+			String search, Integer offset, Integer maxResults)
+			throws ServiceException;
 
 	/**
 	 * This method return the account bean that matches the id

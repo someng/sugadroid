@@ -23,34 +23,35 @@
  * ============================================================================
  */
 
-package com.excilys.sugadroid.services.interfaces;
+package com.excilys.sugadroid.services.impl.ksoap2;
 
-import java.util.List;
+import org.ksoap2.serialization.SoapObject;
 
-import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.ISessionBean;
+import android.util.Log;
+
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 
-/**
- * This class represents the services to access the contacts
- * 
- * @author Pierre-Yves Ricau
- * 
- */
-public interface IContactServices extends IWebService {
+public abstract class SugarServiceClientKsoap2Impl extends
+		ServiceClientKsoap2Impl {
 
-	public List<ContactBean> searchContacts(ISessionBean session,
-			String search, Integer offset, Integer maxResults)
-			throws ServiceException;
+	private static String TAG = SugarServiceClientKsoap2Impl.class
+			.getSimpleName();
 
-	public List<ContactBean> getAccountContacts(ISessionBean session,
-			String accountId, Integer offset, Integer maxResults)
-			throws ServiceException;
+	public void checkErrorValue(SoapObject error) throws ServiceException {
+		String errorNumber = (String) error.getProperty("number");
 
-	public List<ContactBean> getAppointmentContacts(ISessionBean session,
-			String appointmentId, Integer offset, Integer maxResults)
-			throws ServiceException;
+		if (!errorNumber.equals("0")) {
 
-	public ContactBean getContactDetails(ISessionBean session, String contactId)
-			throws ServiceException;
+			String errorName = (String) error.getProperty("name") + " ("
+					+ errorNumber + ")";
+			String description = (String) error.getProperty("description");
+
+			Log.i(TAG, errorName);
+			Log.i(TAG, description);
+
+			throw new ServiceException(errorName, description, errorNumber);
+		}
+
+	}
+
 }

@@ -40,7 +40,7 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  * @author Pierre-Yves Ricau
  * 
  */
-public interface IAppointmentServices {
+public interface IAppointmentServices extends IWebService {
 
 	public List<IAppointmentBean> getDayAppointments(ISessionBean session,
 			LocalDate day) throws ServiceException;

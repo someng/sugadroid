@@ -86,21 +86,29 @@ public class BeanHolder {
 		transport = transportAndroid;
 		// TODO set to false when debug is over.
 		// if set to true, the response of the server will be dumped in the log
-		transport.debug = false;
+		transport.debug = true;
 
-		// Creating facade bean
-		/*
-		 * FacadeKsoap2Impl facadeKsoap2 = new FacadeKsoap2Impl();
-		 * facadeKsoap2.setSessionBean(sessionBean);
-		 * facadeKsoap2.setTransport(transport);
-		 * facadeKsoap2.setNamespace("http://service.bridge.maestro.excilys.com/"
-		 * ); facade = facadeKsoap2;
-		 */
+		String namespace = "http://www.sugarcrm.com/sugarcrm";
 
-		loginServices = new LoginServicesKsoap2Impl();
-		contactServices = new ContactServicesKsoap2Impl();
-		accountServices = new AccountServicesKsoap2Impl();
-		appointmentServices = new AppointmentServicesKsoap2Impl();
+		LoginServicesKsoap2Impl loginServicesKsoap2Impl = new LoginServicesKsoap2Impl();
+		loginServicesKsoap2Impl.setTransport(transport);
+		loginServices = loginServicesKsoap2Impl;
+		loginServices.setNamespace(namespace);
+
+		ContactServicesKsoap2Impl contactServicesKsoap2Impl = new ContactServicesKsoap2Impl();
+		contactServicesKsoap2Impl.setTransport(transport);
+		contactServices = contactServicesKsoap2Impl;
+		contactServices.setNamespace(namespace);
+
+		AccountServicesKsoap2Impl accountServicesKsoap2Impl = new AccountServicesKsoap2Impl();
+		accountServicesKsoap2Impl.setTransport(transport);
+		accountServices = accountServicesKsoap2Impl;
+		accountServices.setNamespace(namespace);
+
+		AppointmentServicesKsoap2Impl appointmentServicesKsoap2Impl = new AppointmentServicesKsoap2Impl();
+		appointmentServicesKsoap2Impl.setTransport(transport);
+		appointmentServices = appointmentServicesKsoap2Impl;
+		appointmentServices.setNamespace(namespace);
 
 	}
 

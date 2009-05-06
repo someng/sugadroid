@@ -43,8 +43,9 @@ import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 
-public class AppointmentServicesKsoap2Impl extends ServiceClientKsoap2Impl
-		implements IAppointmentServices {
+public class AppointmentServicesKsoap2Impl extends
+		AuthenticatedSugarServiceClientKsoap2Impl implements
+		IAppointmentServices {
 
 	private static String TAG = AppointmentServicesKsoap2Impl.class
 			.getSimpleName();
