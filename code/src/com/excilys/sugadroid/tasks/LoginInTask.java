@@ -31,7 +31,6 @@ import java.security.NoSuchAlgorithmException;
 import com.excilys.sugadroid.activities.ConnectionSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.LoginFailedException;
@@ -86,8 +85,8 @@ public class LoginInTask implements Runnable {
 			return;
 		}
 
-		SessionBeanImpl.getInstance().setLoggedIn(sessionId, userId, username,
-				password.hashCode(), url, version);
+		BeanHolder.getInstance().getSessionBean().setLoggedIn(sessionId,
+				userId, username, password.hashCode(), url, version);
 
 		activity.postSetMessageLoggedIn();
 
@@ -96,7 +95,7 @@ public class LoginInTask implements Runnable {
 	}
 
 	private void rollbackFromLogin() {
-		SessionBeanImpl.getInstance().logout();
+		BeanHolder.getInstance().getSessionBean().logout();
 		activity.postSetMessageNotLoggedIn();
 	}
 

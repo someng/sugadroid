@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
@@ -54,7 +53,8 @@ public class GetAppointmentDetailsTask implements Runnable {
 
 		try {
 			appointment = BeanHolder.getInstance().getAppointmentServices()
-					.getAppointmentDetails(SessionBeanImpl.getInstance(),
+					.getAppointmentDetails(
+							BeanHolder.getInstance().getSessionBean(),
 							appointmentId);
 		} catch (InvalidResponseException e) {
 			activity
