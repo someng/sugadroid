@@ -130,7 +130,7 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 	}
 
 	@Override
-	public void forwardItemDetailsActivity(final Bean item) {
+	public void onItemDetailsLoaded(final Bean item) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");

@@ -28,31 +28,32 @@ package com.excilys.sugadroid.tasks;
 import java.util.List;
 
 import com.excilys.sugadroid.activities.AppointmentDetailsActivity;
-import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 
 public class GetAppointmentContactsTask extends
 		AuthenticatedTask<AppointmentDetailsActivity> {
 
-	private final String appointmentId;
-	private final int offset;
+	private String appointmentId;
+	private int offset;
+	private IContactServices contactServices;
+	private int maxResults;
 
 	public GetAppointmentContactsTask(AppointmentDetailsActivity activity,
-			String appointmentId, int offset) {
+			IContactServices contactServices, String appointmentId, int offset,
+			int maxResults) {
 		super(activity);
 		this.appointmentId = appointmentId;
 		this.offset = offset;
+		this.contactServices = contactServices;
+		this.maxResults = maxResults;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		List<ContactBean> contacts;
-
-		contacts = BeanHolder.getInstance().getContactServices()
-				.getAppointmentContacts(appointmentId, offset,
-						GeneralSettings.getAccountMaxResults(activity));
+		List<ContactBean> contacts = contactServices.getAppointmentContacts(
+				appointmentId, offset, maxResults);
 
 		activity.updateContactList(contacts);
 	}

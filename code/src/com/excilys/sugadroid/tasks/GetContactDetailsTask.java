@@ -27,26 +27,27 @@ package com.excilys.sugadroid.tasks;
 
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 
 public class GetContactDetailsTask extends
 		AuthenticatedTask<CallingGetItemDetailsActivity<ContactBean>> {
 
-	private final String contactId;
+	private String contactId;
+	private IContactServices contactServices;
 
 	public GetContactDetailsTask(
 			CallingGetItemDetailsActivity<ContactBean> activity,
-			String contactId) {
+			IContactServices contactServices, String contactId) {
 		super(activity);
 		this.contactId = contactId;
+		this.contactServices = contactServices;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		ContactBean contact = BeanHolder.getInstance().getContactServices()
-				.getContactDetails(contactId);
+		ContactBean contact = contactServices.getContactDetails(contactId);
 
-		activity.forwardItemDetailsActivity(contact);
+		activity.onItemDetailsLoaded(contact);
 	}
 }

@@ -28,31 +28,32 @@ package com.excilys.sugadroid.tasks;
 import java.util.List;
 
 import com.excilys.sugadroid.activities.AccountDetailsActivity;
-import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IContactServices;
 
 public class GetAccountContactsTask extends
 		AuthenticatedTask<AccountDetailsActivity> {
 
-	private final String accountId;
-	private final int offset;
+	private String accountId;
+	private int offset;
+	private IContactServices contactServices;
+	private int maxResults;
 
 	public GetAccountContactsTask(AccountDetailsActivity activity,
-			String accountId, int offset) {
+			IContactServices contactServices, String accountId, int offset,
+			int maxResults) {
 		super(activity);
+		this.contactServices = contactServices;
 		this.accountId = accountId;
 		this.offset = offset;
+		this.maxResults = maxResults;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		List<ContactBean> contacts;
-
-		contacts = BeanHolder.getInstance().getContactServices()
-				.getAccountContacts(accountId, offset,
-						GeneralSettings.getAccountMaxResults(activity));
+		List<ContactBean> contacts = contactServices.getAccountContacts(
+				accountId, offset, maxResults);
 
 		activity.updateContactList(contacts);
 	}

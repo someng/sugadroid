@@ -51,6 +51,8 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetAppointmentDetailsTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 import com.excilys.sugadroid.util.exceptions.DayNotLoadedException;
@@ -248,10 +250,15 @@ public class AppointmentsActivity extends CommonActivity implements
 	}
 
 	private void setTasks() {
+
+		final IAppointmentServices appointmentServices = BeanHolder
+				.getInstance().getAppointmentServices();
+
 		getItemDetailsTask = new Runnable() {
 			public void run() {
 				GetAppointmentDetailsTask task = new GetAppointmentDetailsTask(
-						AppointmentsActivity.this, selectedItem.getId());
+						AppointmentsActivity.this, appointmentServices,
+						selectedItem.getId());
 
 				// Let user know we're doing something
 				showLoadingText();
@@ -313,7 +320,7 @@ public class AppointmentsActivity extends CommonActivity implements
 	}
 
 	@Override
-	public void forwardItemDetailsActivity(final IAppointmentBean appointment) {
+	public void onItemDetailsLoaded(final IAppointmentBean appointment) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");

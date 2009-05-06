@@ -28,6 +28,8 @@ package com.excilys.sugadroid.activities;
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.tasks.GetAccountDetailsTask;
 import com.excilys.sugadroid.tasks.SearchAccountsTask;
 
@@ -44,12 +46,20 @@ public class AccountListActivity
 	@Override
 	public GetAccountDetailsTask getItemDetailsTaskInstance(
 			AccountBean selectedItem) {
-		return new GetAccountDetailsTask(this, selectedItem.getId());
+
+		IAccountServices accountServices = BeanHolder.getInstance()
+				.getAccountServices();
+
+		return new GetAccountDetailsTask(this, accountServices, selectedItem
+				.getId());
 	}
 
 	@Override
 	public SearchAccountsTask getSearchItemTaskInstance(String search) {
-		return new SearchAccountsTask(this, search);
+		IAccountServices accountServices = BeanHolder.getInstance()
+				.getAccountServices();
+		return new SearchAccountsTask(this, accountServices, search,
+				GeneralSettings.getSearchListMaxResults(this));
 	}
 
 	@Override

@@ -37,6 +37,6 @@ import java.io.Serializable;
 public interface CallingGetItemDetailsActivity<T extends Serializable> extends
 		IAuthenticatedActivity {
 
-	public void forwardItemDetailsActivity(T item);
+	public void onItemDetailsLoaded(T item);
 
 }

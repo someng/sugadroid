@@ -41,6 +41,8 @@ import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.tasks.GetAccountDetailsTask;
 
 public class ContactDetailsActivity extends CommonActivity implements
@@ -172,10 +174,15 @@ public class ContactDetailsActivity extends CommonActivity implements
 	}
 
 	private void setTasks() {
+
+		final IAccountServices accountServices = BeanHolder.getInstance()
+				.getAccountServices();
+
 		getItemDetailsTask = new Runnable() {
 			public void run() {
 				GetAccountDetailsTask task = new GetAccountDetailsTask(
-						ContactDetailsActivity.this, contact.getAccountId());
+						ContactDetailsActivity.this, accountServices, contact
+								.getAccountId());
 
 				// Let user know we're doing something
 				showLoadingText();
@@ -200,7 +207,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 	}
 
 	@Override
-	public void forwardItemDetailsActivity(final AccountBean account) {
+	public void onItemDetailsLoaded(final AccountBean account) {
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");

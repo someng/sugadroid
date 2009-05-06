@@ -28,28 +28,28 @@ package com.excilys.sugadroid.tasks;
 import java.util.List;
 
 import com.excilys.sugadroid.activities.AccountListActivity;
-import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
 public class SearchAccountsTask extends AuthenticatedTask<AccountListActivity> {
 
-	private final String search;
+	private String search;
+	private IAccountServices accountServices;
+	private int maxResults;
 
-	public SearchAccountsTask(AccountListActivity activity, String search) {
+	public SearchAccountsTask(AccountListActivity activity,
+			IAccountServices accountServices, String search, int maxResults) {
 		super(activity);
 		this.search = search;
-
+		this.accountServices = accountServices;
+		this.maxResults = maxResults;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		List<AccountBean> accounts;
-
-		accounts = BeanHolder.getInstance().getAccountServices()
-				.searchAccounts(search, activity.getOffset(),
-						GeneralSettings.getSearchListMaxResults(activity));
+		List<AccountBean> accounts = accountServices.searchAccounts(search,
+				activity.getOffset(), maxResults);
 
 		activity.updateItemList(accounts);
 	}

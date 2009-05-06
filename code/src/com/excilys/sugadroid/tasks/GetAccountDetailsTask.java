@@ -30,29 +30,29 @@ import java.util.ArrayList;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
+import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
 public class GetAccountDetailsTask extends
 		AuthenticatedTask<CallingGetItemDetailsActivity<AccountBean>> {
 
-	private final String accountId;
+	private String accountId;
+	private IAccountServices accountServices;
 
 	public GetAccountDetailsTask(
 			CallingGetItemDetailsActivity<AccountBean> activity,
-			String accountId) {
+			IAccountServices accountServices, String accountId) {
 		super(activity);
 		this.accountId = accountId;
+		this.accountServices = accountServices;
 	}
 
 	@Override
 	public void doRun() throws ServiceException {
-		AccountBean account;
-
-		account = BeanHolder.getInstance().getAccountServices()
-				.getAccountDetails(accountId);
+		AccountBean account = accountServices.getAccountDetails(accountId);
 
 		account.setContacts(new ArrayList<ContactBean>());
-		activity.forwardItemDetailsActivity(account);
+
+		activity.onItemDetailsLoaded(account);
 	}
 }

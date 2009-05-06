@@ -34,6 +34,8 @@ import android.widget.Button;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.beans.ISessionBean.SessionState;
+import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 
@@ -119,10 +121,18 @@ public class MenuActivity extends CommonActivity {
 
 	private void setTasks() {
 
+		final IAppointmentServices appointmentServices = BeanHolder
+				.getInstance().getAppointmentServices();
+
 		getInitialCalendarTask = new Runnable() {
 			public void run() {
 				GetInitialCalendarTask task = new GetInitialCalendarTask(
-						MenuActivity.this);
+						MenuActivity.this,
+						appointmentServices,
+						GeneralSettings
+								.getAppointmentsLoadingBefore(MenuActivity.this),
+						GeneralSettings
+								.getAppointmentsLoadingAfter(MenuActivity.this));
 
 				showLoadingText();
 
