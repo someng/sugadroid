@@ -25,19 +25,19 @@
 
 package com.excilys.sugadroid.tasks;
 
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 
 public class GetContactDetailsTask extends
-		AuthenticatedTask<CallingGetItemDetailsActivity<ContactBean>> {
+		AuthenticatedTask<ICallingGetItemDetailsActivity<ContactBean>> {
 
 	private String contactId;
 	private IContactServices contactServices;
 
 	public GetContactDetailsTask(
-			CallingGetItemDetailsActivity<ContactBean> activity,
+			ICallingGetItemDetailsActivity<ContactBean> activity,
 			IContactServices contactServices, String contactId) {
 		super(activity);
 		this.contactId = contactId;

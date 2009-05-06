@@ -49,7 +49,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
@@ -58,7 +58,7 @@ import com.excilys.sugadroid.util.EagerLoadingCalendar;
 import com.excilys.sugadroid.util.exceptions.DayNotLoadedException;
 
 public class AppointmentsActivity extends CommonActivity implements
-		CallingGetItemDetailsActivity<IAppointmentBean> {
+		ICallingGetItemDetailsActivity<IAppointmentBean> {
 
 	private static final String TAG = AppointmentsActivity.class
 			.getSimpleName();

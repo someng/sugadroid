@@ -44,10 +44,10 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
+import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 
 public abstract class CommonSearchListActivity<Bean extends Serializable, GetItemDetailsTask extends Runnable, SearchItemsTask extends Runnable>
-		extends CommonActivity implements CallingGetItemDetailsActivity<Bean> {
+		extends CommonActivity implements ICallingGetItemDetailsActivity<Bean> {
 
 	private final static String TAG = CommonSearchListActivity.class
 			.getSimpleName();
