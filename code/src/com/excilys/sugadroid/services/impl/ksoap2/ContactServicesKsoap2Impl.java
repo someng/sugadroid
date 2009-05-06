@@ -40,12 +40,11 @@ public class ContactServicesKsoap2Impl extends
 	@SuppressWarnings("unused")
 	private static String TAG = ContactServicesKsoap2Impl.class.getSimpleName();
 
-	public ContactServicesKsoap2Impl() {
-	};
-
 	@Override
 	public ContactBean getContactDetails(String contactId)
 			throws ServiceException {
+
+		checkLoggedIn();
 
 		SoapObject request = newEntryRequest();
 
@@ -72,6 +71,8 @@ public class ContactServicesKsoap2Impl extends
 	public List<ContactBean> searchContacts(String search, Integer offset,
 			Integer maxResults) throws ServiceException {
 
+		checkLoggedIn();
+
 		String query = "contacts.first_name LIKE '%" + search
 				+ "%' OR contacts.last_name LIKE '%" + search + "%'";
 
@@ -83,6 +84,8 @@ public class ContactServicesKsoap2Impl extends
 	public List<ContactBean> getAccountContacts(String accountId,
 			Integer offset, Integer maxResults) throws ServiceException {
 
+		checkLoggedIn();
+
 		String query = "contacts.id = accounts_contacts.contact_id AND accounts_contacts.account_id = '"
 				+ accountId + "'";
 
@@ -92,6 +95,8 @@ public class ContactServicesKsoap2Impl extends
 	@Override
 	public List<ContactBean> getAppointmentContacts(String appointmentId,
 			Integer offset, Integer maxResults) throws ServiceException {
+
+		checkLoggedIn();
 
 		String query = "contacts.id in (select contact_id from meetings_contacts where meeting_id = '"
 				+ appointmentId + "')";

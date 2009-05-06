@@ -41,14 +41,13 @@ public class AccountServicesKsoap2Impl extends
 
 	private static String TAG = AccountServicesKsoap2Impl.class.getSimpleName();
 
-	public AccountServicesKsoap2Impl() {
-	};
-
 	@Override
 	public AccountBean getAccountDetails(String accountId)
 			throws ServiceException {
 
 		Log.d(TAG, "getAccountDetails called, accountId: " + accountId);
+
+		checkLoggedIn();
 
 		SoapObject request = newEntryRequest();
 
@@ -75,6 +74,8 @@ public class AccountServicesKsoap2Impl extends
 	public List<AccountBean> searchAccounts(String search, Integer offset,
 			Integer maxResults) throws ServiceException {
 		Log.d(TAG, "searchAccounts called, search: " + search);
+
+		checkLoggedIn();
 
 		SoapObject request = newEntryListRequest();
 

@@ -49,15 +49,14 @@ public class AppointmentServicesKsoap2Impl extends
 	private static String TAG = AppointmentServicesKsoap2Impl.class
 			.getSimpleName();
 
-	public AppointmentServicesKsoap2Impl() {
-	};
-
 	@Override
 	public IAppointmentBean getAppointmentDetails(String appointmentId)
 			throws ServiceException {
 
 		Log.d(TAG, "getAppointmentDetails called, appointmentId: "
 				+ appointmentId);
+
+		checkLoggedIn();
 
 		boolean version4_5 = sessionBean.isVersion4_5();
 
@@ -98,6 +97,8 @@ public class AppointmentServicesKsoap2Impl extends
 			throws ServiceException {
 
 		Log.d(TAG, "getDayAppointments called, date: " + day.toString());
+
+		checkLoggedIn();
 
 		boolean version4_5 = sessionBean.isVersion4_5();
 
@@ -154,6 +155,8 @@ public class AppointmentServicesKsoap2Impl extends
 			LocalDate start, LocalDate end) throws ServiceException {
 		Log.d(TAG, "getAppointmentsInInterval called, days " + start.toString()
 				+ " " + end.toString());
+
+		checkLoggedIn();
 
 		if (start.compareTo(end) > 0) {
 			throw new ServiceException(

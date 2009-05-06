@@ -71,7 +71,6 @@ public class MenuActivity extends CommonActivity {
 		contactListButton = (Button) findViewById(R.id.contact_list_button);
 		appointmentsButton = (Button) findViewById(R.id.appointments_button);
 		loadingText = (TextView) findViewById(R.id.loading);
-
 		loadingText.setVisibility(View.INVISIBLE); // TODO try visibility GONE
 	}
 
