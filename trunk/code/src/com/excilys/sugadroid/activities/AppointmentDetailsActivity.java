@@ -39,7 +39,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
@@ -162,7 +162,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 				} catch (RejectedExecutionException e) {
 					loadingText.setVisibility(View.INVISIBLE);
 					if (!AppointmentDetailsActivity.this.isFinishing()) {
-						showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					}
 				}
 			}
@@ -180,7 +180,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
 					if (!AppointmentDetailsActivity.this.isFinishing()) {
-						showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					}
 				}
 			}

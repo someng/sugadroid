@@ -45,7 +45,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 
 public abstract class CommonSearchListActivity<Bean extends Serializable, GetItemDetailsTask extends Runnable, SearchItemsTask extends Runnable>
@@ -206,7 +206,7 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 						threadManager.submitTask(task);
 					} catch (RejectedExecutionException e) {
 						if (!CommonSearchListActivity.this.isFinishing()) {
-							showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+							showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 						}
 					}
 				}
@@ -222,7 +222,7 @@ public abstract class CommonSearchListActivity<Bean extends Serializable, GetIte
 				try {
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
-					showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 				}
 			}
 

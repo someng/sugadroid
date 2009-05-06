@@ -29,7 +29,7 @@ import java.util.List;
 
 import com.excilys.sugadroid.activities.ContactListActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
@@ -52,8 +52,7 @@ public class SearchContactsTask implements Runnable {
 					.searchContacts(search, activity.getOffset(),
 							GeneralSettings.getSearchListMaxResults(activity));
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			activity.postShowCustomDialog(e.getMessage(), e.getDescription());

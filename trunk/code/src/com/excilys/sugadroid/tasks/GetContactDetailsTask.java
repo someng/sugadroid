@@ -25,7 +25,7 @@
 
 package com.excilys.sugadroid.tasks;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
@@ -52,8 +52,7 @@ public class GetContactDetailsTask implements Runnable {
 			contact = BeanHolder.getInstance().getContactServices()
 					.getContactDetails(contactId);
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			activity.postShowCustomDialog(e.getMessage(), e.getDescription());

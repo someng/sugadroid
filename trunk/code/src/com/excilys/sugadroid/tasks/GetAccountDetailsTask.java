@@ -27,7 +27,7 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
@@ -55,8 +55,7 @@ public class GetAccountDetailsTask implements Runnable {
 			account = BeanHolder.getInstance().getAccountServices()
 					.getAccountDetails(accountId);
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			activity.postShowCustomDialog(e.getMessage(), e.getDescription());

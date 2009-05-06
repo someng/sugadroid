@@ -29,7 +29,7 @@ import java.util.List;
 
 import com.excilys.sugadroid.activities.AppointmentDetailsActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
@@ -56,8 +56,7 @@ public class GetAppointmentContactsTask implements Runnable {
 					.getAppointmentContacts(appointmentId, offset,
 							GeneralSettings.getAccountMaxResults(activity));
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 

@@ -49,7 +49,7 @@ import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.tasks.GetAppointmentDetailsTask;
@@ -263,7 +263,7 @@ public class AppointmentsActivity extends CommonActivity implements
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
 					if (!AppointmentsActivity.this.isFinishing()) {
-						showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					}
 				}
 			}
@@ -273,7 +273,7 @@ public class AppointmentsActivity extends CommonActivity implements
 	private void moveFlipperToPrevious() {
 
 		if (!calendar.isDayLoaded(currentDay.minusDays(1))) {
-			showDialog(DialogManager.DIALOG_ERROR_DAY_NOT_LOADED);
+			showDialog(DialogValues.ERROR_DAY_NOT_LOADED);
 			return;
 		}
 
@@ -300,7 +300,7 @@ public class AppointmentsActivity extends CommonActivity implements
 	private void moveFlipperToNext() {
 
 		if (!calendar.isDayLoaded(currentDay.plusDays(1))) {
-			showDialog(DialogManager.DIALOG_ERROR_DAY_NOT_LOADED);
+			showDialog(DialogValues.ERROR_DAY_NOT_LOADED);
 			return;
 		}
 
@@ -328,8 +328,7 @@ public class AppointmentsActivity extends CommonActivity implements
 				Log.d(TAG, "forwarding to item details activity");
 				Intent intent = new Intent(AppointmentsActivity.this,
 						AppointmentDetailsActivity.class);
-				intent.putExtra(CommonActivity.ITEM_IDENTIFIER,
-						appointment);
+				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, appointment);
 				loadingText.setVisibility(View.INVISIBLE);
 				startActivity(intent);
 			}

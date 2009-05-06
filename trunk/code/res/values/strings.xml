@@ -32,8 +32,11 @@
 	
 	<string name="contact_added_title">Contact added</string>
 	<string name="contact_added_message">This contact has been successfully added</string>
-	
-	<string name="error_ok_button">OK</string>
+	    
+        <string name="dialog_OK_button">Ok</string>
+    <string name="dialog_unknow_error_title">Unknown error</string>
+    <string name="dialog_unknow_error_message">"An unknown error occurred, good luck !"
+    </string>
 
 	<!-- Menu buttons -->
 	<string name="settings_label">General settings</string>

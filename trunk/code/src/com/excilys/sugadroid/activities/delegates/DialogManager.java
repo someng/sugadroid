@@ -46,32 +46,37 @@ public class DialogManager {
 
 	private Activity activity;
 
-	public static final int DIALOG_ERROR_DAY_NOT_LOADED = 1;
-	public static final int DIALOG_ERROR_CANNOT_LAUNCH_TASK = 2;
-	public static final int DIALOG_ERROR_CUSTOM = 3;
-	public static final int DIALOG_ERROR_LOGIN_FAILED = 4;
-	public static final int DIALOG_ERROR_NOT_LOGGED_IN = 5;
-	public static final int DIALOG_ERROR_INVALID_RESPONSE = 6;
-	public static final int DIALOG_CONTACT_ADDED = 7;
+	public enum DialogValues {
+		ERROR_DAY_NOT_LOADED, ERROR_CANNOT_LAUNCH_TASK, CUSTOM, ERROR_LOGIN_FAILED, ERROR_NOT_LOGGED_IN, ERROR_INVALID_RESPONSE, CONTACT_ADDED;
+
+		public static DialogValues valueOf(int i) {
+			return DialogValues.values()[i];
+		}
+
+	};
 
 	public DialogManager(Activity activity) {
 		this.activity = activity;
 	}
 
-	public Dialog onCreateDialog(int id) {
+	public Dialog onCreateDialog(int dialogId) {
+		return onCreateDialog(DialogValues.valueOf(dialogId));
+	}
+
+	public Dialog onCreateDialog(DialogValues dialogId) {
 
 		int title;
 		int message;
 
-		switch (id) {
+		switch (dialogId) {
 
 		// More dialogs here :
 		// http://developer.android.com/guide/samples/ApiDemos/src/com/example/android/apis/app/AlertDialogSamples.html
-		case DIALOG_ERROR_CANNOT_LAUNCH_TASK:
+		case ERROR_CANNOT_LAUNCH_TASK:
 			title = R.string.error_launch_task_title;
 			message = R.string.error_launch_task_message;
 			break;
-		case DIALOG_ERROR_CUSTOM:
+		case CUSTOM:
 			return new AlertDialog.Builder(activity).setTitle(
 					customOkDialogTitle).setMessage(customOkDialogMessage)
 					.setNeutralButton(R.string.error_ok_button,
@@ -81,44 +86,41 @@ public class DialogManager {
 
 								}
 							}).create();
-		case DIALOG_ERROR_LOGIN_FAILED:
+		case ERROR_LOGIN_FAILED:
 			title = R.string.error_login_failed_title;
 			message = R.string.error_login_failed_message;
 			break;
-		case DIALOG_ERROR_NOT_LOGGED_IN:
+		case ERROR_NOT_LOGGED_IN:
 			title = R.string.not_logged_in_title;
 			message = R.string.not_logged_in_message;
 			break;
-		case DIALOG_ERROR_DAY_NOT_LOADED:
+		case ERROR_DAY_NOT_LOADED:
 			title = R.string.day_not_loaded_title;
 			message = R.string.day_not_loaded_message;
 			break;
-		case DIALOG_ERROR_INVALID_RESPONSE:
+		case ERROR_INVALID_RESPONSE:
 			title = R.string.invalid_response_title;
 			message = R.string.invalid_response_message;
 			break;
-		case DIALOG_CONTACT_ADDED:
+		case CONTACT_ADDED:
 			title = R.string.contact_added_title;
 			message = R.string.contact_added_message;
 			break;
 		default:
-			return null;
+			title = R.string.dialog_unknow_error_title;
+			message = R.string.dialog_unknow_error_message;
 		}
 
 		return new AlertDialog.Builder(activity).setTitle(title).setMessage(
-				message).setNeutralButton(R.string.error_ok_button,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-					}
-				}).create();
+				message).setNeutralButton(R.string.dialog_OK_button, null)
+				.create();
 
 	}
 
 	public void showCustomDialog(String title, String message) {
 		customOkDialogTitle = title;
 		customOkDialogMessage = message;
-		activity.showDialog(DIALOG_ERROR_CUSTOM);
+		activity.showDialog(DialogValues.CUSTOM.ordinal());
 	}
 
 }
