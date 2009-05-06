@@ -33,7 +33,6 @@ import org.ksoap2.serialization.SoapObject;
 import android.util.Log;
 
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 
@@ -46,14 +45,13 @@ public class AccountServicesKsoap2Impl extends
 	};
 
 	@Override
-	public AccountBean getAccountDetails(ISessionBean session, String accountId)
+	public AccountBean getAccountDetails(String accountId)
 			throws ServiceException {
 
 		Log.d(TAG, "getAccountDetails called, accountId: " + accountId);
 
 		SoapObject request = newEntryRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Accounts");
 		request.addProperty("id", accountId);
 
@@ -70,18 +68,16 @@ public class AccountServicesKsoap2Impl extends
 
 		request.addProperty("select_fields", t);
 
-		return getEntry(request, AccountBean.class, session.getUrl());
+		return getEntry(request, AccountBean.class);
 	}
 
 	@Override
-	public List<AccountBean> searchAccounts(ISessionBean session,
-			String search, Integer offset, Integer maxResults)
-			throws ServiceException {
+	public List<AccountBean> searchAccounts(String search, Integer offset,
+			Integer maxResults) throws ServiceException {
 		Log.d(TAG, "searchAccounts called, search: " + search);
 
 		SoapObject request = newEntryListRequest();
 
-		request.addProperty("session", session.getSessionId());
 		request.addProperty("module_name", "Accounts");
 		request.addProperty("query", "accounts.name LIKE '%" + search + "%'");
 		request.addProperty("order_by", "accounts.name asc");
@@ -97,6 +93,6 @@ public class AccountServicesKsoap2Impl extends
 		request.addProperty("max_results", maxResults.toString());
 		request.addProperty("deleted", "0");
 
-		return getEntryList(request, AccountBean.class, session.getUrl());
+		return getEntryList(request, AccountBean.class);
 	}
 }

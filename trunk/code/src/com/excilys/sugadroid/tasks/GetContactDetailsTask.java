@@ -50,9 +50,7 @@ public class GetContactDetailsTask implements Runnable {
 
 		try {
 			contact = BeanHolder.getInstance().getContactServices()
-					.getContactDetails(
-							BeanHolder.getInstance().getSessionBean(),
-							contactId);
+					.getContactDetails(contactId);
 		} catch (InvalidResponseException e) {
 			activity
 					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);

@@ -46,12 +46,8 @@ public abstract class ServiceClientKsoap2Impl implements IWebService {
 
 	private Transport transport;
 
-	public Object sendRequest(final SoapObject request,
-			final String soapAction, String url)
+	public Object sendRequest(final SoapObject request, final String soapAction)
 			throws InvalidResponseException {
-
-		// TODO : remove, when url will not be set there any longer
-		transport.setUrl(url);
 
 		Log.d(TAG, "Calling action [" + soapAction + "] on service ["
 				+ transport.getUrl() + "]");

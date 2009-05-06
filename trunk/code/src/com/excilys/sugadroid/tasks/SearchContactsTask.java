@@ -49,8 +49,7 @@ public class SearchContactsTask implements Runnable {
 		List<ContactBean> contacts;
 		try {
 			contacts = BeanHolder.getInstance().getContactServices()
-					.searchContacts(BeanHolder.getInstance().getSessionBean(),
-							search, activity.getOffset(),
+					.searchContacts(search, activity.getOffset(),
 							GeneralSettings.getSearchListMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity

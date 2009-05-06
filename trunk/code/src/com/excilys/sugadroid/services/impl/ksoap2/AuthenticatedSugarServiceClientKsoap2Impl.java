@@ -32,6 +32,7 @@ import org.ksoap2.serialization.SoapObject;
 
 import android.util.Log;
 
+import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactory;
@@ -48,12 +49,14 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 	private final String GET_ENTRY_LIST_METHOD_NAME = "get_entry_list";
 	private final String GET_ENTRY_LIST_SOAP_ACTION = "get_entry_list";
 
-	public <Bean> Bean getEntry(SoapObject request, Class<Bean> beanClass,
-			final String url) throws ServiceException {
+	protected ISessionBean sessionBean;
+
+	public <Bean> Bean getEntry(SoapObject request, Class<Bean> beanClass)
+			throws ServiceException {
 
 		SoapObject response;
 
-		response = (SoapObject) sendRequest(request, GET_ENTRY_SOAP_ACTION, url);
+		response = (SoapObject) sendRequest(request, GET_ENTRY_SOAP_ACTION);
 
 		try {
 			checkErrorValue((SoapObject) response.getProperty("error"));
@@ -84,16 +87,15 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 	}
 
 	public SoapObject newEntryRequest() {
-		return new SoapObject(namespace, GET_ENTRY_METHOD_NAME);
+		return newAuthenticatedRequest(GET_ENTRY_METHOD_NAME);
 	}
 
 	public <Bean> List<Bean> getEntryList(SoapObject request,
-			Class<Bean> beanClass, final String url) throws ServiceException {
+			Class<Bean> beanClass) throws ServiceException {
 
 		SoapObject response;
 
-		response = (SoapObject) sendRequest(request,
-				GET_ENTRY_LIST_SOAP_ACTION, url);
+		response = (SoapObject) sendRequest(request, GET_ENTRY_LIST_SOAP_ACTION);
 
 		try {
 			checkErrorValue((SoapObject) response.getProperty("error"));
@@ -126,6 +128,21 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 	}
 
 	public SoapObject newEntryListRequest() {
-		return new SoapObject(namespace, GET_ENTRY_LIST_METHOD_NAME);
+		return newAuthenticatedRequest(GET_ENTRY_LIST_METHOD_NAME);
 	}
+
+	public SoapObject newAuthenticatedRequest(String methodName) {
+		SoapObject request = new SoapObject(namespace, methodName);
+		request.addProperty("session", sessionBean.getSessionId());
+		return request;
+	}
+
+	public ISessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(ISessionBean sessionBean) {
+		this.sessionBean = sessionBean;
+	}
+
 }

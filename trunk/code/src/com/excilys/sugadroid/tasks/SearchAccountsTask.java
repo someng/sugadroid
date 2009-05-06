@@ -49,8 +49,7 @@ public class SearchAccountsTask implements Runnable {
 		List<AccountBean> accounts;
 		try {
 			accounts = BeanHolder.getInstance().getAccountServices()
-					.searchAccounts(BeanHolder.getInstance().getSessionBean(),
-							search, activity.getOffset(),
+					.searchAccounts(search, activity.getOffset(),
 							GeneralSettings.getSearchListMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity

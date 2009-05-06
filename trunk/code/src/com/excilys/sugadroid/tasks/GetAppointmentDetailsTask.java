@@ -53,9 +53,7 @@ public class GetAppointmentDetailsTask implements Runnable {
 
 		try {
 			appointment = BeanHolder.getInstance().getAppointmentServices()
-					.getAppointmentDetails(
-							BeanHolder.getInstance().getSessionBean(),
-							appointmentId);
+					.getAppointmentDetails(appointmentId);
 		} catch (InvalidResponseException e) {
 			activity
 					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);

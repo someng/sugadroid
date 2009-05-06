@@ -66,15 +66,13 @@ public class BeanHolder {
 
 	private BeanHolder() {
 
-		sessionBean = new SessionBeanImpl();
-
 		hackUtil = new HTTPSHackUtil();
 		// Not linked to beans, should be placed somewhere else
 		// May be useful for HttpUrlConnection connections
 		hackUtil.allowAllSSL();
 
 		// Creating sessionBean bean
-		// sessionBean = new SessionBeanImpl();
+		sessionBean = new SessionBeanImpl();
 
 		// Creating transportHttpClient bean (for transport)
 		transportHttpClient = new DefaultHttpClient();
@@ -97,16 +95,19 @@ public class BeanHolder {
 
 		ContactServicesKsoap2Impl contactServicesKsoap2Impl = new ContactServicesKsoap2Impl();
 		contactServicesKsoap2Impl.setTransport(transport);
+		contactServicesKsoap2Impl.setSessionBean(sessionBean);
 		contactServices = contactServicesKsoap2Impl;
 		contactServices.setNamespace(namespace);
 
 		AccountServicesKsoap2Impl accountServicesKsoap2Impl = new AccountServicesKsoap2Impl();
 		accountServicesKsoap2Impl.setTransport(transport);
+		accountServicesKsoap2Impl.setSessionBean(sessionBean);
 		accountServices = accountServicesKsoap2Impl;
 		accountServices.setNamespace(namespace);
 
 		AppointmentServicesKsoap2Impl appointmentServicesKsoap2Impl = new AppointmentServicesKsoap2Impl();
 		appointmentServicesKsoap2Impl.setTransport(transport);
+		appointmentServicesKsoap2Impl.setSessionBean(sessionBean);
 		appointmentServices = appointmentServicesKsoap2Impl;
 		appointmentServices.setNamespace(namespace);
 
@@ -140,6 +141,10 @@ public class BeanHolder {
 
 	public ISessionBean getSessionBean() {
 		return sessionBean;
+	}
+
+	public Transport getTransport() {
+		return transport;
 	}
 
 }

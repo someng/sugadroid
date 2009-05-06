@@ -53,9 +53,7 @@ public class GetAccountContactsTask implements Runnable {
 		List<ContactBean> contacts;
 		try {
 			contacts = BeanHolder.getInstance().getContactServices()
-					.getAccountContacts(
-							BeanHolder.getInstance().getSessionBean(),
-							accountId, offset,
+					.getAccountContacts(accountId, offset,
 							GeneralSettings.getAccountMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity
