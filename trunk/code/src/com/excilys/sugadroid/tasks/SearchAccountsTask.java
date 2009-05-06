@@ -31,7 +31,6 @@ import com.excilys.sugadroid.activities.AccountListActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -50,8 +49,8 @@ public class SearchAccountsTask implements Runnable {
 		List<AccountBean> accounts;
 		try {
 			accounts = BeanHolder.getInstance().getAccountServices()
-					.searchAccounts(SessionBeanImpl.getInstance(), search,
-							activity.getOffset(),
+					.searchAccounts(BeanHolder.getInstance().getSessionBean(),
+							search, activity.getOffset(),
 							GeneralSettings.getSearchListMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity

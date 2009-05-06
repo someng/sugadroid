@@ -31,7 +31,6 @@ import com.excilys.sugadroid.activities.AppointmentDetailsActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -54,7 +53,8 @@ public class GetAppointmentContactsTask implements Runnable {
 		List<ContactBean> contacts;
 		try {
 			contacts = BeanHolder.getInstance().getContactServices()
-					.getAppointmentContacts(SessionBeanImpl.getInstance(),
+					.getAppointmentContacts(
+							BeanHolder.getInstance().getSessionBean(),
 							appointmentId, offset,
 							GeneralSettings.getAccountMaxResults(activity));
 		} catch (InvalidResponseException e) {

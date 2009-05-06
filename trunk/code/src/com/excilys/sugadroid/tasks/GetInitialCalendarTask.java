@@ -34,7 +34,6 @@ import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.beans.ISessionBean;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
@@ -54,7 +53,7 @@ public class GetInitialCalendarTask implements Runnable {
 
 		Map<LocalDate, List<IAppointmentBean>> initialDaysAppointments;
 
-		ISessionBean session = SessionBeanImpl.getInstance();
+		ISessionBean session = BeanHolder.getInstance().getSessionBean();
 
 		LocalDate today = new LocalDate();
 		LocalDate before = today.minusDays(GeneralSettings

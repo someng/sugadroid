@@ -31,7 +31,6 @@ import com.excilys.sugadroid.activities.AccountDetailsActivity;
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.beans.SessionBeanImpl;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -54,8 +53,9 @@ public class GetAccountContactsTask implements Runnable {
 		List<ContactBean> contacts;
 		try {
 			contacts = BeanHolder.getInstance().getContactServices()
-					.getAccountContacts(SessionBeanImpl.getInstance(), accountId,
-							offset,
+					.getAccountContacts(
+							BeanHolder.getInstance().getSessionBean(),
+							accountId, offset,
 							GeneralSettings.getAccountMaxResults(activity));
 		} catch (InvalidResponseException e) {
 			activity
