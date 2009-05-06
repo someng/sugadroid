@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.excilys.sugadroid.activities.ConnectionSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.LoginFailedException;
@@ -74,12 +74,11 @@ public class LoginInTask implements Runnable {
 
 		} catch (LoginFailedException e) {
 			rollbackFromLogin();
-			activity.postShowDialog(DialogManager.DIALOG_ERROR_LOGIN_FAILED);
+			activity.postShowDialog(DialogValues.ERROR_LOGIN_FAILED);
 			return;
 		} catch (InvalidResponseException e) {
 			rollbackFromLogin();
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			rollbackFromLogin();

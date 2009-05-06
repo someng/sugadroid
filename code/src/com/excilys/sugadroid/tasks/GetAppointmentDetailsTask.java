@@ -27,7 +27,7 @@ package com.excilys.sugadroid.tasks;
 
 import java.util.ArrayList;
 
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
@@ -55,8 +55,7 @@ public class GetAppointmentDetailsTask implements Runnable {
 			appointment = BeanHolder.getInstance().getAppointmentServices()
 					.getAppointmentDetails(appointmentId);
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			activity.postShowCustomDialog(e.getMessage(), e.getDescription());

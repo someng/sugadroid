@@ -39,7 +39,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
@@ -187,7 +187,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
 					if (!ContactDetailsActivity.this.isFinishing()) {
-						showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					}
 				}
 			}
@@ -307,7 +307,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 				}
 			}
 
-			showDialog(DialogManager.DIALOG_CONTACT_ADDED);
+			showDialog(DialogValues.CONTACT_ADDED);
 
 		}
 	}

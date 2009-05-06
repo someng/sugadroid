@@ -38,7 +38,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
@@ -134,7 +134,7 @@ public class MenuActivity extends CommonActivity {
 						forward = AccountListActivity.class;
 						threadManager.queueUpdate(0, loginTask);
 					} else {
-						showDialog(DialogManager.DIALOG_ERROR_NOT_LOGGED_IN);
+						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
 					}
 				}
 			}
@@ -157,7 +157,7 @@ public class MenuActivity extends CommonActivity {
 						forward = ContactListActivity.class;
 						threadManager.queueUpdate(0, loginTask);
 					} else {
-						showDialog(DialogManager.DIALOG_ERROR_NOT_LOGGED_IN);
+						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
 					}
 				}
 			}
@@ -178,7 +178,7 @@ public class MenuActivity extends CommonActivity {
 						forward = AppointmentsActivity.class;
 						threadManager.queueUpdate(0, loginTask);
 					} else {
-						showDialog(DialogManager.DIALOG_ERROR_NOT_LOGGED_IN);
+						showDialog(DialogValues.ERROR_NOT_LOGGED_IN);
 					}
 				}
 			}
@@ -203,7 +203,7 @@ public class MenuActivity extends CommonActivity {
 				try {
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
-					showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					setMessageNotLoggedIn();
 				}
 			}
@@ -218,7 +218,7 @@ public class MenuActivity extends CommonActivity {
 				try {
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
-					showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 				}
 
 			}

@@ -42,7 +42,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.CallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
@@ -206,7 +206,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				try {
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
-					showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+					showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 				}
 			}
 		};
@@ -224,7 +224,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 					threadManager.submitTask(task);
 				} catch (RejectedExecutionException e) {
 					if (!AccountDetailsActivity.this.isFinishing()) {
-						showDialog(DialogManager.DIALOG_ERROR_CANNOT_LAUNCH_TASK);
+						showDialog(DialogValues.ERROR_CANNOT_LAUNCH_TASK);
 					}
 				}
 

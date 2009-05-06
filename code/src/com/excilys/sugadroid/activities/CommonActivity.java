@@ -36,13 +36,32 @@ import android.view.MenuItem;
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager;
 import com.excilys.sugadroid.activities.delegates.ThreadPostingManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.BaseActivity;
+import com.excilys.sugadroid.beans.ISessionBean;
 
-public abstract class CommonActivity extends Activity implements
-		BaseActivity {
+/**
+ * This activity should be the common activity to all application activities. It
+ * enables dialogs, threaded tasks launching, authenticating and authenticated
+ * tasks launching
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
+public abstract class CommonActivity extends Activity implements BaseActivity {
 
 	protected ThreadPostingManager threadManager;
 	protected DialogManager dialogManager;
+
+	// The bean that keeps the session informations
+	protected ISessionBean sessionBean;
+
+	// The runnable used to authenticate
+	private Runnable loginTask;
+
+	// A task waiting for authentication to proceed before being launched (via
+	// callbacks on this activity)
+	private Runnable pendingAuthenticatedTask;
 
 	public static final String ITEM_IDENTIFIER = "ITEM";
 
@@ -66,15 +85,30 @@ public abstract class CommonActivity extends Activity implements
 		return dialogManager.onCreateDialog(id);
 	}
 
+	/**
+	 * Show a custom dialog box
+	 * 
+	 * @param title
+	 * @param message
+	 */
 	public void showCustomDialog(String title, String message) {
 		// Will call the callback onCreateDialog (on a thread)
 		dialogManager.showCustomDialog(title, message);
 	}
 
+	/**
+	 * Show a dialog box (chosen from the available ones in DialogValues)
+	 * 
+	 * @param dialog
+	 */
+	public void showDialog(DialogValues dialog) {
+		showDialog(dialog.ordinal());
+	}
+
 	public void postShowCustomDialog(final String title, final String message) {
 		runOnUiThread(new Runnable() {
 			public void run() {
-				dialogManager.showCustomDialog(title, message);
+				showCustomDialog(title, message);
 			}
 		});
 	}
@@ -83,6 +117,14 @@ public abstract class CommonActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			public void run() {
 				showDialog(id);
+			}
+		});
+	}
+
+	public void postShowDialog(final DialogValues dialog) {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				showDialog(dialog);
 			}
 		});
 	}

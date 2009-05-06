@@ -32,7 +32,7 @@ import org.joda.time.LocalDate;
 
 import com.excilys.sugadroid.activities.GeneralSettings;
 import com.excilys.sugadroid.activities.MenuActivity;
-import com.excilys.sugadroid.activities.delegates.DialogManager;
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
@@ -63,8 +63,7 @@ public class GetInitialCalendarTask implements Runnable {
 					.getAppointmentServices().getAppointmentsInInterval(before,
 							after);
 		} catch (InvalidResponseException e) {
-			activity
-					.postShowDialog(DialogManager.DIALOG_ERROR_INVALID_RESPONSE);
+			activity.postShowDialog(DialogValues.ERROR_INVALID_RESPONSE);
 			return;
 		} catch (ServiceException e) {
 			activity.postShowCustomDialog(e.getMessage(), e.getDescription());

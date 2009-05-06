@@ -25,6 +25,8 @@
 
 package com.excilys.sugadroid.activities.interfaces;
 
+import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
+
 /**
  * This interface is implemented by some activities and is used so that the
  * tasks can be executed by different activities
@@ -36,4 +38,7 @@ public interface BaseActivity {
 	public void postShowCustomDialog(final String title, final String message);
 
 	public void postShowDialog(int dialog);
+
+	public void postShowDialog(DialogValues dialog);
+
 }
