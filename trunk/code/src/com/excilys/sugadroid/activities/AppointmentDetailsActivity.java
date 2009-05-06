@@ -159,9 +159,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 						AppointmentDetailsActivity.this, contactServices,
 						selectedItem.getId());
 
-				// Let user know we're doing something
-				showLoadingText();
-
 				submitRejectableTask(task);
 			}
 
@@ -178,7 +175,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 						GeneralSettings
 								.getAccountMaxResults(AppointmentDetailsActivity.this));
 
-				showLoadingText();
 				hideEmpty();
 
 				submitRejectableTask(task);
@@ -194,7 +190,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 				allContacts.addAll(contacts);
 
-				hideLoadingText();
 				showEmpty();
 				itemAdapter.notifyDataSetChanged();
 
@@ -210,7 +205,6 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 				Intent intent = new Intent(AppointmentDetailsActivity.this,
 						ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
-				hideLoadingText();
 				startActivity(intent);
 			}
 		});

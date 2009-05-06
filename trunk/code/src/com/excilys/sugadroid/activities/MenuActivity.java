@@ -134,8 +134,6 @@ public class MenuActivity extends CommonActivity {
 						GeneralSettings
 								.getAppointmentsLoadingAfter(MenuActivity.this));
 
-				showLoadingText();
-
 				submitRejectableTask(task);
 
 			}
@@ -148,7 +146,6 @@ public class MenuActivity extends CommonActivity {
 				Intent i = new Intent(MenuActivity.this,
 						AppointmentsActivity.class);
 				i.putExtra(AppointmentsActivity.CALENDAR, calendar);
-				hideLoadingText();
 				startActivity(i);
 			}
 		});

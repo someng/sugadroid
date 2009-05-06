@@ -37,19 +37,19 @@ import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.interfaces.ILoginServices;
 
-public class LoginInTask implements Runnable {
+public class LoginInTask extends LoadingTask<IAuthenticatingActivity> {
 
 	private static final String TAG = LoginInTask.class.getSimpleName();
 
 	private final String username;
 	private final String password;
-	private final IAuthenticatingActivity activity;
 	private final ILoginServices loginServices;
 	private final ISessionBean sessionBean;
 
 	public LoginInTask(IAuthenticatingActivity activity, String username,
 			String password, ILoginServices loginServices,
 			ISessionBean sessionBean) {
+		super(activity);
 		this.username = username;
 		this.password = password;
 		this.activity = activity;
@@ -57,7 +57,8 @@ public class LoginInTask implements Runnable {
 		this.sessionBean = sessionBean;
 	}
 
-	public void run() {
+	@Override
+	public void doRunLoadingTask() {
 		String sessionId;
 		String userId;
 		String version;

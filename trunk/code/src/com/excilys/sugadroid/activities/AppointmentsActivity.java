@@ -260,8 +260,6 @@ public class AppointmentsActivity extends CommonActivity implements
 						AppointmentsActivity.this, appointmentServices,
 						selectedItem.getId());
 
-				// Let user know we're doing something
-				showLoadingText();
 				submitRejectableTask(task);
 
 			}
@@ -327,7 +325,6 @@ public class AppointmentsActivity extends CommonActivity implements
 				Intent intent = new Intent(AppointmentsActivity.this,
 						AppointmentDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, appointment);
-				hideLoadingText();
 				startActivity(intent);
 			}
 		});

@@ -52,7 +52,7 @@ public class GetInitialCalendarTask extends AuthenticatedTask<MenuActivity> {
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 
 		Map<LocalDate, List<IAppointmentBean>> initialDaysAppointments;
 

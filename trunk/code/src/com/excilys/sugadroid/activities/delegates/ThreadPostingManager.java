@@ -31,6 +31,8 @@ import java.util.concurrent.Future;
 
 import android.os.Handler;
 
+import com.excilys.sugadroid.activities.interfaces.ICallingLoadingTasksActivity;
+
 /**
  * This class is a delegate that provides methods to deal with threads in
  * Android
@@ -50,13 +52,16 @@ public class ThreadPostingManager {
 	// GUI Thread
 	private Handler guiThread;
 
+	private ICallingLoadingTasksActivity activity;
+
 	// Task that is being executed by the executor, not on the GUI Thread
 	// Also enables the program to know when a task is done using the get()
 	// method.
 	@SuppressWarnings(value = "unchecked")
 	private Future taskPending;
 
-	public ThreadPostingManager() {
+	public ThreadPostingManager(ICallingLoadingTasksActivity activity) {
+		this.activity = activity;
 		guiThread = new Handler();
 		executor = Executors.newSingleThreadExecutor();
 	}
@@ -66,7 +71,7 @@ public class ThreadPostingManager {
 		if (taskPending != null) {
 			taskPending.cancel(true);
 		}
-
+		activity.onLoadingStarting();
 		taskPending = executor.submit(task);
 	}
 

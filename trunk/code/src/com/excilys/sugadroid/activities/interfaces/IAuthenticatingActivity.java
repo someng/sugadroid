@@ -31,7 +31,7 @@ package com.excilys.sugadroid.activities.interfaces;
  * @author Pierre-Yves Ricau
  * 
  */
-public interface IAuthenticatingActivity {
+public interface IAuthenticatingActivity extends ICallingLoadingTasksActivity {
 
 	public abstract void onLoginSuccessful();
 

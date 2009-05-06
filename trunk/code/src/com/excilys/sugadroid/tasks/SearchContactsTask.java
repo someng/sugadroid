@@ -47,7 +47,7 @@ public class SearchContactsTask extends AuthenticatedTask<ContactListActivity> {
 	}
 
 	@Override
-	public void doRun() throws ServiceException {
+	public void doRunAuthenticatedTask() throws ServiceException {
 		List<ContactBean> contacts = contactServices.searchContacts(search,
 				activity.getOffset(), maxResults);
 
