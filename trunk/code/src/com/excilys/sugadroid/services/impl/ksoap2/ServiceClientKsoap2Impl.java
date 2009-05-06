@@ -60,6 +60,7 @@ public abstract class ServiceClientKsoap2Impl implements IWebService {
 		Object response;
 		try {
 			transport.call(soapAction, envelope);
+			logRawRequest();
 			response = envelope.getResponse();
 		} catch (IOException e) {
 			throw new InvalidResponseException(e);
@@ -70,6 +71,12 @@ public abstract class ServiceClientKsoap2Impl implements IWebService {
 		}
 
 		return response;
+	}
+
+	protected void logRawRequest() {
+		if (transport.debug) {
+			Log.i(TAG, "Raw request to server: \n" + transport.requestDump);
+		}
 	}
 
 	/**

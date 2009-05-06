@@ -33,7 +33,9 @@ import org.ksoap2.serialization.SoapObject;
 import android.util.Log;
 
 import com.excilys.sugadroid.beans.ISessionBean;
+import com.excilys.sugadroid.beans.ISessionBean.SessionState;
 import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
+import com.excilys.sugadroid.services.exceptions.NotLoggedInException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactory;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.ParsingException;
@@ -51,7 +53,14 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 
 	protected ISessionBean sessionBean;
 
-	public <Bean> Bean getEntry(SoapObject request, Class<Bean> beanClass)
+	protected void checkLoggedIn() throws NotLoggedInException {
+		if (sessionBean.getState() != SessionState.LOGGED_IN) {
+			throw new NotLoggedInException(
+					"User should be logged in before trying to call this service");
+		}
+	}
+
+	protected <Bean> Bean getEntry(SoapObject request, Class<Bean> beanClass)
 			throws ServiceException {
 
 		SoapObject response;
@@ -86,11 +95,11 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 		return bean;
 	}
 
-	public SoapObject newEntryRequest() {
+	protected SoapObject newEntryRequest() {
 		return newAuthenticatedRequest(GET_ENTRY_METHOD_NAME);
 	}
 
-	public <Bean> List<Bean> getEntryList(SoapObject request,
+	protected <Bean> List<Bean> getEntryList(SoapObject request,
 			Class<Bean> beanClass) throws ServiceException {
 
 		SoapObject response;
@@ -127,11 +136,11 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 		return beans;
 	}
 
-	public SoapObject newEntryListRequest() {
+	protected SoapObject newEntryListRequest() {
 		return newAuthenticatedRequest(GET_ENTRY_LIST_METHOD_NAME);
 	}
 
-	public SoapObject newAuthenticatedRequest(String methodName) {
+	protected SoapObject newAuthenticatedRequest(String methodName) {
 		SoapObject request = new SoapObject(namespace, methodName);
 		request.addProperty("session", sessionBean.getSessionId());
 		return request;
