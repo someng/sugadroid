@@ -73,8 +73,8 @@ public class LoginInTask implements Runnable {
 
 			version = loginServices.getServerVersion();
 
-			sessionBean.setLoggedIn(sessionId, userId, username, password
-					.hashCode(), loginServices.getEntryPoint(), version);
+			sessionBean.setLoggedIn(sessionId, userId, username, loginServices
+					.getEntryPoint(), version);
 
 			activity.onLoginSuccessful();
 		} catch (LoginFailedException e) {

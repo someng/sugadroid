@@ -35,7 +35,6 @@ public class SessionBeanImpl implements ISessionBean {
 	private String url;
 	private String version;
 	private boolean version4_5;
-	private int passwordHash;
 	private SessionState state = SessionState.NOT_LOGGED_IN;
 
 	/**
@@ -68,13 +67,12 @@ public class SessionBeanImpl implements ISessionBean {
 	 *      java.lang.String)
 	 */
 	public synchronized void setLoggedIn(String sessionId, String userId,
-			String username, int passwordHash, String url, String version) {
+			String username, String url, String version) {
 		this.sessionId = sessionId;
 		this.username = username;
 		this.userId = userId;
 		this.url = url;
 		this.version = version;
-		this.passwordHash = passwordHash;
 
 		StringTokenizer stk = new StringTokenizer(version, ".");
 
@@ -88,14 +86,6 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#isLoggedIn()
-	 */
-	public synchronized boolean isLoggedIn() {
-		return state == SessionState.LOGGED_IN;
-	}
-
-	/**
-	 * 
 	 * @see com.excilys.sugadroid.beans.ISessionBean#logout()
 	 */
 	public synchronized void logout() {
@@ -104,7 +94,6 @@ public class SessionBeanImpl implements ISessionBean {
 		userId = null;
 		url = null;
 		version = null;
-		passwordHash = 0;
 		state = SessionState.NOT_LOGGED_IN;
 	}
 
@@ -130,27 +119,6 @@ public class SessionBeanImpl implements ISessionBean {
 	 */
 	public synchronized boolean isVersion4_5() {
 		return version4_5;
-	}
-
-	/**
-	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getPasswordHash()
-	 */
-	public synchronized int getPasswordHash() {
-		return passwordHash;
-	}
-
-	/**
-	 * s
-	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#checkLoginParamsChanged(java
-	 *      .lang.String, java.lang.String, int)
-	 */
-	public synchronized boolean checkLoginParamsChanged(String username,
-			String url, int passwordHash) {
-
-		return !this.username.equals(username) || !this.url.equals(url)
-				|| this.passwordHash != passwordHash;
 	}
 
 	public synchronized SessionState getState() {
