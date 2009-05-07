@@ -64,26 +64,27 @@ import com.excilys.sugadroid.tasks.LoginInTask;
 public abstract class CommonActivity extends Activity implements
 		IAuthenticatingActivity, IAuthenticatedActivity {
 
-	private static final String TAG = CommonActivity.class.getSimpleName();
+	private static final String		TAG				= CommonActivity.class
+															.getSimpleName();
 
-	private ThreadPostingManager threadManager;
-	protected DialogManager dialogManager;
+	private ThreadPostingManager	threadManager;
+	protected DialogManager			dialogManager;
 
 	// The bean that keeps the session informations
-	protected ISessionBean sessionBean;
+	protected ISessionBean			sessionBean;
 
 	// The runnable used to authenticate
-	private Runnable loginTask;
+	private Runnable				loginTask;
 
 	// A task waiting for authentication to proceed before being launched (via
 	// callbacks on this activity)
-	private Runnable pendingAuthenticatedTask;
+	private Runnable				pendingAuthenticatedTask;
 
-	private TextView loadingText;
+	private TextView				loadingText;
 
-	protected int menuId = R.menu.back_to_menu;
+	protected int					menuId			= R.menu.back_to_menu;
 
-	public static final String ITEM_IDENTIFIER = "ITEM";
+	public static final String		ITEM_IDENTIFIER	= "ITEM";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public abstract class CommonActivity extends Activity implements
 
 		final BeanHolder holder = BeanHolder.getInstance();
 
-		initActivity(new DialogManager(this), new ThreadPostingManager(this),
+		initActivity(new DialogManager(this), new ThreadPostingManager(),
 				holder.getSessionBean(), holder.getLoginServices(), holder
 						.getTransport());
 
@@ -192,16 +193,16 @@ public abstract class CommonActivity extends Activity implements
 	protected void executeOnGuiThreadAuthenticatedTask(Runnable task) {
 
 		switch (sessionBean.getState()) {
-		case LOGGED_IN:
-			pendingAuthenticatedTask = null;
-			threadManager.postOnGuiThread(task);
-			break;
-		case LOGIN_IN:
-			pendingAuthenticatedTask = task;
-			break;
-		case NOT_LOGGED_IN:
-			pendingAuthenticatedTask = task;
-			login();
+			case LOGGED_IN:
+				pendingAuthenticatedTask = null;
+				threadManager.postOnGuiThread(task);
+				break;
+			case LOGIN_IN:
+				pendingAuthenticatedTask = task;
+				break;
+			case NOT_LOGGED_IN:
+				pendingAuthenticatedTask = task;
+				login();
 		}
 	}
 
@@ -217,18 +218,18 @@ public abstract class CommonActivity extends Activity implements
 			Runnable task) {
 
 		switch (sessionBean.getState()) {
-		case LOGGED_IN:
-			pendingAuthenticatedTask = null;
-			threadManager.postDelayedOnGuiThread(delayMillis, task);
-			break;
-		case LOGIN_IN:
-			// No delay will be applied if authenticating
-			pendingAuthenticatedTask = task;
-			break;
-		case NOT_LOGGED_IN:
-			// No delay will be applied if not authenticated
-			pendingAuthenticatedTask = task;
-			login();
+			case LOGGED_IN:
+				pendingAuthenticatedTask = null;
+				threadManager.postDelayedOnGuiThread(delayMillis, task);
+				break;
+			case LOGIN_IN:
+				// No delay will be applied if authenticating
+				pendingAuthenticatedTask = task;
+				break;
+			case NOT_LOGGED_IN:
+				// No delay will be applied if not authenticated
+				pendingAuthenticatedTask = task;
+				login();
 		}
 	}
 
@@ -274,23 +275,23 @@ public abstract class CommonActivity extends Activity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
-		case R.id.connection_settings:
-			ConnectionSettings.saveCurrentSettings(this);
-			startActivity(new Intent(this, ConnectionSettings.class));
-			return true;
-		case R.id.back_to_menu_settings:
-			// Launch the settings activity
-			// startActivity(new Intent(this, MenuActivity.class));
-			backToMenuActivity();
-			return true;
-		case R.id.about:
-			showCustomDialog(getString(R.string.about_title),
-					getString(R.string.about_text));
-			return true;
-		case R.id.settings:
-			// Launch the settings activity
-			startActivity(new Intent(this, GeneralSettings.class));
-			return true;
+			case R.id.connection_settings:
+				ConnectionSettings.saveCurrentSettings(this);
+				startActivity(new Intent(this, ConnectionSettings.class));
+				return true;
+			case R.id.back_to_menu_settings:
+				// Launch the settings activity
+				// startActivity(new Intent(this, MenuActivity.class));
+				backToMenuActivity();
+				return true;
+			case R.id.about:
+				showCustomDialog(getString(R.string.about_title),
+						getString(R.string.about_text));
+				return true;
+			case R.id.settings:
+				// Launch the settings activity
+				startActivity(new Intent(this, GeneralSettings.class));
+				return true;
 		}
 		return false;
 	}
@@ -530,14 +531,14 @@ public abstract class CommonActivity extends Activity implements
 		super.onResume();
 
 		switch (sessionBean.getState()) {
-		case LOGIN_IN:
-			showLoggedIn();
-			break;
-		case NOT_LOGGED_IN:
-			showNotLoggedIn();
-			break;
-		case LOGGED_IN:
-			showLoggedIn();
+			case LOGIN_IN:
+				showLoggedIn();
+				break;
+			case NOT_LOGGED_IN:
+				showNotLoggedIn();
+				break;
+			case LOGGED_IN:
+				showLoggedIn();
 		}
 
 		if (ConnectionSettings.currentSettingsChanged(this)) {

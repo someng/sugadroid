@@ -44,7 +44,7 @@ import com.excilys.sugadroid.services.util.HTTPSHackUtil;
  */
 public class BeanHolder {
 
-	private static final BeanHolder instance = new BeanHolder();
+	private static final BeanHolder	instance	= new BeanHolder();
 
 	/**
 	 * This bean is a singleton
@@ -55,28 +55,35 @@ public class BeanHolder {
 		return instance;
 	}
 
-	private HttpClient transportHttpClient;
-	private Transport transport;
-	private HTTPSHackUtil hackUtil;
-	private ILoginServices loginServices;
-	private IContactServices contactServices;
-	private IAccountServices accountServices;
-	private IAppointmentServices appointmentServices;
-	private ISessionBean sessionBean;
+	private HttpClient				transportHttpClient;
+	private Transport				transport;
+	private HTTPSHackUtil			hackUtil;
+	private ILoginServices			loginServices;
+	private IContactServices		contactServices;
+	private IAccountServices		accountServices;
+	private IAppointmentServices	appointmentServices;
+	private ISessionBean			sessionBean;
 
 	private BeanHolder() {
-
-		hackUtil = new HTTPSHackUtil();
-		// Not linked to beans, should be placed somewhere else
-		// May be useful for HttpUrlConnection connections
-		hackUtil.allowAllSSL();
 
 		// Creating sessionBean bean
 		sessionBean = new SessionBeanImpl();
 
 		// Creating transportHttpClient bean (for transport)
 		transportHttpClient = new DefaultHttpClient();
-		hackUtil.httpClientAllowAllSSL(transportHttpClient);
+
+		hackUtil = new HTTPSHackUtil();
+
+		/*
+		 * Uncommenting the following line will disable hostname verifying for
+		 * SSL handshake (however, you still need a valid certificate).
+		 */
+		// hackUtil.allowAllHostname();
+		/*
+		 * Uncommenting the following line will allow any SSL certificate, even
+		 * self-signed.
+		 */
+		// hackUtil.httpClientAllowAllSSL(transportHttpClient);
 
 		// Creating transport bean (for facade)
 		HttpClientTransportAndroid transportAndroid = new HttpClientTransportAndroid();
