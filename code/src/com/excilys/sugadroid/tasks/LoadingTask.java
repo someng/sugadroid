@@ -30,7 +30,7 @@ import com.excilys.sugadroid.activities.interfaces.ICallingLoadingTasksActivity;
 public abstract class LoadingTask<T extends ICallingLoadingTasksActivity>
 		implements Runnable {
 
-	protected T activity;
+	protected T	activity;
 
 	public LoadingTask(T activity) {
 		this.activity = activity;
@@ -38,6 +38,7 @@ public abstract class LoadingTask<T extends ICallingLoadingTasksActivity>
 
 	@Override
 	public void run() {
+		activity.onLoadingStarting();
 		try {
 			doRunLoadingTask();
 		} finally {
