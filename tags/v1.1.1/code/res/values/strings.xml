@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ********* Application name ********* -->
+	<string name="app_name">SugaDroid</string>
+
+	<!-- ********* Activity titles ********* -->
+	<string name="activity_contact_list">SugaDroid, contacts list</string>
+	<string name="activity_account_list">SugaDroid, accounts list</string>
+	<string name="activity_contact_details">SugaDroid, contact details</string>
+	<string name="activity_account_details">SugaDroid, account details</string>
+	<string name="activity_appointment_details">SugaDroid, appointment details</string>
+	<string name="activity_appointments">SugaDroid, my appointments</string>
+	<string name="activity_connection_settings">SugaDroid, connection settings</string>
+	<string name="activity_general_settings">SugaDroid, general settings</string>
+
+	<!-- ********* Dialog box messages ********* -->
+	<string name="day_not_loaded_title">Day not loaded</string>
+	<string name="day_not_loaded_message">This day has not been loaded yet (feature not available yet)</string>
+	
+	<string name="contact_added_title">Contact added</string>
+	<string name="contact_added_message">This contact has been successfully added</string>
+
+    <string name="dialog_OK_button">Ok</string>
+    <string name="dialog_unknow_error_title">Unknown error</string>
+    <string name="dialog_unknow_error_message">"An unknown error occurred, good luck !"
+    </string>
+
+    <!-- ********* Toast texts ********* -->
+    <!-- Toast Login -->
+    <string name="toast_login_failed_no_network">Login failed, check the network</string>
+    <string name="toast_login_failed_bad_credentials">Login failed, check your username and password</string>
+    <string name="toast_login_failed">Login failed, message:</string>
+    <string name="toast_login_successful">Login successful</string>
+    <string name="toast_login_in">Login in</string>
+    
+    <!-- Toast Service -->
+    <string name="toast_service_call_failed_no_network">Action failed, check the network</string> 
+    <string name="toast_service_call_failed">Action failed, message:</string>
+    <string name="toast_service_no_session">Action failed, no session, you need to login</string>
+    <string name="toast_service_session_invalid">Action failed, session invalid, you need to login again</string>
+
+
+	<!-- ********* Menu texts ********* -->
+	<string name="settings_label">General settings</string>
+	<string name="settings_shortcut">s</string>
+	
+	<string name="connection_settings_label">Connection settings</string>
+	<string name="connection_settings_shortcut">c</string>
+	
+	<string name="back_to_menu_label">Back to menu</string>
+	<string name="back_to_menu_shortcut">m</string>
+	
+    <!-- ********* About texts ********* -->
+	<string name="about_title">About</string>
+	<string name="about_text">\
+SugaDroid is a prototype to show how to use SugarCRM Web Services with an Android Client.
+It was created by Pierre-Yves Ricau for eBusiness Information, a French company, in march 2009.
+</string>
+	
+	<!-- ********* Settings texts ********* -->
+	<string name="username_pref_text">Username</string>
+	<string name="username_pref_summary">The username you use to log in to Sugar</string>
+	
+	<string name="password_pref_text">Password</string>
+	<string name="password_pref_summary">The password associated to your username</string>
+	
+	<string name="url_pref_text">Sugar URL</string>
+	<string name="url_pref_summary">The SOAP URL of SugarCRM</string>
+
+	<string name="search_max_results_pref_text">Max search results</string>
+	<string name="search_max_results_pref_summary">Maximum number of results shown for each search</string>
+
+	<string name="account_max_results_pref_text">Max account contacts</string>
+	<string name="account_max_results_pref_summary">Maximum number of contacts shown for each account</string>
+
+	<string name="gmt_pref_text">GMT</string>
+	<string name="gmt_pref_summary">Enter the number of hours to add related to GMT</string>
+
+	<string name="appointments_loading_before_pref_text">Appointments previous days</string>
+	<string name="appointments_loading_before_pref_summary">Enter the number of days before today to preload for appointments</string>
+
+	<string name="appointments_loading_after_pref_text">Appointments future days</string>
+	<string name="appointments_loading_after_pref_summary">Enter the number of days after today to preload for appointments</string>
+
+	<!-- default values for preferences -->
+	<!-- The following 8 next entries does not need to be translated -->
+	<string name="default_username"></string>
+	<string name="default_password"></string>
+	<string name="default_url">http://demo.sugarcrm.com/sugarcrm_ce/soap.php</string>
+	<string name="default_search_list_max_results">10</string>
+	<string name="default_account_max_results">5</string>
+	<string name="default_gmt">1</string>
+	<string name="default_appointments_loading_before">1</string>
+	<string name="default_appointments_loading_after">7</string>
+
+	<!-- ********* View texts ********* -->
+	<string name="welcome_text">Welcome !</string>
+	<string name="loading_text">Loading...</string>
+
+	<string name="contact_list_button">Search for contacts</string>
+	<string name="account_list_button">Search for accounts</string>
+	<string name="appointments_button">My appointments</string>
+	<string name="about_button">About</string>
+
+	<string name="item_search_hint">Enter your search</string>
+	<string name="item_search_no_result">No result</string>
+	<string name="item_search_more_result">&gt; Show next items</string>
+
+	<string name="logged_in_message">Logged in</string>
+	<string name="logged_out_message">Not logged in</string>
+	<string name="loging_in_message">Login in...</string>
+	
+	<string name="address_button">Show on Google Maps</string>
+	<string name="previous_day_button">&lt;</string>
+	<string name="next_day_button">&gt;</string>
+	<string name="day_date_format">MM-dd-yyyy</string>
+	<string name="time_format">"HH'h'mm"</string>
+	<string name="today">Today</string>
+
+	<string name="contact_list">Contacts list</string>
+	<string name="appointment_name">Topic:</string>
+	<string name="appointment_date_start">Start day:</string>
+	<string name="appointment_time_start">Start hour:</string>
+	<string name="appointment_date_end">End day:</string>
+	<string name="appointment_duration">Duration:</string>
+	<string name="appointment_hours">h</string>
+	<string name="not_available">Not available</string>
+	
+	<string name="add_contact">Add contact</string>
+    
+    <!-- Top view -->
+    <string name="top_logged_in">Logged in</string>
+    <string name="top_not_logged_in">Not logged in</string>
+    <string name="top_login_in">Login in...</string>
+
+</resources>
