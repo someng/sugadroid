@@ -44,20 +44,13 @@ import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.Parsi
  * @author Pierre-Yves Ricau
  * 
  */
-public class BeanFactory {
+public class SugarBeanFactoryImpl implements IBeanFactory {
 
-	private static BeanFactory singleton;
-
-	private BeanFactory() {
-	}
-
-	public static BeanFactory getInstance() {
-		if (singleton == null) {
-			singleton = new BeanFactory();
-		}
-		return singleton;
-	}
-
+	/**
+	 * 
+	 * @see com.excilys.sugadroid.services.IBeanFactory#parseBean(java.util.Map,
+	 *      java.lang.Class)
+	 */
 	public <T> T parseBean(Map<String, String> properties, Class<T> beanClass)
 			throws ParsingException {
 

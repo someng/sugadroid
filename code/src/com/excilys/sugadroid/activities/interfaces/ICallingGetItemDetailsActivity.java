@@ -28,8 +28,8 @@ package com.excilys.sugadroid.activities.interfaces;
 import java.io.Serializable;
 
 /**
- * This interface is implemented by some activities and is used so that the
- * tasks can be executed by different activities
+ * This interface is implemented by some activities and is used so that the same
+ * tasks can be executed by different activities, using generics
  * 
  * @author Pierre-Yves Ricau
  * 
@@ -37,6 +37,11 @@ import java.io.Serializable;
 public interface ICallingGetItemDetailsActivity<T extends Serializable> extends
 		IAuthenticatedActivity {
 
+	/**
+	 * Callback when an item has been loaded
+	 * 
+	 * @param item
+	 */
 	public void onItemDetailsLoaded(T item);
 
 }

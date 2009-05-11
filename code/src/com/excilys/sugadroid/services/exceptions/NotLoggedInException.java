@@ -25,6 +25,9 @@
 package com.excilys.sugadroid.services.exceptions;
 
 /**
+ * Exception thrown when a service call fails due to missing session
+ * informations
+ * 
  * @author Pierre-Yves Ricau
  * 
  */

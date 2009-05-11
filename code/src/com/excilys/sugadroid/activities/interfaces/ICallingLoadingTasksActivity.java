@@ -25,10 +25,24 @@
 
 package com.excilys.sugadroid.activities.interfaces;
 
+/**
+ * This interface provides callbacks and is used for any activity that will
+ * execute tasks (Runnable) that might takes a long time to execute (ie http
+ * calls).
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 public interface ICallingLoadingTasksActivity {
 
+	/**
+	 * Callback when the task begin to perform
+	 */
 	public abstract void onLoadingStarting();
 
+	/**
+	 * Callback when the task has completed
+	 */
 	public abstract void onLoadingDone();
 
 }

@@ -32,8 +32,8 @@ import org.ksoap2.serialization.SoapObject;
 
 import android.util.Log;
 
-import com.excilys.sugadroid.beans.ISessionBean;
-import com.excilys.sugadroid.beans.ISessionBean.SessionState;
+import com.excilys.sugadroid.beans.interfaces.ISessionBean;
+import com.excilys.sugadroid.beans.interfaces.ISessionBean.SessionState;
 import com.excilys.sugadroid.services.exceptions.InvalidSessionException;
 import com.excilys.sugadroid.services.exceptions.NotLoggedInException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;
@@ -45,6 +45,8 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 
 	private static String TAG = AuthenticatedSugarServiceClientKsoap2Impl.class
 			.getSimpleName();
+
+	private Ksoap2BeanFactory ksoap2BeanFactory;
 
 	private final String GET_ENTRY_METHOD_NAME = "get_entry";
 	private final String GET_ENTRY_SOAP_ACTION = "get_entry";
@@ -86,8 +88,7 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 
 		Bean bean;
 		try {
-			bean = Ksoap2BeanFactory.getInstance().parseBean(entryList,
-					beanClass);
+			bean = ksoap2BeanFactory.parseBean(entryList, beanClass);
 		} catch (ParsingException e) {
 			throw new ServiceException(e);
 		}
@@ -125,8 +126,7 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 
 		List<Bean> beans;
 		try {
-			beans = Ksoap2BeanFactory.getInstance().parseBeanList(entryList,
-					beanClass);
+			beans = ksoap2BeanFactory.parseBeanList(entryList, beanClass);
 		} catch (ParsingException e) {
 			throw new ServiceException(e);
 		}
@@ -152,6 +152,14 @@ public abstract class AuthenticatedSugarServiceClientKsoap2Impl extends
 
 	public void setSessionBean(ISessionBean sessionBean) {
 		this.sessionBean = sessionBean;
+	}
+
+	public Ksoap2BeanFactory getKsoap2BeanFactory() {
+		return ksoap2BeanFactory;
+	}
+
+	public void setKsoap2BeanFactory(Ksoap2BeanFactory ksoap2BeanFactory) {
+		this.ksoap2BeanFactory = ksoap2BeanFactory;
 	}
 
 }

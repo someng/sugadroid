@@ -28,7 +28,9 @@ package com.excilys.sugadroid.beans;
 import java.io.Serializable;
 
 /**
- * @author pricau
+ * A bean representing a contact, as given by SugarCRM
+ * 
+ * @author Pierre-Yves Ricau
  * 
  */
 public class ContactBean implements Serializable {
@@ -108,6 +110,11 @@ public class ContactBean implements Serializable {
 		this.email1 = email1;
 	}
 
+	/**
+	 * Returns the first name, a space and the last name if available, and if
+	 * not, only the firstName or only the lastName (or an empty string if
+	 * nothing available)
+	 */
 	@Override
 	public String toString() {
 
@@ -122,10 +129,6 @@ public class ContactBean implements Serializable {
 		if (lastName == null) {
 			return firstName;
 		}
-		return firstName + " " + lastName;
-	}
-
-	public String getFullName() {
 		return firstName + " " + lastName;
 	}
 

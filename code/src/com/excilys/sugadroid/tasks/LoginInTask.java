@@ -31,7 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import android.util.Log;
 
 import com.excilys.sugadroid.activities.interfaces.IAuthenticatingActivity;
-import com.excilys.sugadroid.beans.ISessionBean;
+import com.excilys.sugadroid.beans.interfaces.ISessionBean;
 import com.excilys.sugadroid.services.exceptions.InvalidResponseException;
 import com.excilys.sugadroid.services.exceptions.LoginFailedException;
 import com.excilys.sugadroid.services.exceptions.ServiceException;

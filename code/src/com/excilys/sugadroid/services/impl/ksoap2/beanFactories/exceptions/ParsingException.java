@@ -25,6 +25,13 @@
 
 package com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions;
 
+/**
+ * Exception thrown when an error occurs in the parsing of the response (when
+ * creating the beans)
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 public class ParsingException extends Exception {
 
 	private static final long serialVersionUID = 1L;

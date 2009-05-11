@@ -32,7 +32,16 @@ import org.joda.time.LocalTime;
 
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
 
-//Child classes should have a setDateStart method, with a different parameter depending on the version
+/**
+ * A bean representing an appointment, as given by SugarCRM (v4.5 and v5).
+ * 
+ * Child classes should have a setDateStart method, with a different parameter
+ * depending on the version
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
+
 public abstract class GenericAppointmentBean implements IAppointmentBean {
 
 	private static final long serialVersionUID = 1L;

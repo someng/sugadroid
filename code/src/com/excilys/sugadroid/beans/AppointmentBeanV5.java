@@ -29,6 +29,12 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
+/**
+ * A bean representing an appointment, as given by SugarCRM v5
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 public class AppointmentBeanV5 extends GenericAppointmentBean {
 
 	private static final long serialVersionUID = 1L;
