@@ -25,7 +25,6 @@
 
 package com.excilys.sugadroid.activities;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -36,13 +35,9 @@ public class CommonListActivity extends CommonActivity {
 	private ListView listView;
 	private TextView empty;
 
-	/** Called when the activity is first created. */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	// Should always be called by child
+	/**
+	 * Should always be called by child
+	 */
 	protected void findViews() {
 		listView = (ListView) findViewById(android.R.id.list);
 		empty = (TextView) findViewById(android.R.id.empty);

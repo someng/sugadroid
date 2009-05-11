@@ -220,7 +220,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 	private void addContact(ContactBean contact) {
 
 		ContentValues personValues = new ContentValues();
-		personValues.put(Contacts.People.NAME, contact.getFullName());
+		personValues.put(Contacts.People.NAME, contact.toString());
 		/* STARRED 0 = Contacts, 1 = Favorites */
 		personValues.put(Contacts.People.STARRED, 0);
 

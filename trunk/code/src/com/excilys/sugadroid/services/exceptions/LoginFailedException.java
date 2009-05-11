@@ -25,6 +25,12 @@
 
 package com.excilys.sugadroid.services.exceptions;
 
+/**
+ * Exception thrown when the login failed for a specific reason
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 public class LoginFailedException extends ServiceException {
 
 	private static final long serialVersionUID = 1L;

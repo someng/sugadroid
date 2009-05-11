@@ -33,7 +33,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.excilys.sugadroid.R;
-import com.excilys.sugadroid.beans.ISessionBean.SessionState;
+import com.excilys.sugadroid.beans.interfaces.ISessionBean.SessionState;
 import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;

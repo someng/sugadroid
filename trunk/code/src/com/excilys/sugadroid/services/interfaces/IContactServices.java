@@ -38,6 +38,16 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  */
 public interface IContactServices extends IWebService {
 
+	/**
+	 * Get a list of contacts matching a search on the name
+	 * 
+	 * @param search
+	 *            using the pattern %search%
+	 * @param offset
+	 * @param maxResults
+	 * @return
+	 * @throws ServiceException
+	 */
 	public List<ContactBean> searchContacts(String search, Integer offset,
 			Integer maxResults) throws ServiceException;
 

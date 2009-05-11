@@ -27,6 +27,8 @@ package com.excilys.sugadroid.beans;
 
 import java.util.StringTokenizer;
 
+import com.excilys.sugadroid.beans.interfaces.ISessionBean;
+
 public class SessionBeanImpl implements ISessionBean {
 
 	private String sessionId;
@@ -39,14 +41,14 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getSessionId()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#getSessionId()
 	 */
 	public synchronized String getSessionId() {
 		return sessionId;
 	}
 
 	/**
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getUsername()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#getUsername()
 	 */
 	public synchronized String getUsername() {
 		return username;
@@ -54,7 +56,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getUserId()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#getUserId()
 	 */
 	public synchronized String getUserId() {
 		return userId;
@@ -62,7 +64,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#setLoggedIn(java.lang.String,
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#setLoggedIn(java.lang.String,
 	 *      java.lang.String, java.lang.String, int, java.lang.String,
 	 *      java.lang.String)
 	 */
@@ -86,7 +88,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#logout()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#logout()
 	 */
 	public synchronized void logout() {
 		sessionId = null;
@@ -99,7 +101,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getUrl()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#getUrl()
 	 */
 	public synchronized String getUrl() {
 		return url;
@@ -107,7 +109,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#getVersion()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#getVersion()
 	 */
 	public synchronized String getVersion() {
 		return version;
@@ -115,7 +117,7 @@ public class SessionBeanImpl implements ISessionBean {
 
 	/**
 	 * 
-	 * @see com.excilys.sugadroid.beans.ISessionBean#isVersion4_5()
+	 * @see com.excilys.sugadroid.beans.interfaces.ISessionBean#isVersion4_5()
 	 */
 	public synchronized boolean isVersion4_5() {
 		return version4_5;

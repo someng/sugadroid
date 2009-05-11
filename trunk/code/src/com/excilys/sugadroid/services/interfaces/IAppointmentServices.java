@@ -41,9 +41,25 @@ import com.excilys.sugadroid.services.exceptions.ServiceException;
  */
 public interface IAppointmentServices extends IWebService {
 
+	/**
+	 * This method returns the appointments of a specific day
+	 * 
+	 * @param day
+	 * @return
+	 * @throws ServiceException
+	 */
 	public List<IAppointmentBean> getDayAppointments(LocalDate day)
 			throws ServiceException;
 
+	/**
+	 * This method returns the details for a specific appointment, ie more
+	 * properties in the bean are loaded then when getting the bean with methods
+	 * that return lists of beans
+	 * 
+	 * @param appointmentId
+	 * @return
+	 * @throws ServiceException
+	 */
 	public IAppointmentBean getAppointmentDetails(String appointmentId)
 			throws ServiceException;
 

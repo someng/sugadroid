@@ -25,6 +25,13 @@
 
 package com.excilys.sugadroid.services.exceptions;
 
+/**
+ * Mother class of all exceptions linked to service. Can also hold specific
+ * SugarCRM exceptions (errors returned in SOAP)
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 public class ServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;

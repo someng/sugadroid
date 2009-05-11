@@ -1,18 +1,25 @@
-/* ==================================import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.ksoap2.transport.Transport;
-
-import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.AppointmentServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.ContactServicesKsoap2Impl;
-import com.excilys.sugadroid.services.impl.ksoap2.HttpClientTransportAndroid;
-import com.excilys.sugadroid.services.impl.ksoap2.LoginServicesKsoap2Impl;
-import com.excilys.sugadroid.services.interfaces.IAccountServices;
-import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
-import com.excilys.sugadroid.services.interfaces.IContactServices;
-import com.excilys.sugadroid.services.interfaces.ILoginServices;
-import com.excilys.sugadroid.services.util.HTTPSHackUtil;
- not, see <http://www.gnu.org/licenses/>.
+/* ============================================================================
+ *
+ * Copyright 2009 eBusiness Information - Excilys group
+ *
+ * Author: Pierre-Yves Ricau (py.ricau+sugadroid@gmail.com)
+ *
+ * Company contact: ebi@ebusinessinformation.fr
+ *
+ * This file is part of SugaDroid.
+ *
+ * SugaDroid is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SugaDroid is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SugaDroid.  If not, see <http://www.gnu.org/licenses/>.
  * ============================================================================
  */
 
@@ -22,13 +29,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.ksoap2.transport.Transport;
 
-import com.excilys.sugadroid.beans.ISessionBean;
 import com.excilys.sugadroid.beans.SessionBeanImpl;
+import com.excilys.sugadroid.beans.interfaces.ISessionBean;
+import com.excilys.sugadroid.services.IBeanFactory;
+import com.excilys.sugadroid.services.SugarBeanFactoryImpl;
 import com.excilys.sugadroid.services.impl.ksoap2.AccountServicesKsoap2Impl;
 import com.excilys.sugadroid.services.impl.ksoap2.AppointmentServicesKsoap2Impl;
 import com.excilys.sugadroid.services.impl.ksoap2.ContactServicesKsoap2Impl;
 import com.excilys.sugadroid.services.impl.ksoap2.HttpClientTransportAndroid;
 import com.excilys.sugadroid.services.impl.ksoap2.LoginServicesKsoap2Impl;
+import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.Ksoap2BeanFactory;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
@@ -63,6 +73,8 @@ public class BeanHolder {
 	private IAccountServices accountServices;
 	private IAppointmentServices appointmentServices;
 	private ISessionBean sessionBean;
+	private IBeanFactory beanFactory;
+	private Ksoap2BeanFactory ksoap2BeanFactory;
 
 	private BeanHolder() {
 
@@ -99,21 +111,29 @@ public class BeanHolder {
 		loginServices = loginServicesKsoap2Impl;
 		loginServices.setNamespace(namespace);
 
+		beanFactory = new SugarBeanFactoryImpl();
+
+		ksoap2BeanFactory = new Ksoap2BeanFactory();
+		ksoap2BeanFactory.setBeanFactory(beanFactory);
+
 		ContactServicesKsoap2Impl contactServicesKsoap2Impl = new ContactServicesKsoap2Impl();
 		contactServicesKsoap2Impl.setTransport(transport);
 		contactServicesKsoap2Impl.setSessionBean(sessionBean);
+		contactServicesKsoap2Impl.setKsoap2BeanFactory(ksoap2BeanFactory);
 		contactServices = contactServicesKsoap2Impl;
 		contactServices.setNamespace(namespace);
 
 		AccountServicesKsoap2Impl accountServicesKsoap2Impl = new AccountServicesKsoap2Impl();
 		accountServicesKsoap2Impl.setTransport(transport);
 		accountServicesKsoap2Impl.setSessionBean(sessionBean);
+		accountServicesKsoap2Impl.setKsoap2BeanFactory(ksoap2BeanFactory);
 		accountServices = accountServicesKsoap2Impl;
 		accountServices.setNamespace(namespace);
 
 		AppointmentServicesKsoap2Impl appointmentServicesKsoap2Impl = new AppointmentServicesKsoap2Impl();
 		appointmentServicesKsoap2Impl.setTransport(transport);
 		appointmentServicesKsoap2Impl.setSessionBean(sessionBean);
+		appointmentServicesKsoap2Impl.setKsoap2BeanFactory(ksoap2BeanFactory);
 		appointmentServices = appointmentServicesKsoap2Impl;
 		appointmentServices.setNamespace(namespace);
 
@@ -151,6 +171,14 @@ public class BeanHolder {
 
 	public Transport getTransport() {
 		return transport;
+	}
+
+	public IBeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	public Ksoap2BeanFactory getKsoap2BeanFactory() {
+		return ksoap2BeanFactory;
 	}
 
 }

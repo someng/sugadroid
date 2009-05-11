@@ -33,12 +33,27 @@ package com.excilys.sugadroid.activities.interfaces;
  */
 public interface IAuthenticatingActivity extends ICallingLoadingTasksActivity {
 
+	/**
+	 * Callback when login occurred successfully
+	 */
 	public abstract void onLoginSuccessful();
 
+	/**
+	 * Callback when login action failed due to a network error
+	 */
 	public abstract void onLoginFailedNoNetwork();
 
+	/**
+	 * Callback when login action failed due to wrong username/password
+	 * combination
+	 */
 	public abstract void onLoginFailedBadCredentials();
 
+	/**
+	 * Callback when login action failed due to a specific error
+	 * 
+	 * @param message
+	 */
 	public abstract void onLoginFailed(String message);
 
 }

@@ -33,22 +33,20 @@ import java.util.Vector;
 
 import org.ksoap2.serialization.SoapObject;
 
-import com.excilys.sugadroid.services.BeanFactory;
+import com.excilys.sugadroid.services.IBeanFactory;
 import com.excilys.sugadroid.services.impl.ksoap2.beanFactories.exceptions.ParsingException;
+
+/**
+ * A bean factory that convert Ksoap2 Objects to specific beans, using a bean
+ * factory
+ * 
+ * @author Pierre-Yves Ricau
+ * 
+ */
 
 public class Ksoap2BeanFactory {
 
-	private static Ksoap2BeanFactory singleton;
-
-	private Ksoap2BeanFactory() {
-	}
-
-	public static Ksoap2BeanFactory getInstance() {
-		if (singleton == null) {
-			singleton = new Ksoap2BeanFactory();
-		}
-		return singleton;
-	}
+	private IBeanFactory beanFactory;
 
 	public <T> T parseBean(SoapObject response, Class<T> beanClass)
 			throws ParsingException {
@@ -65,7 +63,7 @@ public class Ksoap2BeanFactory {
 			properties.put(field, value);
 		}
 
-		return BeanFactory.getInstance().parseBean(properties, beanClass);
+		return beanFactory.parseBean(properties, beanClass);
 	}
 
 	public <T> List<T> parseBeanList(Vector<SoapObject> response,
@@ -99,6 +97,14 @@ public class Ksoap2BeanFactory {
 		}
 
 		return result.toString();
+	}
+
+	public IBeanFactory getBeanFactory() {
+		return beanFactory;
+	}
+
+	public void setBeanFactory(IBeanFactory beanFactory) {
+		this.beanFactory = beanFactory;
 	}
 
 }

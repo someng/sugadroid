@@ -23,41 +23,50 @@
  * ============================================================================
  */
 
-package com.excilys.sugadroid.services.exceptions;
+package com.excilys.sugadroid.beans.interfaces;
 
-/**
- * Exception thrown when the server response is invalid (IOException, or not a
- * SOAP response)
- * 
- * @author Pierre-Yves Ricau
- * 
- */
-public class InvalidResponseException extends ServiceException {
+public interface ISessionBean {
 
-	private static final long serialVersionUID = 1L;
-
-	public InvalidResponseException() {
+	public enum SessionState {
+		LOGGED_IN, NOT_LOGGED_IN, LOGIN_IN;
 	}
 
-	public InvalidResponseException(String detailMessage) {
-		super(detailMessage);
-	}
+	public abstract String getSessionId();
 
-	public InvalidResponseException(Throwable throwable) {
-		super(throwable);
-	}
+	public abstract String getUsername();
 
-	public InvalidResponseException(String detailMessage, Throwable throwable) {
-		super(detailMessage, throwable);
-	}
+	public abstract String getUserId();
 
-	public InvalidResponseException(String error, String description) {
-		super(error, description);
-	}
+	/**
+	 * Register session informations
+	 * 
+	 * @param sessionId
+	 * @param userId
+	 * @param username
+	 * @param url
+	 * @param version
+	 */
+	public abstract void setLoggedIn(String sessionId, String userId,
+			String username, String url, String version);
 
-	public InvalidResponseException(String error, String description,
-			String errorNumber) {
-		super(error, description, errorNumber);
-	}
+	/**
+	 * Clean session informations from session bean
+	 * 
+	 */
+	public abstract void logout();
+
+	public abstract String getUrl();
+
+	public abstract String getVersion();
+
+	public abstract boolean isVersion4_5();
+
+	/**
+	 * Record in session bean that the user is currently login in. Used to avoid
+	 * multiple login attempts at the same time.
+	 */
+	public abstract void setLoginIn();
+
+	public abstract SessionState getState();
 
 }

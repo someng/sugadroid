@@ -29,8 +29,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * A bean representing an account, as given by SugarCRM
  * 
- * @author pricau
+ * @author Pierre-Yves Ricau
  * 
  */
 public class AccountBean implements Serializable {
@@ -125,6 +126,11 @@ public class AccountBean implements Serializable {
 		this.phone_office = phone_office;
 	}
 
+	/**
+	 * Constructs the shipping address, based on the informations available
+	 * 
+	 * @return
+	 */
 	public String getShippingFullAddress() {
 
 		StringBuilder sb = new StringBuilder("");
