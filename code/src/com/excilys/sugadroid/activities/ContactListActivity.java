@@ -28,15 +28,12 @@ package com.excilys.sugadroid.activities;
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 import com.excilys.sugadroid.tasks.SearchContactsTask;
 
-public class ContactListActivity
-		extends
-		CommonSearchListActivity<ContactBean, GetContactDetailsTask, SearchContactsTask>
-		implements ICallingGetItemDetailsActivity<ContactBean> {
+public class ContactListActivity extends CommonSearchListActivity<ContactBean, GetContactDetailsTask, SearchContactsTask> implements
+		ICallingGetItemDetailsActivity<ContactBean> {
 
 	@Override
 	public Class<ContactDetailsActivity> getItemDetailsActivity() {
@@ -44,20 +41,16 @@ public class ContactListActivity
 	}
 
 	@Override
-	public GetContactDetailsTask getItemDetailsTaskInstance(
-			ContactBean selectedItem) {
-		IContactServices contactServices = BeanHolder.getInstance()
-				.getContactServices();
-		return new GetContactDetailsTask(this, contactServices, selectedItem
-				.getId());
+	public GetContactDetailsTask getItemDetailsTaskInstance(ContactBean selectedItem) {
+		IContactServices contactServices = (IContactServices) container.getBean("contactServices");
+
+		return new GetContactDetailsTask(this, contactServices, selectedItem.getId());
 	}
 
 	@Override
 	public SearchContactsTask getSearchItemTaskInstance(String search) {
-		IContactServices contactServices = BeanHolder.getInstance()
-				.getContactServices();
-		return new SearchContactsTask(this, contactServices, search,
-				GeneralSettings.getSearchListMaxResults(this));
+		IContactServices contactServices = (IContactServices) container.getBean("contactServices");
+		return new SearchContactsTask(this, contactServices, search, GeneralSettings.getSearchListMaxResults(this));
 	}
 
 	@Override

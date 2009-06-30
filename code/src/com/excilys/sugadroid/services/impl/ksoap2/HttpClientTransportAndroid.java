@@ -40,17 +40,15 @@ import org.ksoap2.transport.Transport;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * This class is an equivalent to HttpTransportSE, but it uses the HttpClient
- * provided by Android instead of HTTPUrlConnection. It corrects a bug from
- * HttpTransportSE, that makes every 2 requests fail with HTTPS under specific
- * conditions.
+ * This class is an equivalent to HttpTransportSE, but it uses the HttpClient provided by Android instead of HTTPUrlConnection. It corrects
+ * a bug from HttpTransportSE, that makes every 2 requests fail with HTTPS under specific conditions.
  * 
  * @author Pierre-Yves Ricau
  * 
  */
 public class HttpClientTransportAndroid extends Transport {
 
-	private HttpClient httpClient;
+	private HttpClient	httpClient;
 
 	public HttpClientTransportAndroid(String url) {
 		super(url);
@@ -61,8 +59,7 @@ public class HttpClientTransportAndroid extends Transport {
 	}
 
 	@Override
-	public void call(String soapAction, SoapEnvelope envelope)
-			throws IOException, XmlPullParserException {
+	public void call(String soapAction, SoapEnvelope envelope) throws IOException, XmlPullParserException {
 		if (soapAction == null) {
 			soapAction = "\"\"";
 		}
@@ -75,7 +72,7 @@ public class HttpClientTransportAndroid extends Transport {
 		HttpPost method = new HttpPost(url);
 
 		method.addHeader("User-Agent", "kSOAP/2.0-Excilys");
-		method.addHeader("SOAPAction", "soapAction");
+		method.addHeader("SOAPAction", soapAction);
 		method.addHeader("Content-Type", "text/xml");
 
 		HttpEntity entity = new ByteArrayEntity(requestData);
@@ -104,6 +101,8 @@ public class HttpClientTransportAndroid extends Transport {
 		}
 
 		parseResponse(envelope, inputStream);
+
+		inputStream.close();
 
 	}
 

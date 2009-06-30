@@ -41,33 +41,30 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.ContactBean;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 import com.excilys.sugadroid.tasks.GetAppointmentContactsTask;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 
-public class AppointmentDetailsActivity extends CommonListActivity implements
-		ICallingGetItemDetailsActivity<ContactBean> {
+public class AppointmentDetailsActivity extends CommonListActivity implements ICallingGetItemDetailsActivity<ContactBean> {
 
-	private static final String TAG = AppointmentDetailsActivity.class
-			.getSimpleName();
+	private static final String			TAG	= AppointmentDetailsActivity.class.getSimpleName();
 
-	private IAppointmentBean appointment;
+	private IAppointmentBean			appointment;
 
-	private TextView nameText;
-	private TextView dateStartText;
-	private TextView durationText;
-	private TextView descriptionText;
+	private TextView					nameText;
+	private TextView					dateStartText;
+	private TextView					durationText;
+	private TextView					descriptionText;
 
-	private List<ContactBean> appointmentContacts;
+	private List<ContactBean>			appointmentContacts;
 
-	private ArrayAdapter<ContactBean> itemAdapter;
+	private ArrayAdapter<ContactBean>	itemAdapter;
 
-	private Runnable getItemDetailsTask;
+	private Runnable					getItemDetailsTask;
 
-	private Runnable getAppointmentContactsTask;
+	private Runnable					getAppointmentContactsTask;
 
-	private ContactBean selectedItem;
+	private ContactBean					selectedItem;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -77,8 +74,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 		setContentView(R.layout.appointment_details);
 
-		appointment = (IAppointmentBean) getIntent().getSerializableExtra(
-				CommonActivity.ITEM_IDENTIFIER);
+		appointment = (IAppointmentBean) getIntent().getSerializableExtra(CommonActivity.ITEM_IDENTIFIER);
 
 		findViews();
 		setTasks();
@@ -102,23 +98,15 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 		hideLoadingText();
 
-		StringBuilder sb = new StringBuilder(
-				getString(R.string.appointment_date_start));
-		sb.append(" ").append(
-				appointment.getDayStart().toString(
-						getString(R.string.day_date_format))).append(" ")
-				.append(getString(R.string.appointment_time_start)).append(" ")
-				.append(
-						appointment.getTimeStart().plusHours(
-								GeneralSettings.getGMT(this)).toString(
-								getString(R.string.time_format)));
+		StringBuilder sb = new StringBuilder(getString(R.string.appointment_date_start));
+		sb.append(" ").append(appointment.getDayStart().toString(getString(R.string.day_date_format))).append(" ").append(
+				getString(R.string.appointment_time_start)).append(" ").append(
+				appointment.getTimeStart().plusHours(GeneralSettings.getGMT(this)).toString(getString(R.string.time_format)));
 
 		dateStartText.setText(sb.toString());
 
-		durationText.setText(getString(R.string.appointment_duration) + " "
-				+ appointment.getDurationHours()
-				+ getString(R.string.appointment_hours)
-				+ appointment.getDurationMinutes().toString());
+		durationText.setText(getString(R.string.appointment_duration) + " " + appointment.getDurationHours()
+				+ getString(R.string.appointment_hours) + appointment.getDurationMinutes().toString());
 
 		descriptionText.setText(appointment.getDescription());
 
@@ -128,8 +116,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 		appointmentContacts = new ArrayList<ContactBean>();
 
-		itemAdapter = new ArrayAdapter<ContactBean>(this,
-				android.R.layout.simple_list_item_1, appointmentContacts);
+		itemAdapter = new ArrayAdapter<ContactBean>(this, android.R.layout.simple_list_item_1, appointmentContacts);
 
 		setListAdapter(itemAdapter);
 	}
@@ -138,11 +125,9 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				selectedItem = itemAdapter.getItem(position);
-				executeDelayedOnGuiThreadAuthenticatedTask(500,
-						getItemDetailsTask);
+				executeDelayedOnGuiThreadAuthenticatedTask(500, getItemDetailsTask);
 			}
 
 		});
@@ -150,14 +135,12 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 
 	protected void setTasks() {
 
-		final IContactServices contactServices = BeanHolder.getInstance()
-				.getContactServices();
+		final IContactServices contactServices = (IContactServices) container.getBean("contactServices");
 
 		getItemDetailsTask = new Runnable() {
 			public void run() {
-				GetContactDetailsTask task = new GetContactDetailsTask(
-						AppointmentDetailsActivity.this, contactServices,
-						selectedItem.getId());
+				GetContactDetailsTask task = new GetContactDetailsTask(AppointmentDetailsActivity.this, contactServices, selectedItem
+						.getId());
 
 				submitRejectableTask(task);
 			}
@@ -167,13 +150,8 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 		getAppointmentContactsTask = new Runnable() {
 			public void run() {
 
-				GetAppointmentContactsTask task = new GetAppointmentContactsTask(
-						AppointmentDetailsActivity.this,
-						contactServices,
-						appointment.getId(),
-						0,
-						GeneralSettings
-								.getAccountMaxResults(AppointmentDetailsActivity.this));
+				GetAppointmentContactsTask task = new GetAppointmentContactsTask(AppointmentDetailsActivity.this, contactServices,
+						appointment.getId(), 0, GeneralSettings.getAccountMaxResults(AppointmentDetailsActivity.this));
 
 				hideEmpty();
 
@@ -202,8 +180,7 @@ public class AppointmentDetailsActivity extends CommonListActivity implements
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");
-				Intent intent = new Intent(AppointmentDetailsActivity.this,
-						ContactDetailsActivity.class);
+				Intent intent = new Intent(AppointmentDetailsActivity.this, ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
 				startActivity(intent);
 			}
