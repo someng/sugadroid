@@ -74,7 +74,7 @@ public class BeanContainerHolder {
 			/*
 			 * Comment the following line to disable logging of network communications (overriding default value)
 			 */
-			container.define("logCommunications", true);
+			// container.define("logCommunications", true);
 		}
 		return container;
 	}

@@ -25,6 +25,7 @@
 
 package com.excilys.sugadroid.activities;
 
+import info.piwai.yasdic.YasdicContainer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,7 @@ import android.widget.Button;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.beans.interfaces.ISessionBean.SessionState;
+import com.excilys.sugadroid.di.BeanContainerHolder.LogBeanDef;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
@@ -118,17 +120,23 @@ public class MenuActivity extends CommonActivity {
 
 	private void setTasks() {
 
-		final IAppointmentServices appointmentServices = (IAppointmentServices) container.getBean("appointmentServices");
-
 		getInitialCalendarTask = new Runnable() {
 			public void run() {
-				GetInitialCalendarTask task = new GetInitialCalendarTask(MenuActivity.this, appointmentServices, GeneralSettings
-						.getAppointmentsLoadingBefore(MenuActivity.this), GeneralSettings.getAppointmentsLoadingAfter(MenuActivity.this));
 
-				submitRejectableTask(task);
+				submitRejectableTask((Runnable) container.getBean("getInitialCalendarTask"));
 
 			}
 		};
+
+		container.define("getInitialCalendarTask", new LogBeanDef<GetInitialCalendarTask>() {
+			@Override
+			protected GetInitialCalendarTask newBean(YasdicContainer c) {
+				return new GetInitialCalendarTask(MenuActivity.this, (IAppointmentServices) c.getBean("appointmentServices"),
+						GeneralSettings.getAppointmentsLoadingBefore(MenuActivity.this), GeneralSettings
+								.getAppointmentsLoadingAfter(MenuActivity.this));
+			}
+
+		});
 	}
 
 	public void onInitialCalendarLoaded(final EagerLoadingCalendar calendar) {

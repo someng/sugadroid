@@ -182,9 +182,9 @@ public class ContactDetailsActivity extends CommonActivity implements ICallingGe
 		container.define("getAccountDetailsTask", false, new LogBeanDef<GetAccountDetailsTask>() {
 
 			@Override
-			protected GetAccountDetailsTask newBean(YasdicContainer arg0) {
-				return new GetAccountDetailsTask(ContactDetailsActivity.this, (IAccountServices) container.getBean("accountServices"),
-						contact.getAccountId());
+			protected GetAccountDetailsTask newBean(YasdicContainer c) {
+				return new GetAccountDetailsTask(ContactDetailsActivity.this, (IAccountServices) c.getBean("accountServices"), contact
+						.getAccountId());
 			}
 
 		});
