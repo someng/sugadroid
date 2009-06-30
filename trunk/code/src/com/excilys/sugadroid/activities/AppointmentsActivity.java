@@ -51,36 +51,33 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.interfaces.IAppointmentBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetAppointmentDetailsTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 import com.excilys.sugadroid.util.exceptions.DayNotLoadedException;
 
-public class AppointmentsActivity extends CommonActivity implements
-		ICallingGetItemDetailsActivity<IAppointmentBean> {
+public class AppointmentsActivity extends CommonActivity implements ICallingGetItemDetailsActivity<IAppointmentBean> {
 
-	private static final String TAG = AppointmentsActivity.class
-			.getSimpleName();
+	private static final String		TAG			= AppointmentsActivity.class.getSimpleName();
 
-	public static final String CALENDAR = "calendar";
+	public static final String		CALENDAR	= "calendar";
 
-	private ViewFlipper pageFlipper;
+	private ViewFlipper				pageFlipper;
 
-	private List<View> views;
+	private List<View>				views;
 
-	private EagerLoadingCalendar calendar;
+	private EagerLoadingCalendar	calendar;
 
-	private LocalDate currentDay;
+	private LocalDate				currentDay;
 
-	private Button previousDayButton;
-	private Button nextDayButton;
+	private Button					previousDayButton;
+	private Button					nextDayButton;
 
-	private TextView currentDayText;
+	private TextView				currentDayText;
 
-	private IAppointmentBean selectedItem;
+	private IAppointmentBean		selectedItem;
 
-	private Runnable getItemDetailsTask;
+	private Runnable				getItemDetailsTask;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,15 +90,12 @@ public class AppointmentsActivity extends CommonActivity implements
 		setListeners();
 		setTasks();
 
-		calendar = (EagerLoadingCalendar) getIntent().getSerializableExtra(
-				CALENDAR);
+		calendar = (EagerLoadingCalendar) getIntent().getSerializableExtra(CALENDAR);
 
 		currentDay = new LocalDate();
 
-		pageFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
-				android.R.anim.slide_in_left));
-		pageFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-				android.R.anim.slide_out_right));
+		pageFlipper.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left));
+		pageFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right));
 
 		views = new ArrayList<View>();
 
@@ -120,57 +114,45 @@ public class AppointmentsActivity extends CommonActivity implements
 	}
 
 	private void initFlippingView(View view) {
-		ListView listView = (ListView) view
-				.findViewById(R.id.appointments_list);
+		ListView listView = (ListView) view.findViewById(R.id.appointments_list);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				selectedItem = (IAppointmentBean) arg0.getAdapter().getItem(
-						position);
+				selectedItem = (IAppointmentBean) arg0.getAdapter().getItem(position);
 				Log.d(TAG, "Item clicked: " + selectedItem.getName());
-				executeDelayedOnGuiThreadAuthenticatedTask(500,
-						getItemDetailsTask);
+				executeDelayedOnGuiThreadAuthenticatedTask(500, getItemDetailsTask);
 			}
 		});
 
 	}
 
 	private void fillFlippingView(View view, LocalDate day) {
-		ListView listView = (ListView) view
-				.findViewById(R.id.appointments_list);
+		ListView listView = (ListView) view.findViewById(R.id.appointments_list);
 
 		ArrayAdapter<IAppointmentBean> adapter;
 		try {
-			adapter = new ArrayAdapter<IAppointmentBean>(this,
-					android.R.layout.simple_list_item_1, calendar
-							.getDayAppointments(day)) {
+			adapter = new ArrayAdapter<IAppointmentBean>(this, android.R.layout.simple_list_item_1, calendar.getDayAppointments(day)) {
 
 				@Override
-				public View getView(int position, View convertView,
-						ViewGroup parent) {
+				public View getView(int position, View convertView, ViewGroup parent) {
 
 					if (convertView == null) {
-						convertView = View.inflate(getContext(),
-								R.layout.appointments_row, null);
+						convertView = View.inflate(getContext(), R.layout.appointments_row, null);
 					}
 
-					TextView appointmentSubject = (TextView) convertView
-							.findViewById(R.id.appointment_subject);
+					TextView appointmentSubject = (TextView) convertView.findViewById(R.id.appointment_subject);
 
-					TextView appointmentTime = (TextView) convertView
-							.findViewById(R.id.appointment_time);
+					TextView appointmentTime = (TextView) convertView.findViewById(R.id.appointment_time);
 
 					IAppointmentBean bean = getItem(position);
 
 					appointmentSubject.setText(bean.getName());
 
-					appointmentTime.setText(bean.getTimeStart().plusHours(
-							GeneralSettings.getGMT(AppointmentsActivity.this))
-							.toString(getString(R.string.time_format)));
+					appointmentTime.setText(bean.getTimeStart().plusHours(GeneralSettings.getGMT(AppointmentsActivity.this)).toString(
+							getString(R.string.time_format)));
 
 					return convertView;
 				}
@@ -196,8 +178,8 @@ public class AppointmentsActivity extends CommonActivity implements
 	private void setListeners() {
 		pageFlipper.setOnTouchListener(new OnTouchListener() {
 
-			private boolean moved = false;
-			private float oldX;
+			private boolean	moved	= false;
+			private float	oldX;
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -205,28 +187,28 @@ public class AppointmentsActivity extends CommonActivity implements
 				int action = event.getAction();
 
 				switch (action) {
-				case MotionEvent.ACTION_DOWN:
-					oldX = event.getX();
-					moved = false;
-					return true;
-				case MotionEvent.ACTION_MOVE:
-					moved = true;
-					return true;
-				case MotionEvent.ACTION_UP:
-					if (!moved) {
+					case MotionEvent.ACTION_DOWN:
+						oldX = event.getX();
+						moved = false;
 						return true;
-					}
-					moved = false;
-					if (oldX - event.getX() > 0) {
-						Log.d(TAG, "Left !");
-						moveFlipperToNext();
-					} else {
-						Log.d(TAG, "Right !");
-						moveFlipperToPrevious();
-					}
-					return false;
-				default:
-					return true;
+					case MotionEvent.ACTION_MOVE:
+						moved = true;
+						return true;
+					case MotionEvent.ACTION_UP:
+						if (!moved) {
+							return true;
+						}
+						moved = false;
+						if (oldX - event.getX() > 0) {
+							Log.d(TAG, "Left !");
+							moveFlipperToNext();
+						} else {
+							Log.d(TAG, "Right !");
+							moveFlipperToPrevious();
+						}
+						return false;
+					default:
+						return true;
 				}
 			}
 
@@ -251,14 +233,12 @@ public class AppointmentsActivity extends CommonActivity implements
 
 	private void setTasks() {
 
-		final IAppointmentServices appointmentServices = BeanHolder
-				.getInstance().getAppointmentServices();
+		final IAppointmentServices appointmentServices = (IAppointmentServices) container.getBean("appointmentServices");
 
 		getItemDetailsTask = new Runnable() {
 			public void run() {
-				GetAppointmentDetailsTask task = new GetAppointmentDetailsTask(
-						AppointmentsActivity.this, appointmentServices,
-						selectedItem.getId());
+				GetAppointmentDetailsTask task = new GetAppointmentDetailsTask(AppointmentsActivity.this, appointmentServices, selectedItem
+						.getId());
 
 				submitRejectableTask(task);
 
@@ -322,8 +302,7 @@ public class AppointmentsActivity extends CommonActivity implements
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");
-				Intent intent = new Intent(AppointmentsActivity.this,
-						AppointmentDetailsActivity.class);
+				Intent intent = new Intent(AppointmentsActivity.this, AppointmentDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, appointment);
 				startActivity(intent);
 			}
@@ -333,8 +312,7 @@ public class AppointmentsActivity extends CommonActivity implements
 	private void setDayTextView(LocalDate day) {
 		String dayString;
 		if (day.equals(new LocalDate())) {
-			dayString = getString(R.string.today) + " "
-					+ day.toString(getString(R.string.day_date_format));
+			dayString = getString(R.string.today) + " " + day.toString(getString(R.string.day_date_format));
 		} else {
 			dayString = day.toString(getString(R.string.day_date_format));
 		}

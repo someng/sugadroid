@@ -44,35 +44,32 @@ import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IContactServices;
 import com.excilys.sugadroid.tasks.GetAccountContactsTask;
 import com.excilys.sugadroid.tasks.GetContactDetailsTask;
 
-public class AccountDetailsActivity extends CommonListActivity implements
-		ICallingGetItemDetailsActivity<ContactBean> {
+public class AccountDetailsActivity extends CommonListActivity implements ICallingGetItemDetailsActivity<ContactBean> {
 
-	private static final String TAG = AccountDetailsActivity.class
-			.getSimpleName();
+	private static final String			TAG	= AccountDetailsActivity.class.getSimpleName();
 
-	private AccountBean account;
+	private AccountBean					account;
 
-	private TextView nameText;
-	private TextView addressText;
-	private Button addressButton;
-	private Button phoneButton;
+	private TextView					nameText;
+	private TextView					addressText;
+	private Button						addressButton;
+	private Button						phoneButton;
 
-	private ArrayAdapter<ContactBean> itemAdapter;
+	private ArrayAdapter<ContactBean>	itemAdapter;
 
-	private Runnable getAccountContactsTask;
+	private Runnable					getAccountContactsTask;
 
-	private Runnable getItemDetailsTask;
+	private Runnable					getItemDetailsTask;
 
-	private ContactBean selectedItem;
+	private ContactBean					selectedItem;
 
-	private ContactBean moreResults;
+	private ContactBean					moreResults;
 
-	private List<ContactBean> accountContacts;
+	private List<ContactBean>			accountContacts;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -82,8 +79,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 		setContentView(R.layout.account_details);
 
-		account = (AccountBean) getIntent().getSerializableExtra(
-				CommonActivity.ITEM_IDENTIFIER);
+		account = (AccountBean) getIntent().getSerializableExtra(CommonActivity.ITEM_IDENTIFIER);
 
 		moreResults = new ContactBean();
 		moreResults.setFirstName(getString(R.string.item_search_more_result));
@@ -115,8 +111,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		nameText.setVisibility(View.VISIBLE);
 		hideLoadingText();
 
-		if (account.getPhoneOffice() != null
-				&& !account.getPhoneOffice().equals("")) {
+		if (account.getPhoneOffice() != null && !account.getPhoneOffice().equals("")) {
 			phoneButton.setText(account.getPhoneOffice());
 		} else {
 			phoneButton.setText(R.string.not_available);
@@ -137,8 +132,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 		accountContacts = new ArrayList<ContactBean>();
 
-		itemAdapter = new ArrayAdapter<ContactBean>(this,
-				android.R.layout.simple_list_item_1, accountContacts);
+		itemAdapter = new ArrayAdapter<ContactBean>(this, android.R.layout.simple_list_item_1, accountContacts);
 
 		setListAdapter(itemAdapter);
 	}
@@ -148,17 +142,14 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				List<ContactBean> contacts = accountContacts;
-				if (position == contacts.size() - 1
-						&& contacts.get(position).equals(moreResults)) {
+				if (position == contacts.size() - 1 && contacts.get(position).equals(moreResults)) {
 					executeOnGuiThreadAuthenticatedTask(getAccountContactsTask);
 
 				} else {
 					selectedItem = itemAdapter.getItem(position);
-					executeDelayedOnGuiThreadAuthenticatedTask(500,
-							getItemDetailsTask);
+					executeDelayedOnGuiThreadAuthenticatedTask(500, getItemDetailsTask);
 				}
 			}
 		});
@@ -188,8 +179,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 
 	protected void setTasks() {
 
-		final IContactServices contactServices = BeanHolder.getInstance()
-				.getContactServices();
+		final IContactServices contactServices = (IContactServices) container.getBean("contactServices");
 
 		getAccountContactsTask = new Runnable() {
 			public void run() {
@@ -201,13 +191,8 @@ public class AccountDetailsActivity extends CommonListActivity implements
 					size -= 1;
 				}
 
-				GetAccountContactsTask task = new GetAccountContactsTask(
-						AccountDetailsActivity.this,
-						contactServices,
-						account.getId(),
-						size,
-						GeneralSettings
-								.getAccountMaxResults(AccountDetailsActivity.this));
+				GetAccountContactsTask task = new GetAccountContactsTask(AccountDetailsActivity.this, contactServices, account.getId(),
+						size, GeneralSettings.getAccountMaxResults(AccountDetailsActivity.this));
 
 				hideEmpty();
 				submitRejectableTask(task);
@@ -217,9 +202,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		getItemDetailsTask = new Runnable() {
 			public void run() {
 
-				GetContactDetailsTask task = new GetContactDetailsTask(
-						AccountDetailsActivity.this, contactServices,
-						selectedItem.getId());
+				GetContactDetailsTask task = new GetContactDetailsTask(AccountDetailsActivity.this, contactServices, selectedItem.getId());
 
 				submitRejectableTask(task);
 
@@ -228,14 +211,12 @@ public class AccountDetailsActivity extends CommonListActivity implements
 	}
 
 	public void callNumber(String number) {
-		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-				+ number));
+		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
 		startActivity(intent);
 	}
 
 	public void showAddress(String address) {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="
-				+ address));
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + address));
 		startActivity(intent);
 	}
 
@@ -254,8 +235,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 				showEmpty();
 				itemAdapter.notifyDataSetChanged();
 
-				if (contacts.size() == GeneralSettings
-						.getAccountMaxResults(AccountDetailsActivity.this)) {
+				if (contacts.size() == GeneralSettings.getAccountMaxResults(AccountDetailsActivity.this)) {
 					allContacts.add(moreResults);
 				}
 			}
@@ -267,8 +247,7 @@ public class AccountDetailsActivity extends CommonListActivity implements
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");
-				Intent intent = new Intent(AccountDetailsActivity.this,
-						ContactDetailsActivity.class);
+				Intent intent = new Intent(AccountDetailsActivity.this, ContactDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, contact);
 				startActivity(intent);
 			}

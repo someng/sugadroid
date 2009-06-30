@@ -28,15 +28,12 @@ package com.excilys.sugadroid.activities;
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.tasks.GetAccountDetailsTask;
 import com.excilys.sugadroid.tasks.SearchAccountsTask;
 
-public class AccountListActivity
-		extends
-		CommonSearchListActivity<AccountBean, GetAccountDetailsTask, SearchAccountsTask>
-		implements ICallingGetItemDetailsActivity<AccountBean> {
+public class AccountListActivity extends CommonSearchListActivity<AccountBean, GetAccountDetailsTask, SearchAccountsTask> implements
+		ICallingGetItemDetailsActivity<AccountBean> {
 
 	@Override
 	public Class<AccountDetailsActivity> getItemDetailsActivity() {
@@ -44,22 +41,17 @@ public class AccountListActivity
 	}
 
 	@Override
-	public GetAccountDetailsTask getItemDetailsTaskInstance(
-			AccountBean selectedItem) {
+	public GetAccountDetailsTask getItemDetailsTaskInstance(AccountBean selectedItem) {
 
-		IAccountServices accountServices = BeanHolder.getInstance()
-				.getAccountServices();
+		IAccountServices accountServices = (IAccountServices) container.getBean("accountServices");
 
-		return new GetAccountDetailsTask(this, accountServices, selectedItem
-				.getId());
+		return new GetAccountDetailsTask(this, accountServices, selectedItem.getId());
 	}
 
 	@Override
 	public SearchAccountsTask getSearchItemTaskInstance(String search) {
-		IAccountServices accountServices = BeanHolder.getInstance()
-				.getAccountServices();
-		return new SearchAccountsTask(this, accountServices, search,
-				GeneralSettings.getSearchListMaxResults(this));
+		IAccountServices accountServices = (IAccountServices) container.getBean("accountServices");
+		return new SearchAccountsTask(this, accountServices, search, GeneralSettings.getSearchListMaxResults(this));
 	}
 
 	@Override

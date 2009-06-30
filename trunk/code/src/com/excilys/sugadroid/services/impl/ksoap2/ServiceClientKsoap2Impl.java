@@ -40,33 +40,30 @@ import com.excilys.sugadroid.services.interfaces.IWebService;
 
 public abstract class ServiceClientKsoap2Impl implements IWebService {
 
-	private static String TAG = ServiceClientKsoap2Impl.class.getSimpleName();
+	private static String	TAG	= ServiceClientKsoap2Impl.class.getSimpleName();
 
-	protected String namespace;
+	protected String		namespace;
 
-	private Transport transport;
+	private Transport		transport;
 
-	public Object sendRequest(final SoapObject request, final String soapAction)
-			throws InvalidResponseException {
+	public Object sendRequest(final SoapObject request, final String soapAction) throws InvalidResponseException {
 
-		Log.d(TAG, "Calling action [" + soapAction + "] on service ["
-				+ transport.getUrl() + "]");
+		Log.d(TAG, "Calling action [" + soapAction + "] on service [" + transport.getUrl() + "]");
 
-		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-				SoapEnvelope.VER11);
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
 
 		envelope.setOutputSoapObject(request);
 
 		Object response;
 		try {
 			transport.call(soapAction, envelope);
-			logRawRequest();
 			response = envelope.getResponse();
 		} catch (IOException e) {
 			throw new InvalidResponseException(e);
 		} catch (XmlPullParserException e) {
 			throw new InvalidResponseException(e);
 		} finally {
+			logRawRequest();
 			logRawResponse();
 		}
 

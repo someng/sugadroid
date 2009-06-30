@@ -34,22 +34,21 @@ import android.widget.Button;
 
 import com.excilys.sugadroid.R;
 import com.excilys.sugadroid.beans.interfaces.ISessionBean.SessionState;
-import com.excilys.sugadroid.di.BeanHolder;
 import com.excilys.sugadroid.services.interfaces.IAppointmentServices;
 import com.excilys.sugadroid.tasks.GetInitialCalendarTask;
 import com.excilys.sugadroid.util.EagerLoadingCalendar;
 
 public class MenuActivity extends CommonActivity {
 
-	private static final String TAG = MenuActivity.class.getSimpleName();
+	private static final String	TAG		= MenuActivity.class.getSimpleName();
 
-	private Button accountListButton;
-	private Button contactListButton;
-	private Button appointmentsButton;
+	private Button				accountListButton;
+	private Button				contactListButton;
+	private Button				appointmentsButton;
 
-	protected int menuId = R.menu.menu;
+	protected int				menuId	= R.menu.menu;
 
-	private Runnable getInitialCalendarTask;
+	private Runnable			getInitialCalendarTask;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -84,8 +83,7 @@ public class MenuActivity extends CommonActivity {
 				executeOnGuiThreadAuthenticatedTask(new Runnable() {
 					public void run() {
 
-						Intent i = new Intent(MenuActivity.this,
-								AccountListActivity.class);
+						Intent i = new Intent(MenuActivity.this, AccountListActivity.class);
 						startActivity(i);
 
 					}
@@ -100,8 +98,7 @@ public class MenuActivity extends CommonActivity {
 				executeOnGuiThreadAuthenticatedTask(new Runnable() {
 					public void run() {
 
-						Intent i = new Intent(MenuActivity.this,
-								ContactListActivity.class);
+						Intent i = new Intent(MenuActivity.this, ContactListActivity.class);
 						startActivity(i);
 
 					}
@@ -121,18 +118,12 @@ public class MenuActivity extends CommonActivity {
 
 	private void setTasks() {
 
-		final IAppointmentServices appointmentServices = BeanHolder
-				.getInstance().getAppointmentServices();
+		final IAppointmentServices appointmentServices = (IAppointmentServices) container.getBean("appointmentServices");
 
 		getInitialCalendarTask = new Runnable() {
 			public void run() {
-				GetInitialCalendarTask task = new GetInitialCalendarTask(
-						MenuActivity.this,
-						appointmentServices,
-						GeneralSettings
-								.getAppointmentsLoadingBefore(MenuActivity.this),
-						GeneralSettings
-								.getAppointmentsLoadingAfter(MenuActivity.this));
+				GetInitialCalendarTask task = new GetInitialCalendarTask(MenuActivity.this, appointmentServices, GeneralSettings
+						.getAppointmentsLoadingBefore(MenuActivity.this), GeneralSettings.getAppointmentsLoadingAfter(MenuActivity.this));
 
 				submitRejectableTask(task);
 
@@ -143,8 +134,7 @@ public class MenuActivity extends CommonActivity {
 	public void onInitialCalendarLoaded(final EagerLoadingCalendar calendar) {
 		runOnUiThread(new Runnable() {
 			public void run() {
-				Intent i = new Intent(MenuActivity.this,
-						AppointmentsActivity.class);
+				Intent i = new Intent(MenuActivity.this, AppointmentsActivity.class);
 				i.putExtra(AppointmentsActivity.CALENDAR, calendar);
 				startActivity(i);
 			}

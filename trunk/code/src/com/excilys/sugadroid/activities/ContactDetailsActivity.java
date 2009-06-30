@@ -25,6 +25,7 @@
 
 package com.excilys.sugadroid.activities;
 
+import info.piwai.yasdic.YasdicContainer;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,27 +42,25 @@ import com.excilys.sugadroid.activities.delegates.DialogManager.DialogValues;
 import com.excilys.sugadroid.activities.interfaces.ICallingGetItemDetailsActivity;
 import com.excilys.sugadroid.beans.AccountBean;
 import com.excilys.sugadroid.beans.ContactBean;
-import com.excilys.sugadroid.di.BeanHolder;
+import com.excilys.sugadroid.di.BeanContainerHolder.LogBeanDef;
 import com.excilys.sugadroid.services.interfaces.IAccountServices;
 import com.excilys.sugadroid.tasks.GetAccountDetailsTask;
 
-public class ContactDetailsActivity extends CommonActivity implements
-		ICallingGetItemDetailsActivity<AccountBean> {
+public class ContactDetailsActivity extends CommonActivity implements ICallingGetItemDetailsActivity<AccountBean> {
 
-	private static final String TAG = ContactDetailsActivity.class
-			.getSimpleName();
-	public static final String CONTACT = "contact";
+	private static final String	TAG		= ContactDetailsActivity.class.getSimpleName();
+	public static final String	CONTACT	= "contact";
 
-	private ContactBean contact;
+	private ContactBean			contact;
 
-	private Button accountButton;
-	private Button phoneMobileButton;
-	private Button phoneWorkButton;
-	private Button emailButton;
-	private Button addButton;
-	private TextView nameText;
+	private Button				accountButton;
+	private Button				phoneMobileButton;
+	private Button				phoneWorkButton;
+	private Button				emailButton;
+	private Button				addButton;
+	private TextView			nameText;
 
-	private Runnable getItemDetailsTask;
+	private Runnable			getItemDetailsTask;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -71,8 +70,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 
 		setContentView(R.layout.contact_details);
 
-		contact = (ContactBean) getIntent().getSerializableExtra(
-				CommonActivity.ITEM_IDENTIFIER);
+		contact = (ContactBean) getIntent().getSerializableExtra(CommonActivity.ITEM_IDENTIFIER);
 
 		findViews();
 		setContents();
@@ -94,24 +92,21 @@ public class ContactDetailsActivity extends CommonActivity implements
 		nameText.setText(contact.toString());
 		hideLoadingText();
 
-		if (contact.getAccountName() != null
-				&& !contact.getAccountName().equals("")) {
+		if (contact.getAccountName() != null && !contact.getAccountName().equals("")) {
 			accountButton.setText(contact.getAccountName());
 		} else {
 			accountButton.setText(R.string.not_available);
 			accountButton.setClickable(false);
 		}
 
-		if (contact.getPhoneMobile() != null
-				&& !contact.getPhoneMobile().equals("")) {
+		if (contact.getPhoneMobile() != null && !contact.getPhoneMobile().equals("")) {
 			phoneMobileButton.setText(contact.getPhoneMobile());
 		} else {
 			phoneMobileButton.setText(R.string.not_available);
 			phoneMobileButton.setClickable(false);
 		}
 
-		if (contact.getPhoneWork() != null
-				&& !contact.getPhoneWork().equals("")) {
+		if (contact.getPhoneWork() != null && !contact.getPhoneWork().equals("")) {
 			phoneWorkButton.setText(contact.getPhoneWork());
 		} else {
 			phoneWorkButton.setText(R.string.not_available);
@@ -175,31 +170,33 @@ public class ContactDetailsActivity extends CommonActivity implements
 
 	private void setTasks() {
 
-		final IAccountServices accountServices = BeanHolder.getInstance()
-				.getAccountServices();
-
 		getItemDetailsTask = new Runnable() {
 			public void run() {
-				GetAccountDetailsTask task = new GetAccountDetailsTask(
-						ContactDetailsActivity.this, accountServices, contact
-								.getAccountId());
 
-				submitRejectableTask(task);
+				submitRejectableTask((GetAccountDetailsTask) container.getBean("getAccountDetailsTask"));
 
 			}
 
 		};
+
+		container.define("getAccountDetailsTask", false, new LogBeanDef<GetAccountDetailsTask>() {
+
+			@Override
+			protected GetAccountDetailsTask newBean(YasdicContainer arg0) {
+				return new GetAccountDetailsTask(ContactDetailsActivity.this, (IAccountServices) container.getBean("accountServices"),
+						contact.getAccountId());
+			}
+
+		});
 	}
 
 	public void callNumber(String number) {
-		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"
-				+ number));
+		Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
 		startActivity(intent);
 	}
 
 	public void sendMail(String emailAddress) {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"
-				+ emailAddress));
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + emailAddress));
 		startActivity(intent);
 	}
 
@@ -208,8 +205,7 @@ public class ContactDetailsActivity extends CommonActivity implements
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Log.d(TAG, "forwarding to item details activity");
-				Intent intent = new Intent(ContactDetailsActivity.this,
-						AccountDetailsActivity.class);
+				Intent intent = new Intent(ContactDetailsActivity.this, AccountDetailsActivity.class);
 				intent.putExtra(CommonActivity.ITEM_IDENTIFIER, account);
 				startActivity(intent);
 			}
@@ -228,57 +224,41 @@ public class ContactDetailsActivity extends CommonActivity implements
 		// Uri newPersonUri = getContentResolver()
 		// .insert(Contacts.People.CONTENT_URI, personValues);
 
-		Uri newPersonUri = Contacts.People.createPersonInMyContactsGroup(
-				getContentResolver(), personValues);
+		Uri newPersonUri = Contacts.People.createPersonInMyContactsGroup(getContentResolver(), personValues);
 
 		if (newPersonUri != null) {
 
 			// add account
-			if (contact.getAccountName() != null
-					&& !contact.getAccountName().equals("")) {
+			if (contact.getAccountName() != null && !contact.getAccountName().equals("")) {
 				ContentValues organisationValues = new ContentValues();
-				Uri orgUri = Uri.withAppendedPath(newPersonUri,
-						Contacts.Organizations.CONTENT_DIRECTORY);
-				organisationValues.put(Contacts.Organizations.COMPANY, contact
-						.getAccountName());
-				organisationValues.put(Contacts.Organizations.TYPE,
-						Contacts.Organizations.TYPE_WORK);
-				Uri orgUpdate = getContentResolver().insert(orgUri,
-						organisationValues);
+				Uri orgUri = Uri.withAppendedPath(newPersonUri, Contacts.Organizations.CONTENT_DIRECTORY);
+				organisationValues.put(Contacts.Organizations.COMPANY, contact.getAccountName());
+				organisationValues.put(Contacts.Organizations.TYPE, Contacts.Organizations.TYPE_WORK);
+				Uri orgUpdate = getContentResolver().insert(orgUri, organisationValues);
 				if (orgUpdate == null) {
 					Log.e(TAG, "Could not insert contact's account name");
 				}
 			}
 
-			if (contact.getPhoneMobile() != null
-					&& !contact.getPhoneMobile().equals("")) {
+			if (contact.getPhoneMobile() != null && !contact.getPhoneMobile().equals("")) {
 				// add mobile phone number
 				ContentValues mobileValues = new ContentValues();
-				Uri mobileUri = Uri.withAppendedPath(newPersonUri,
-						Contacts.People.Phones.CONTENT_DIRECTORY);
-				mobileValues.put(Contacts.Phones.NUMBER, contact
-						.getPhoneMobile());
-				mobileValues.put(Contacts.Phones.TYPE,
-						Contacts.Phones.TYPE_MOBILE);
-				Uri phoneUpdate = getContentResolver().insert(mobileUri,
-						mobileValues);
+				Uri mobileUri = Uri.withAppendedPath(newPersonUri, Contacts.People.Phones.CONTENT_DIRECTORY);
+				mobileValues.put(Contacts.Phones.NUMBER, contact.getPhoneMobile());
+				mobileValues.put(Contacts.Phones.TYPE, Contacts.Phones.TYPE_MOBILE);
+				Uri phoneUpdate = getContentResolver().insert(mobileUri, mobileValues);
 				if (phoneUpdate == null) {
-					Log
-							.e(TAG,
-									"Could not insert contact's mobile phone number");
+					Log.e(TAG, "Could not insert contact's mobile phone number");
 				}
 			}
 
-			if (contact.getPhoneWork() != null
-					&& !contact.getPhoneWork().equals("")) {
+			if (contact.getPhoneWork() != null && !contact.getPhoneWork().equals("")) {
 				// add work phone number
 				ContentValues workValues = new ContentValues();
-				Uri faxUri = Uri.withAppendedPath(newPersonUri,
-						Contacts.People.Phones.CONTENT_DIRECTORY);
+				Uri faxUri = Uri.withAppendedPath(newPersonUri, Contacts.People.Phones.CONTENT_DIRECTORY);
 				workValues.put(Contacts.Phones.NUMBER, contact.getPhoneWork());
 				workValues.put(Contacts.Phones.TYPE, Contacts.Phones.TYPE_WORK);
-				Uri phoneUpdate = getContentResolver().insert(faxUri,
-						workValues);
+				Uri phoneUpdate = getContentResolver().insert(faxUri, workValues);
 				if (phoneUpdate == null) {
 					Log.e(TAG, "Could not insert contact's work phone number");
 				}
@@ -287,16 +267,11 @@ public class ContactDetailsActivity extends CommonActivity implements
 			if (contact.getEmail1() != null && !contact.getEmail1().equals("")) {
 				// add email
 				ContentValues emailValues = new ContentValues();
-				Uri emailUri = Uri.withAppendedPath(newPersonUri,
-						Contacts.People.ContactMethods.CONTENT_DIRECTORY);
-				emailValues.put(Contacts.ContactMethods.KIND,
-						Contacts.KIND_EMAIL);
-				emailValues.put(Contacts.ContactMethods.TYPE,
-						Contacts.ContactMethods.TYPE_HOME);
-				emailValues.put(Contacts.ContactMethods.DATA, contact
-						.getEmail1());
-				Uri emailUpdate = getContentResolver().insert(emailUri,
-						emailValues);
+				Uri emailUri = Uri.withAppendedPath(newPersonUri, Contacts.People.ContactMethods.CONTENT_DIRECTORY);
+				emailValues.put(Contacts.ContactMethods.KIND, Contacts.KIND_EMAIL);
+				emailValues.put(Contacts.ContactMethods.TYPE, Contacts.ContactMethods.TYPE_HOME);
+				emailValues.put(Contacts.ContactMethods.DATA, contact.getEmail1());
+				Uri emailUpdate = getContentResolver().insert(emailUri, emailValues);
 				if (emailUpdate == null) {
 					Log.e(TAG, "Could not insert contact's email");
 				}
